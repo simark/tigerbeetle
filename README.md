@@ -1,6 +1,8 @@
 tigerbeetle
 ===========
 
+[![Build Status](https://travis-ci.org/eepp/tigerbeetle.svg?branch=master)](https://travis-ci.org/eepp/tigerbeetle)
+
 ***tigerbeetle*** is an ongoing project aiming at the creation of a
 fast, flexible trace analysis core. The project name has absolutely no
 meaning and is subject to change.
