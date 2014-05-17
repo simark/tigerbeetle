@@ -1,9 +1,177 @@
 #include <iostream>
+#include <vector>
+#include <string>
+#include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
+
+namespace bfs = boost::filesystem;
+
+namespace
+{
+
+struct Arguments
+{
+    std::vector<bfs::path> traces;
+    std::vector<bfs::path> stateProviders;
+    std::string bindProgress;
+    bfs::path cacheDir;
+    bool verbose;
+};
+
+/**
+ * Parses the command line arguments passed to the program.
+ *
+ * @param argc Number of arguments in \p argv
+ * @param argv Command line arguments
+ * @param args Arguments values to fill
+ *
+ * @returns    0 to continue, 1 if there's a command line error
+ */
+int parseOptions(int argc, char* argv[], Arguments& args)
+{
+    namespace bpo = boost::program_options;
+
+    bpo::options_description desc;
+
+    desc.add_options()
+        ("help,h", "help")
+        ("traces,T", bpo::value<std::vector<std::string>>())
+        ("verbose,v", bpo::bool_switch()->default_value(false))
+        ("stateprov,s", bpo::value<std::vector<std::string>>()->multitoken())
+        ("bind-progress,b", bpo::value<std::string>())
+        ("cache-dir,d", bpo::value<std::string>())
+    ;
+
+    bpo::positional_options_description pos;
+
+    pos.add("traces", -1);
+
+    bpo::variables_map vm;
+
+    try {
+        auto cliParser = bpo::command_line_parser(argc, argv);
+        auto parsedOptions = cliParser.options(desc).positional(pos).run();
+
+        bpo::store(parsedOptions, vm);
+    } catch (const std::exception& ex) {
+        std::cerr << "Command line error: " << ex.what() << std::endl;
+        return 1;
+    }
+
+    if (!vm["help"].empty()) {
+        std::cout <<
+            "usage: tibeebuild [options] <trace path>..." << std::endl <<
+            std::endl <<
+            "options:" << std::endl <<
+            std::endl <<
+            "  -h, --help           print this help message" << std::endl <<
+            "  -b, --bind-progress  bind address for build progress (default: none)" << std::endl <<
+            "  -d, --cache-dir      write caches to this directory (default: CWD)" << std::endl <<
+            "  -s                   state provider file path (at least one)" << std::endl <<
+            "  -v, --verbose        verbose" << std::endl;
+
+        return -1;
+    }
+
+    try {
+        vm.notify();
+    } catch (const std::exception& ex) {
+        std::cerr << "Command line error: " << ex.what() << std::endl;
+        return 1;
+    }
+
+    // traces
+    if (vm["traces"].empty()) {
+        std::cerr << "Command line error: need at least one trace file to work with" << std::endl;
+        return 1;
+    }
+
+    auto traces = vm["traces"].as<std::vector<std::string>>();
+
+    for (const auto& trace : traces) {
+        bfs::path p {trace};
+
+        if (!bfs::exists(p)) {
+            std::cerr << "Trace path " << p << " does not exist" << std::endl;
+            return 1;
+        }
+
+        args.traces.push_back(p);
+    }
+
+    // cache directory
+    bfs::path cacheDirPath = bfs::current_path();
+
+    if (!vm["cache-dir"].empty()) {
+        cacheDirPath = vm["cache-dir"].as<std::string>();
+    }
+
+    if (bfs::exists(cacheDirPath) && bfs::is_directory(cacheDirPath)) {
+        args.cacheDir = cacheDirPath;
+    } else {
+        std::cerr << "Cache output directory " << cacheDirPath << " is not a directory" << std::endl;
+        return 1;
+    }
+
+    // state providers
+    if (vm["stateprov"].empty()) {
+        std::cerr << "Command line error: need at least one state provider to work with" << std::endl;
+        return 1;
+    }
+
+    auto stateProviders = vm["stateprov"].as<std::vector<std::string>>();
+
+    for (const auto& stateProvider : stateProviders) {
+        bfs::path p {stateProvider};
+
+        if (bfs::exists(p) && !bfs::is_directory(p)) {
+            args.stateProviders.push_back(p);
+        } else {
+            std::cerr << "State provider " << p << " is not a file" << std::endl;
+            return 1;
+        }
+    }
+
+    // bind progress
+    if (!vm["bind-progress"].empty()) {
+        args.bindProgress = vm["bind-progress"].as<std::string>();
+    }
+
+    // verbose
+    args.verbose = vm["verbose"].as<bool>();
+
+    return 0;
+}
+
+}
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello, tiger beetle!" << std::endl <<
-                 "I'm the cache builder." << std::endl;
+    Arguments args;
+
+    int ret = parseOptions(argc, argv, args);
+
+    if (ret < 0) {
+        return 0;
+    } else if (ret > 0) {
+        return ret;
+    }
+
+    std::cout <<
+        "Verbose: " << (args.verbose ? "yes" : "no") << std::endl <<
+        "Cache output directory: " << args.cacheDir << std::endl <<
+        "Bind address for progress: " << args.bindProgress << std::endl << std::endl;
+
+    std::cout << "State providers:" << std::endl << std::endl;
+    for (const auto& stateProvider : args.stateProviders) {
+        std::cout << "  - " << stateProvider << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "Traces:" << std::endl << std::endl;
+    for (const auto& trace : args.traces) {
+        std::cout << "  - " << trace << std::endl;
+    }
 
     return 0;
 }

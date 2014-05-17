@@ -7,6 +7,7 @@ target = 'tibeebuild'
 
 libs = [
     'boost_program_options',
+    'boost_filesystem',
     'boost_system',
 ]
 
