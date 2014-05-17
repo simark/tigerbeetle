@@ -22,6 +22,7 @@ custom_env = {
 
 root_env = Environment(CCFLAGS=ccflags,
                        ENV=custom_env)
+
 if 'CXX' in os.environ:
     root_env['CXX'] = os.environ['CXX']
 
