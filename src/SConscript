@@ -1,0 +1,15 @@
+import os
+
+
+Import('root_env')
+
+env = root_env.Clone()
+env.Append(CPPPATH=['#/src/common'])
+
+tibeecore = SConscript(os.path.join('tibeecore', 'SConscript'),
+                       exports=['env'])
+tibeebuild = SConscript(os.path.join('tibeebuild', 'SConscript'),
+                        exports=['env'])
+
+Return(['tibeecore', 'tibeebuild'])
+

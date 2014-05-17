@@ -5,3 +5,5 @@
 *.os
 .sconsign.dblite
 *.his
+/src/tibeecore/tibeecore
+/src/tibeebuild/tibeebuild
