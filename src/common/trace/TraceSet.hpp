@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <set>
 #include <boost/filesystem.hpp>
+#include <boost/utility.hpp>
 #include <babeltrace/babeltrace.h>
 
 #include <common/BasicTypes.hpp>
@@ -43,7 +44,8 @@ namespace common
  *
  * @author Philippe Proulx
  */
-class TraceSet
+class TraceSet :
+    boost::noncopyable
 {
 public:
     typedef TraceSetIterator iterator;
