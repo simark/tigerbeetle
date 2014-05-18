@@ -35,7 +35,7 @@ According to Wikipedia:
 > by experienced system administrators or technical support personnel and
 > software monitoring tools to diagnose common problems with software.
 
-You may view a trace like a log file, each _tracepoint_ producing an _event_.
+You may view a trace as a log file, each _tracepoint_ producing an _event_.
 The biggest difference between tracing and logging is that tracing is normally
 way faster and isn't limited to recording lines of plain text.
 
