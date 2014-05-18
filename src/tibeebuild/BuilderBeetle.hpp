@@ -25,7 +25,7 @@ namespace tibee
 {
 
 /**
- * Trace deck. Plays a trace set to one or more listeners.
+ * Builder beetle. This little beetle will build whatever you ask it.
  *
  * @author Philippe Proulx
  */
