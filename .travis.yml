@@ -7,10 +7,16 @@ before_install:
   # support C++11 with g++ 4.8 and latest Boost
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo add-apt-repository -y ppa:boost-latest/ppa
+
+  # latest Babeltrace
+  - sudo add-apt-repository -y ppa:lttng/daily
+
+  # update everything now
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq g++-4.8 scons libcppunit-dev boost1.55
+  - sudo apt-get install -qq g++-4.8 scons pkg-config
+  - sudo apt-get install -qq libcppunit-dev boost1.55 babeltrace
   - export CXX=g++-4.8
 
 script:

@@ -1,0 +1,34 @@
+import os.path
+
+
+Import('env')
+
+target = 'tibeecommon'
+
+trace_sources = [
+    'AbstractEventValue.cpp',
+    'ArrayEventValue.cpp',
+    'DictEventValue.cpp',
+    'EnumEventValue.cpp',
+    'Event.cpp',
+    'EventValueUtils.cpp',
+    'FloatEventValue.cpp',
+    'SintEventValue.cpp',
+    'StringEventValue.cpp',
+    'TraceSet.cpp',
+    'TraceSetIterator.cpp',
+    'UintEventValue.cpp',
+    'UnknownEventValue.cpp',
+]
+
+subs = [
+    ('trace', trace_sources),
+]
+
+sources = []
+for base, files in subs:
+    sources += [os.path.join(base, f) for f in files]
+
+lib = env.Library(target=target, source=sources)
+
+Return('lib')

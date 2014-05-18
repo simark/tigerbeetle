@@ -16,10 +16,13 @@
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
+#include <cstdio>
 #include <vector>
 #include <string>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+
+#include <common/trace/TraceSet.hpp>
 
 namespace bfs = boost::filesystem;
 
@@ -160,6 +163,46 @@ int parseOptions(int argc, char* argv[], Arguments& args)
     return 0;
 }
 
+void test(const std::vector<bfs::path>& traces)
+{
+    using namespace tibee::common;
+
+    TraceSet set;
+
+    for (const auto& trace : traces) {
+        if (!set.addTrace(trace.string())) {
+            std::cerr << "Error: could not add trace " << trace << std::endl;
+        }
+    }
+
+    for (const auto& event : set) {
+        std::cout << "name: " << event.getName() << std::endl <<
+                     "ts: " << event.getTimestamp() << std::endl <<
+                     "cycles: " << event.getCycles() << std::endl <<
+                     "fields: " << event.getFields()->toString() << std::endl;
+
+        auto context = event.getContext();
+
+        if (context) {
+            std::cout << "context: " << context->toString() << std::endl;
+        }
+
+        auto streamEventContext = event.getStreamEventContext();
+
+        if (streamEventContext) {
+            std::cout << "stream event context: " << streamEventContext->toString() << std::endl;
+        }
+
+        auto streamPacketContext = event.getStreamPacketContext();
+
+        if (streamPacketContext) {
+            std::cout << "stream packet context: " << streamPacketContext->toString() << std::endl;
+        }
+
+        std::cout << std::endl;
+    }
+}
+
 }
 
 int main(int argc, char* argv[])
@@ -189,6 +232,9 @@ int main(int argc, char* argv[])
     for (const auto& trace : args.traces) {
         std::cout << "  - " << trace << std::endl;
     }
+
+    std::cout << std::endl;
+    test(args.traces);
 
     return 0;
 }

@@ -4,12 +4,19 @@ import os
 Import('root_env')
 
 env = root_env.Clone()
-env.Append(CPPPATH=['#/src/common'])
 
+env.Append(CPPPATH=['#/src'])
+env.ParseConfig('pkg-config --cflags --libs babeltrace')
+env.ParseConfig('pkg-config --cflags --libs babeltrace-ctf')
+
+common = SConscript(os.path.join('common', 'SConscript'),
+                    exports=['env'])
 tibeecore = SConscript(os.path.join('tibeecore', 'SConscript'),
-                       exports=['env'])
+                       exports=['env', 'common'])
 tibeebuild = SConscript(os.path.join('tibeebuild', 'SConscript'),
-                        exports=['env'])
+                        exports=['env', 'common'])
+
+Depends('tibeecore', 'common')
+Depends('tibeebuild', 'common')
 
 Return(['tibeecore', 'tibeebuild'])
-

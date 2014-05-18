@@ -1,7 +1,7 @@
 import os.path
 
 
-Import('env')
+Import(['env', 'common'])
 
 target = 'tibeebuild'
 
@@ -9,12 +9,17 @@ libs = [
     'boost_program_options',
     'boost_filesystem',
     'boost_system',
+    common
 ]
 
 sources = [
     'main.cpp',
 ]
 
-app = env.Program(target=target, source=sources, LIBS=libs)
+app_env = env.Clone()
+
+app_env.Append(LIBS=libs)
+
+app = app_env.Program(target=target, source=sources)
 
 Return('app')
