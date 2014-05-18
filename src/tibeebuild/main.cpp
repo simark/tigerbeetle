@@ -22,21 +22,13 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include <common/trace/TraceSet.hpp>
+#include "BuilderBeetle.hpp"
+#include "Arguments.hpp"
 
 namespace bfs = boost::filesystem;
 
 namespace
 {
-
-struct Arguments
-{
-    std::vector<bfs::path> traces;
-    std::vector<bfs::path> stateProviders;
-    std::string bindProgress;
-    bfs::path cacheDir;
-    bool verbose;
-};
 
 /**
  * Parses the command line arguments passed to the program.
@@ -47,7 +39,7 @@ struct Arguments
  *
  * @returns    0 to continue, 1 if there's a command line error
  */
-int parseOptions(int argc, char* argv[], Arguments& args)
+int parseOptions(int argc, char* argv[], tibee::Arguments& args)
 {
     namespace bpo = boost::program_options;
 
@@ -163,51 +155,11 @@ int parseOptions(int argc, char* argv[], Arguments& args)
     return 0;
 }
 
-void test(const std::vector<bfs::path>& traces)
-{
-    using namespace tibee::common;
-
-    TraceSet set;
-
-    for (const auto& trace : traces) {
-        if (!set.addTrace(trace.string())) {
-            std::cerr << "Error: could not add trace " << trace << std::endl;
-        }
-    }
-
-    for (const auto& event : set) {
-        std::cout << "name: " << event.getName() << std::endl <<
-                     "ts: " << event.getTimestamp() << std::endl <<
-                     "cycles: " << event.getCycles() << std::endl <<
-                     "fields: " << event.getFields()->toString() << std::endl;
-
-        auto context = event.getContext();
-
-        if (context) {
-            std::cout << "context: " << context->toString() << std::endl;
-        }
-
-        auto streamEventContext = event.getStreamEventContext();
-
-        if (streamEventContext) {
-            std::cout << "stream event context: " << streamEventContext->toString() << std::endl;
-        }
-
-        auto streamPacketContext = event.getStreamPacketContext();
-
-        if (streamPacketContext) {
-            std::cout << "stream packet context: " << streamPacketContext->toString() << std::endl;
-        }
-
-        std::cout << std::endl;
-    }
-}
-
 }
 
 int main(int argc, char* argv[])
 {
-    Arguments args;
+    tibee::Arguments args;
 
     int ret = parseOptions(argc, argv, args);
 
@@ -217,24 +169,10 @@ int main(int argc, char* argv[])
         return ret;
     }
 
-    std::cout <<
-        "Verbose: " << (args.verbose ? "yes" : "no") << std::endl <<
-        "Cache output directory: " << args.cacheDir << std::endl <<
-        "Bind address for progress: " << args.bindProgress << std::endl << std::endl;
+    // create the builder beetle and run it
+    std::unique_ptr<tibee::BuilderBeetle> builderBeetle {new tibee::BuilderBeetle {args}};
 
-    std::cout << "State providers:" << std::endl << std::endl;
-    for (const auto& stateProvider : args.stateProviders) {
-        std::cout << "  - " << stateProvider << std::endl;
-    }
-    std::cout << std::endl;
-
-    std::cout << "Traces:" << std::endl << std::endl;
-    for (const auto& trace : args.traces) {
-        std::cout << "  - " << trace << std::endl;
-    }
-
-    std::cout << std::endl;
-    test(args.traces);
+    builderBeetle->run();
 
     return 0;
 }
