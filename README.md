@@ -143,7 +143,7 @@ Our goal is to first focus on the [LTTng](http://lttng.org/) tracer.
 [There](https://sourceware.org/systemtap/)
 [are](http://www.sysdig.org/)
 [others](http://en.wikipedia.org/wiki/DTrace) out
-there, but LTTng is a powerful, modern, stable, actively maintained kernel
+there, but LTTng is a powerful, modern, stable and actively maintained kernel
 and userspace tracer for Linux. Some analysis tools exist for inspecting
 LTTng traces, but they are either:
 
@@ -198,7 +198,7 @@ state provider, albeit more complex to write and debug.
 
 ### extensible
 
-Message-oriented middlewares are very trendy currently and we plan to center
+Message-oriented middlewares are very trendy recently and we plan to center
 tigerbeetle around one of them to make it as extensible as possible (between
 processes and between networked machines). [ØMQ](http://zeromq.org/) will
 be tried first and kept if it proves to be a good choice.
