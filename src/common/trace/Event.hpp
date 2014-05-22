@@ -24,6 +24,7 @@
 
 #include <common/BasicTypes.hpp>
 #include <common/trace/DictEventValue.hpp>
+#include <common/trace/EventValueFactory.hpp>
 
 namespace tibee
 {
@@ -37,13 +38,10 @@ namespace common
  */
 class Event
 {
-public:
-    Event();
+friend class TraceSetIterator;
 
-    void setInternalPtr(::bt_ctf_event* internalPtr)
-    {
-        _btEvent = internalPtr;
-    }
+public:
+    Event(const EventValueFactory* valueFactory);
 
     /**
      * Returns the event name.
@@ -76,36 +74,45 @@ public:
     /**
      * Returns the event fields.
      *
+     * The returned pointer is only valid while this event is valid.
+     *
      * @returns Event fields or \a nullptr if not available
      */
-    DictEventValue::UP getFields() const;
+    const DictEventValue* getFields() const;
 
     /**
      * Returns the event context.
      *
+     * The returned pointer is only valid while this event is valid.
+     *
      * @returns Event context or \a nullptr if not available
      */
-    DictEventValue::UP getContext() const;
+    const DictEventValue* getContext() const;
 
     /**
-     * Returns the stream event context
+     * Returns the stream event context.
+     *
+     * The returned pointer is only valid while this event is valid.
      *
      * @returns Stream event context or \a nullptr if not available
      */
-    DictEventValue::UP getStreamEventContext() const;
+    const DictEventValue* getStreamEventContext() const;
 
     /**
-     * Returns the stream packet context
+     * Returns the stream packet context.
+     *
+     * The returned pointer is only valid while this event is valid.
      *
      * @returns Stream packet context or \a nullptr if not available
      */
-    DictEventValue::UP getStreamPacketContext() const;
+    const DictEventValue* getStreamPacketContext() const;
 
 private:
-    DictEventValue::UP getTopLevelScope(::bt_ctf_scope topLevelScope) const;
+    const DictEventValue* getTopLevelScope(::bt_ctf_scope topLevelScope) const;
 
 private:
     ::bt_ctf_event* _btEvent;
+    const EventValueFactory* _valueFactory;
 };
 
 }

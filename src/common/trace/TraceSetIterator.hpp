@@ -59,6 +59,15 @@ public:
     TraceSetIterator& operator++();
     bool operator==(const TraceSetIterator& rhs);
     bool operator!=(const TraceSetIterator& rhs);
+
+    /**
+     * Return the event currently pointed to by this iterator.
+     *
+     * The event stays valid as long as this iterator and any other
+     * iterator for the same trace set remain untouched.
+     *
+     * @returns Current event
+     */
     const Event& operator*();
 
 private:
@@ -66,6 +75,7 @@ private:
     ::bt_iter* _btIter;
     ::bt_ctf_event* _btEvent;
     std::unique_ptr<Event> _event;
+    EventValueFactory _valueFactory;
 };
 
 }

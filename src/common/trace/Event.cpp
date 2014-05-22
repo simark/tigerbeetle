@@ -28,7 +28,8 @@ namespace tibee
 namespace common
 {
 
-Event::Event()
+Event::Event(const EventValueFactory* valueFactory) :
+    _valueFactory {valueFactory}
 {
 }
 
@@ -52,37 +53,38 @@ trace_ts_t Event::getTimestamp() const
     return static_cast<trace_ts_t>(::bt_ctf_get_timestamp(_btEvent));
 }
 
-DictEventValue::UP Event::getTopLevelScope(::bt_ctf_scope topLevelScope) const
+const DictEventValue* Event::getTopLevelScope(::bt_ctf_scope topLevelScope) const
 {
     // get fields scope
     auto scopeDef = ::bt_ctf_get_top_level_scope(_btEvent, topLevelScope);
 
     // make sure it's a struct
     if (scopeDef && ::bt_ctf_field_type(::bt_ctf_get_decl_from_def(scopeDef)) == ::CTF_TYPE_STRUCT) {
-        auto dictEventValue = new DictEventValue {scopeDef, _btEvent};
-
-        return DictEventValue::UP {dictEventValue};
+        /* We know for sure a DictEventValue will be returned here because
+         * of the check above.
+         */
+        return static_cast<const DictEventValue*>(_valueFactory->buildEventValue(scopeDef, _btEvent));
     }
 
     return nullptr;
 }
 
-DictEventValue::UP Event::getFields() const
+const DictEventValue* Event::getFields() const
 {
     return this->getTopLevelScope(::BT_EVENT_FIELDS);
 }
 
-DictEventValue::UP Event::getContext() const
+const DictEventValue* Event::getContext() const
 {
     return this->getTopLevelScope(::BT_EVENT_CONTEXT);
 }
 
-DictEventValue::UP Event::getStreamEventContext() const
+const DictEventValue* Event::getStreamEventContext() const
 {
     return this->getTopLevelScope(::BT_STREAM_EVENT_CONTEXT);
 }
 
-DictEventValue::UP Event::getStreamPacketContext() const
+const DictEventValue* Event::getStreamPacketContext() const
 {
     return this->getTopLevelScope(::BT_STREAM_PACKET_CONTEXT);
 }

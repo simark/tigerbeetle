@@ -21,7 +21,7 @@
 #include <babeltrace/ctf/events.h>
 
 #include <common/trace/EventValueType.hpp>
-#include <common/trace/EventValueUtils.hpp>
+#include <common/trace/EventValueFactory.hpp>
 #include <common/trace/AbstractEventValue.hpp>
 #include <common/trace/ArrayEventValue.hpp>
 
@@ -30,30 +30,28 @@ namespace tibee
 namespace common
 {
 
-ArrayEventValue::ArrayEventValue(const ::bt_definition* def,
-                                 const ::bt_ctf_event* ev) :
+ArrayEventValue::ArrayEventValue(const ::bt_definition* def, const ::bt_ctf_event* ev,
+                                 const EventValueFactory* valueFactory) :
     AbstractEventValue {EventValueType::ARRAY},
     _btDef {def},
     _btEvent {ev},
-    _size {0},
-    _done {false}
+    _valueFactory {valueFactory},
+    _btFieldList {nullptr},
+    _size {0}
 {
     this->buildCache();
 }
 
 void ArrayEventValue::buildCache()
 {
-    if (!_done) {
-        _btDecl = ::bt_ctf_get_decl_from_def(_btDef);
-        _btType = ::bt_ctf_field_type(_btDecl);
+    _btDecl = ::bt_ctf_get_decl_from_def(_btDef);
 
-        if (_btType == CTF_TYPE_SEQUENCE) {
-            // FIXME: find the proper way to get a CTF sequence length
-        } else {
-            _size = ::bt_ctf_get_array_len(_btDecl);
-        }
+    unsigned int count;
 
-        _done = true;
+    auto ret = ::bt_ctf_get_field_list(_btEvent, _btDef, &_btFieldList, &count);
+
+    if (ret == 0) {
+        _size = count;
     }
 }
 
@@ -62,28 +60,20 @@ std::size_t ArrayEventValue::size() const
     return _size;
 }
 
-AbstractEventValue::UP ArrayEventValue::operator[](std::size_t index) const
+const AbstractEventValue* ArrayEventValue::operator[](std::size_t index) const
 {
-    if (_btType == CTF_TYPE_SEQUENCE) {
-        // FIXME: find the proper way to retrieve a CTF sequence item
-        return nullptr;
-    }
+    // this should work for both CTF array and sequence
+    auto itemDef = _btFieldList[index];
 
-    auto itemDef = ::bt_ctf_get_index(_btEvent, _btDef, index);
-
-    if (!itemDef) {
-        return nullptr;
-    }
-
-    return EventValueUtils::getEventValue(itemDef, _btEvent);
+    return _valueFactory->buildEventValue(itemDef, _btEvent);
 }
 
-std::vector<AbstractEventValue::UP> ArrayEventValue::getVector() const
+std::vector<const AbstractEventValue*> ArrayEventValue::getVector() const
 {
-    std::vector<AbstractEventValue::UP> ret;
+    std::vector<const AbstractEventValue*> ret;
 
     for (std::size_t x = 0; x < this->size(); ++x) {
-        ret.push_back((*this)[x]);
+        ret.push_back(this->operator[](x));
     }
 
     return ret;
@@ -98,7 +88,7 @@ bool ArrayEventValue::isString() const
 
 const char* ArrayEventValue::getString() const
 {
-    if (_btType == CTF_TYPE_SEQUENCE) {
+    if (::bt_ctf_field_type(_btDecl) == CTF_TYPE_SEQUENCE) {
         // FIXME: find the proper way to retrieve a CTF sequence string
         return nullptr;
     }

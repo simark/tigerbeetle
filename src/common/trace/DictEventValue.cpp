@@ -21,7 +21,7 @@
 #include <babeltrace/ctf/events.h>
 
 #include <common/trace/EventValueType.hpp>
-#include <common/trace/EventValueUtils.hpp>
+#include <common/trace/EventValueFactory.hpp>
 #include <common/trace/AbstractEventValue.hpp>
 #include <common/trace/DictEventValue.hpp>
 
@@ -31,33 +31,28 @@ namespace common
 {
 
 DictEventValue::DictEventValue(const ::bt_definition* def,
-                                 const ::bt_ctf_event* ev) :
+                               const ::bt_ctf_event* ev,
+                               const EventValueFactory* valueFactory) :
     AbstractEventValue {EventValueType::DICT},
     _btDef {def},
     _btEvent {ev},
+    _valueFactory {valueFactory},
     _btFieldList {nullptr},
-    _size {0},
-    _done {false}
+    _size {0}
 {
     this->buildCache();
 }
 
 void DictEventValue::buildCache()
 {
-    if (!_done) {
-        _btDecl = ::bt_ctf_get_decl_from_def(_btDef);
+    _btDecl = ::bt_ctf_get_decl_from_def(_btDef);
 
-        unsigned int count;
+    unsigned int count;
 
-        auto ret = ::bt_ctf_get_field_list(_btEvent, _btDef, &_btFieldList, &count);
+    auto ret = ::bt_ctf_get_field_list(_btEvent, _btDef, &_btFieldList, &count);
 
-        if (ret >= 0) {
-            _size = count;
-        } else {
-            _btFieldList = nullptr;
-        }
-
-        _done = true;
+    if (ret == 0) {
+        _size = count;
     }
 }
 
@@ -88,30 +83,22 @@ std::string DictEventValue::getKeyNameStr(std::size_t index) const
     return std::string {name};
 }
 
-AbstractEventValue::UP DictEventValue::operator[](std::size_t index) const
+const AbstractEventValue* DictEventValue::operator[](std::size_t index) const
 {
-    if (!_btFieldList) {
-        return nullptr;
-    }
-
     auto itemDef = _btFieldList[index];
 
-    if (!itemDef) {
-        return nullptr;
-    }
-
-    return EventValueUtils::getEventValue(itemDef, _btEvent);
+    return _valueFactory->buildEventValue(itemDef, _btEvent);
 }
 
-std::map<std::string, AbstractEventValue::UP> DictEventValue::getMap() const
+std::map<std::string, const AbstractEventValue*> DictEventValue::getMap() const
 {
-    std::map<std::string, AbstractEventValue::UP> ret;
+    std::map<std::string, const AbstractEventValue*> ret;
 
     for (std::size_t x = 0; x < this->size(); ++x) {
         auto keyName = this->getKeyName(x);
-        auto eventValue = (*this)[x];
+        auto eventValue = this->operator[](x);
 
-        ret.insert(std::make_pair(keyName, std::move(eventValue)));
+        ret.insert(std::make_pair(keyName, eventValue));
     }
 
     return ret;
@@ -134,7 +121,7 @@ std::string DictEventValue::toString() const
 
     for (auto it = map.begin(); it != beforeEnd; ++it) {
         const auto& keyName = it->first;
-        const auto& value = it->second;
+        auto value = it->second;
 
         ss << "\"";
         ss << keyName;

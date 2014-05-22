@@ -39,7 +39,7 @@ TraceSet::TraceSet()
     beginPos.type = ::BT_SEEK_BEGIN;
     beginPos.u.seek_time = 0;
 
-    _btCtfIter = ::bt_ctf_iter_create(_btCtx, &beginPos, NULL);
+    _btCtfIter = ::bt_ctf_iter_create(_btCtx, &beginPos, nullptr);
 
     if (!_btCtfIter) {
         ::bt_context_put(_btCtx);
@@ -52,8 +52,8 @@ TraceSet::TraceSet()
 
 TraceSet::~TraceSet()
 {
-    ::bt_context_put(_btCtx);
     ::bt_ctf_iter_destroy(_btCtfIter);
+    ::bt_context_put(_btCtx);
 }
 
 void TraceSet::seekBegin() const

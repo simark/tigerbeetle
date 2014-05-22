@@ -30,6 +30,8 @@ namespace tibee
 namespace common
 {
 
+class EventValueFactory;
+
 /**
  * Event value carrying an dictionary of values.
  *
@@ -46,13 +48,18 @@ public:
     /**
      * Builds a dictionary value out of a field definition.
      *
-     * @param def BT field definition
+     * @param def          BT field definition
+     * @param ev           BT event
+     * @param valueFactory Factory to be used for building other values
      */
-    DictEventValue(const ::bt_definition* def,
-                   const ::bt_ctf_event* ev);
+    DictEventValue(const ::bt_definition* def, const ::bt_ctf_event* ev,
+                   const EventValueFactory* valueFactory);
 
     /**
      * Returns the number of items in this dictionary.
+     *
+     * This must be checked before using any method using an index
+     * because DictEventValue doesn't check bounds.
      *
      * @returns Item count
      */
@@ -60,7 +67,7 @@ public:
 
     /**
      * Returns the key name at index \p index without checking
-     * boundaries.
+     * bounds.
      *
      * @param index Index of key of which to get the name
      * @returns     Name of key at index \p index
@@ -69,7 +76,7 @@ public:
 
     /**
      * Returns a copy of the key name at index \p index without
-     * checking boundaries.
+     * checking bounds.
      *
      * @param index Index of key of which to get a copy of the name
      * @returns     Copy of name of key at index \p index
@@ -81,22 +88,23 @@ public:
      *
      * Dictionary values are indexed using an integer. Use
      * getKeyName(std::size_t) to get the name of the key at a
-     * specific index.
+     * specific index. This method doesn't check bounds (call
+     * size() first).
      *
      * @returns Event value at index \p index
      */
-    AbstractEventValue::UP operator[](std::size_t index) const;
+    const AbstractEventValue* operator[](std::size_t index) const;
 
     /**
      * Convenience method which builds a (key name -> event value) map
      * using data contained in this dictionary.
      *
      * The map is not cached internally, but built everytime this is
-     * called.
+     * called (slow: use for debugging).
      *
      * @returns Map of (key name -> event value)
      */
-    std::map<std::string, AbstractEventValue::UP> getMap() const;
+    std::map<std::string, const AbstractEventValue*> getMap() const;
 
     /**
      * @see AbstractEventValue::toString()
@@ -110,9 +118,9 @@ private:
     const ::bt_definition* _btDef;
     const ::bt_declaration* _btDecl;
     const ::bt_ctf_event* _btEvent;
-    ::bt_definition const * const* _btFieldList;
+    const EventValueFactory* _valueFactory;
+    ::bt_definition const* const* _btFieldList;
     std::size_t _size;
-    bool _done;
 };
 
 }

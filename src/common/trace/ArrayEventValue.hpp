@@ -31,6 +31,8 @@ namespace tibee
 namespace common
 {
 
+class EventValueFactory;
+
 /**
  * Event value carrying an array of values.
  *
@@ -43,13 +45,18 @@ public:
     /**
      * Builds an array value out of a field definition and an event.
      *
-     * @param def BT field definition
-     * @param ev  BT event
+     * @param def          BT field definition
+     * @param ev           BT event
+     * @param valueFactory Factory to be used for building other values
      */
-    ArrayEventValue(const ::bt_definition* def, const ::bt_ctf_event* ev);
+    ArrayEventValue(const ::bt_definition* def, const ::bt_ctf_event* ev,
+                    const EventValueFactory* valueFactory);
 
     /**
      * Returns the number of items in this array.
+     *
+     * This must be checked before using any method using an index
+     * because ArrayEventValue doesn't check bounds.
      *
      * @returns Item count
      */
@@ -57,23 +64,23 @@ public:
 
     /**
      * Returns the event value at index \p index without checking
-     * boundaries.
+     * bounds.
      *
      * @param index Index of item to get
      * @returns     Event value
      */
-    AbstractEventValue::UP operator[](std::size_t index) const;
+    const AbstractEventValue* operator[](std::size_t index) const;
 
     /**
      * Convenience method which builds a vector of event values
      * contained in this array.
      *
      * The vector is not cached internally, but built everytime this is
-     * called.
+     * called (slow: use for debugging).
      *
      * @returns Vector of event values
      */
-    std::vector<AbstractEventValue::UP> getVector() const;
+    std::vector<const AbstractEventValue*> getVector() const;
 
     /**
      * Returns whether this array is in fact a string of representable
@@ -91,9 +98,6 @@ public:
      */
     const char* getString() const;
 
-    /**
-     * @see AbstractEventValue::toString()
-     */
     std::string toString() const;
 
 private:
@@ -103,9 +107,9 @@ private:
     const ::bt_definition* _btDef;
     const ::bt_declaration* _btDecl;
     const ::bt_ctf_event* _btEvent;
-    ::ctf_type_id _btType;
+    const EventValueFactory* _valueFactory;
+    ::bt_definition const* const* _btFieldList;
     std::size_t _size;
-    bool _done;
 };
 
 }

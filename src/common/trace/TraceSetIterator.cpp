@@ -28,8 +28,7 @@ namespace common
 
 TraceSetIterator::TraceSetIterator(::bt_ctf_iter* btCtfIter) :
     _btCtfIter {btCtfIter},
-    _btIter {nullptr},
-    _event {new Event}
+    _btIter {nullptr}
 {
     if (!_btCtfIter) {
         return;
@@ -46,8 +45,13 @@ TraceSetIterator::TraceSetIterator(::bt_ctf_iter* btCtfIter) :
         _btCtfIter = nullptr;
     }
 
+    // create event
+    _event = std::unique_ptr<Event> {
+        new Event {std::addressof(_valueFactory)}
+    };
+
     // update event wrapper
-    _event->setInternalPtr(_btEvent);
+    _event->_btEvent = _btEvent;
 }
 
 TraceSetIterator::TraceSetIterator(const TraceSetIterator& it)
@@ -91,8 +95,11 @@ TraceSetIterator& TraceSetIterator::operator++()
         _btCtfIter = nullptr;
     }
 
+    // reset value factory pools
+    _valueFactory.resetPools();
+
     // update event wrapper
-    _event->setInternalPtr(_btEvent);
+    _event->_btEvent = _btEvent;
 
     return *this;
 }
