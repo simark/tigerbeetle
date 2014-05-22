@@ -32,7 +32,7 @@ namespace common
  *
  * This is a specific object pool implementation for our use case: we
  * never want to "free" objects, only allocate them one after the other,
- * and free all the pool memory on destruction or "reset" it on demande
+ * and free all the pool memory on destruction or "reset" it on demand
  * (not freeing anything, but effectively restarting allocation from
  * index 0 and resetting the size).
  *
@@ -87,7 +87,7 @@ private:
     std::list<alignedT> _pool;
 
     /* Current pool size (starts at 1 because the next element is always
-     * preallocated.
+     * preallocated).
      */
     std::size_t _size;
 
