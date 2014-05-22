@@ -83,7 +83,7 @@ private:
      * An iterator (see _nextIt below) always points to the _next_ pool
      * element, so the pool capacity (this list's size) must always be at
      * least 1. Calling _pool.resize() doesn't affect previous elements,
-     * but may invalidate any current iterator.
+     * nor any current iterator.
      */
     std::list<alignedT> _pool;
 
