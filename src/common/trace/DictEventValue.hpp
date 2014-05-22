@@ -18,6 +18,7 @@
 #ifndef _DICTEVENTVALUE_HPP
 #define _DICTEVENTVALUE_HPP
 
+#include <cstddef>
 #include <memory>
 #include <map>
 #include <babeltrace/ctf/events.h>

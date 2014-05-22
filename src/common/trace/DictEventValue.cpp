@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <cstdint>
+#include <cstddef>
 #include <sstream>
 #include <map>
 #include <babeltrace/ctf/events.h>

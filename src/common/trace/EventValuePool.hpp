@@ -18,7 +18,6 @@
 #ifndef _EVENTVALUEPOOL_HPP
 #define _EVENTVALUEPOOL_HPP
 
-#include <iostream>
 #include <cstddef>
 #include <list>
 #include <type_traits>

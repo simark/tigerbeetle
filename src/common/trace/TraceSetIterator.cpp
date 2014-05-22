@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream>
 #include <babeltrace/ctf/iterator.h>
 
 #include <common/trace/TraceSetIterator.hpp>

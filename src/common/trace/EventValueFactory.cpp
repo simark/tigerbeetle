@@ -17,9 +17,7 @@
  */
 #include <memory>
 #include <functional>
-#include <map>
 #include <babeltrace/ctf/events.h>
-#include <iostream>
 
 #include <common/trace/EventValuePool.hpp>
 #include <common/trace/EventValueType.hpp>
@@ -54,7 +52,6 @@ EventValueFactory::EventValueFactory() :
 
 EventValueFactory::~EventValueFactory()
 {
-    // everything should be handled by std and Boost here
 }
 
 void EventValueFactory::initTypes()
@@ -104,7 +101,7 @@ void EventValueFactory::initTypes()
     /* Since the enumeration values of CTF types could change in time,
      * we go through all values from 0 to n (n >= last CTF type value)
      * and set the right builder for the right CTF type using a switch.
-     * This is slow but done only once.
+     * This is slow but done only once per event value factory.
      */
     for (std::size_t x = 0; x < _builders.size(); ++x) {
         switch (x) {

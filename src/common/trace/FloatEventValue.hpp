@@ -21,7 +21,6 @@
 #include <babeltrace/ctf/events.h>
 
 #include <common/trace/AbstractEventValue.hpp>
-#include <common/trace/EventValueType.hpp>
 
 namespace tibee
 {

@@ -15,11 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <memory>
 #include <string>
 #include <babeltrace/ctf/events.h>
 
-#include <common/trace/EventValueType.hpp>
 #include <common/trace/DictEventValue.hpp>
 #include <common/trace/Event.hpp>
 

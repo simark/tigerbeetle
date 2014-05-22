@@ -18,10 +18,6 @@
 #ifndef _EVENTVALUETYPE_HPP
 #define _EVENTVALUETYPE_HPP
 
-#include <cstdint>
-
-#include <common/BasicTypes.hpp>
-
 namespace tibee
 {
 namespace common

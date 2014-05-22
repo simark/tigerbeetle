@@ -18,7 +18,6 @@
 #ifndef _EVENT_HPP
 #define _EVENT_HPP
 
-#include <cstdint>
 #include <string>
 #include <babeltrace/ctf/events.h>
 

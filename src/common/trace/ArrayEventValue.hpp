@@ -18,7 +18,7 @@
 #ifndef _ARRAYEVENTVALUE_HPP
 #define _ARRAYEVENTVALUE_HPP
 
-#include <cstdint>
+#include <cstddef>
 #include <vector>
 #include <babeltrace/babeltrace.h>
 #include <babeltrace/ctf/events.h>
