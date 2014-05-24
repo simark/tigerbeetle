@@ -57,11 +57,11 @@ EventValueFactory::~EventValueFactory()
 void EventValueFactory::initTypes()
 {
     // precious builder functions
-    static auto unknownBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto unknownBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         return new(_unknownPool.get()) UnknownEventValue;
     };
-    static auto intBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev) -> const AbstractEventValue*
+    static auto intBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev) -> const AbstractEventValue*
     {
         auto decl = ::bt_ctf_get_decl_from_def(def);
 
@@ -71,29 +71,29 @@ void EventValueFactory::initTypes()
             return new(_uintPool.get()) UintEventValue {def};
         }
     };
-    static auto floatBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto floatBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         return new(_floatPool.get()) FloatEventValue {def};
     };
-    static auto enumBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto enumBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         return new(_enumPool.get()) EnumEventValue {def};
     };
-    static auto stringBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto stringBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         return new(_stringPool.get()) StringEventValue {def};
     };
-    static auto structBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto structBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         return new(_dictPool.get()) DictEventValue {def, ev, this};
     };
-    static auto variantBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto variantBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         auto realDef = ::bt_ctf_get_variant(def);
 
         return this->buildEventValue(realDef, ev);
     };
-    static auto arraySequenceBuilder = [this](const ::bt_definition* def, const ::bt_ctf_event* ev)
+    static auto arraySequenceBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
         return new(_arrayPool.get()) ArrayEventValue {def, ev, this};
     };
