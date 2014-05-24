@@ -71,14 +71,20 @@ public:
      *
      * @param ts Current timestamp
      */
-    void setCurrentTimestamp(timestamp_t ts);
+    void setCurrentTimestamp(timestamp_t ts)
+    {
+        _ts = ts;
+    }
 
     /**
      * Returns the current history timestamp.
      *
      * @returns Current history timestamp
      */
-    timestamp_t getCurrentTimestamp() const;
+    timestamp_t getCurrentTimestamp() const
+    {
+        return _ts;
+    }
 
     /**
      * Closes this state history sink, effectively closing all opened
