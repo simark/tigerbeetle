@@ -36,7 +36,7 @@ namespace common
  * @author Philippe Proulx
  */
 class QuarkStateValue :
-    public SimpleStateValue<std::uint32_t, StateValueType::QUARK>
+    public SimpleStateValue<quark_t, StateValueType::QUARK>
 {
 public:
     typedef std::shared_ptr<QuarkStateValue> SP;
