@@ -26,7 +26,12 @@ root_env = Environment(CCFLAGS=ccflags,
 if 'CXX' in os.environ:
     root_env['CXX'] = os.environ['CXX']
 
+if 'LIBDELOREAN_CPPPATH' in os.environ:
+    root_env.Append(CPPPATH=[os.environ['LIBDELOREAN_CPPPATH']])
+
+if 'LIBDELOREAN_LIBPATH' in os.environ:
+    root_env.Append(LIBPATH=[os.environ['LIBDELOREAN_LIBPATH']])
+
 Export('root_env')
 
 apps = SConscript(os.path.join('src', 'SConscript'))
-

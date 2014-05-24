@@ -15,10 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _BASIC_TYPES_HPP
-#define _BASIC_TYPES_HPP
+#ifndef _INT64STATEVALUE_HPP
+#define _INT64STATEVALUE_HPP
 
+#include <memory>
 #include <cstdint>
+
+#include <common/state/SimpleStateValue.hpp>
+#include <common/state/StateValueType.hpp>
 
 namespace tibee
 {
@@ -26,20 +30,22 @@ namespace common
 {
 
 /**
- * @file
- * This header holds basic type definitions used throughout tigerbeetle.
+ * 64-bit signed integer state value.
+ *
+ * @author Philippe Proulx
  */
+class Int64StateValue :
+    public SimpleStateValue<std::int64_t, StateValueType::INT64>
+{
+public:
+    typedef std::shared_ptr<Int64StateValue> SP;
+    typedef std::unique_ptr<Int64StateValue> UP;
 
-/// Trace/state timestamp
-typedef std::uint64_t   timestamp_t;
-
-/// Trace cycles
-typedef std::uint64_t   trace_cycles_t;
-
-/// State quark
-typedef std::uint32_t   quark_t;
+public:
+    using SimpleStateValue::SimpleStateValue;
+};
 
 }
 }
 
-#endif // _BASIC_TYPES_HPP
+#endif // _INT64STATEVALUE_HPP

@@ -46,9 +46,9 @@ trace_cycles_t Event::getCycles() const
     return static_cast<trace_cycles_t>(::bt_ctf_get_cycles(_btEvent));
 }
 
-trace_ts_t Event::getTimestamp() const
+timestamp_t Event::getTimestamp() const
 {
-    return static_cast<trace_ts_t>(::bt_ctf_get_timestamp(_btEvent));
+    return static_cast<timestamp_t>(::bt_ctf_get_timestamp(_btEvent));
 }
 
 const DictEventValue* Event::getTopLevelScope(::bt_ctf_scope topLevelScope) const

@@ -21,8 +21,15 @@ trace_sources = [
     'UnknownEventValue.cpp',
 ]
 
+state_sources = [
+    'AbstractStateValue.cpp',
+    'CurrentState.cpp',
+    'StateHistorySink.cpp',
+]
+
 subs = [
     ('trace', trace_sources),
+    ('state', state_sources),
 ]
 
 sources = []

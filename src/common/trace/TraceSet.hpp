@@ -78,14 +78,14 @@ public:
      *
      * @returns Begin timestamp of the set
      */
-    trace_ts_t getBegin() const;
+    timestamp_t getBegin() const;
 
     /**
      * Returns the end timestamp of the set.
      *
      * @returns End timestamp of the set
      */
-    trace_ts_t getEnd() const;
+    timestamp_t getEnd() const;
 
     /**
      * Returns an iterator pointing to the first event of the set.

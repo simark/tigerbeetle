@@ -88,7 +88,7 @@ bool TraceSet::addTrace(const boost::filesystem::path& path)
     return true;
 }
 
-trace_ts_t TraceSet::getBegin() const
+timestamp_t TraceSet::getBegin() const
 {
     // ignore if no trace is loaded
     if (_tracePaths.empty()) {
@@ -117,10 +117,10 @@ trace_ts_t TraceSet::getBegin() const
     ::bt_iter_set_pos(_btIter, savedPos);
     ::bt_iter_free_pos(savedPos);
 
-    return static_cast<trace_ts_t>(ts);
+    return static_cast<timestamp_t>(ts);
 }
 
-trace_ts_t TraceSet::getEnd() const
+timestamp_t TraceSet::getEnd() const
 {
     // ignore if no trace is loaded
     if (_tracePaths.empty()) {
@@ -152,7 +152,7 @@ trace_ts_t TraceSet::getEnd() const
     ::bt_iter_set_pos(_btIter, savedPos);
     ::bt_iter_free_pos(savedPos);
 
-    return static_cast<trace_ts_t>(ts);
+    return static_cast<timestamp_t>(ts);
 }
 
 

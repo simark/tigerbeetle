@@ -37,7 +37,7 @@ namespace common
  */
 class Event
 {
-friend class TraceSetIterator;
+    friend class TraceSetIterator;
 
 public:
     Event(const EventValueFactory* valueFactory);
@@ -68,7 +68,7 @@ public:
      *
      * @returns Event timestamp
      */
-    trace_ts_t getTimestamp() const;
+    timestamp_t getTimestamp() const;
 
     /**
      * Returns the event fields.

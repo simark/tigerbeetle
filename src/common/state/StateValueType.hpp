@@ -15,10 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _BASIC_TYPES_HPP
-#define _BASIC_TYPES_HPP
-
-#include <cstdint>
+#ifndef _STATEVALUETYPE_HPP
+#define _STATEVALUETYPE_HPP
 
 namespace tibee
 {
@@ -26,20 +24,21 @@ namespace common
 {
 
 /**
- * @file
- * This header holds basic type definitions used throughout tigerbeetle.
+ * State value types.
+ *
+ * @author Philippe Proulx
  */
-
-/// Trace/state timestamp
-typedef std::uint64_t   timestamp_t;
-
-/// Trace cycles
-typedef std::uint64_t   trace_cycles_t;
-
-/// State quark
-typedef std::uint32_t   quark_t;
+enum class StateValueType
+{
+    INT32,
+    UINT32,
+    INT64,
+    UINT64,
+    FLOAT32,
+    QUARK,
+};
 
 }
 }
 
-#endif // _BASIC_TYPES_HPP
+#endif // _STATEVALUETYPE_HPP
