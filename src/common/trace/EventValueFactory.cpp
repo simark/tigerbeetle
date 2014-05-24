@@ -99,8 +99,8 @@ void EventValueFactory::initTypes()
     };
 
     // fill our builders
-    for (std::size_t x = 0; x < _builders.size(); ++x) {
-        _builders[x] = unknownBuilder;
+    for (auto& builder : _builders) {
+        builder = unknownBuilder;
     }
 
     _builders[::CTF_TYPE_INTEGER] = intBuilder;
