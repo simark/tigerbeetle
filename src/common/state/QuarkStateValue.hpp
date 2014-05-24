@@ -21,6 +21,7 @@
 #include <memory>
 #include <cstdint>
 
+#include <common/BasicTypes.hpp>
 #include <common/state/SimpleStateValue.hpp>
 #include <common/state/StateValueType.hpp>
 
