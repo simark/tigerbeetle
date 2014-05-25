@@ -190,8 +190,7 @@ private:
 private:
     void initTranslators();
     void open();
-    void writeInterval(quark_t pathQuark,
-                       const StateValueEntry& stateValueEntry);
+    void writeInterval(quark_t pathQuark);
     void writeStringDb(const StringDb& stringDb,
                        const boost::filesystem::path& path);
     quark_t getQuark(StringDb& stringDb, const std::string& value);

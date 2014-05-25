@@ -223,9 +223,18 @@ quark_t StateHistorySink::getStringValueQuark(const std::string& value)
     return this->getQuark(_strValuesDb, value);
 }
 
-void StateHistorySink::writeInterval(quark_t pathQuark,
-                                     const StateHistorySink::StateValueEntry& stateValueEntry)
+void StateHistorySink::writeInterval(quark_t pathQuark)
 {
+    // retrieve state value entry for this quark
+    auto it = _stateValues.find(pathQuark);
+
+    if (it == _stateValues.end()) {
+        // not found: quit now
+        return;
+    }
+
+    const auto& stateValueEntry = it->second;
+
     // translate from state value to interval
     auto stateValueType = static_cast<std::size_t>(stateValueEntry.value->getType());
     auto interval = _translators[stateValueType](pathQuark,
