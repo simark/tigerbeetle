@@ -52,6 +52,8 @@ StateHistorySink::StateHistorySink(const bfs::path& pathStrDbPath,
     _historyPath {historyPath},
     _ts {0},
     _opened {false},
+    _curPathQuark {0},
+    _curStrValueQuark {0},
     _currentState {*this}
 {
     _intervalFileSink = std::unique_ptr<delo::HistoryFileSink> {
@@ -66,92 +68,92 @@ StateHistorySink::~StateHistorySink()
 
 void StateHistorySink::initTranslators()
 {
-    static auto unknownTranslator =
-        [] (quark_t, const AbstractStateValue&, timestamp_t, timestamp_t)
+    auto unknownTranslator =
+        [] (quark_t, const StateHistorySink::StateValueEntry&)
     {
         return nullptr;
     };
 
-    static auto int32Translator =
-        [] (quark_t pathQuark, const AbstractStateValue& stateValue, timestamp_t begin, timestamp_t end)
+    auto int32Translator =
+        [this] (quark_t pathQuark, const StateHistorySink::StateValueEntry& stateValueEntry)
     {
         auto interval = new delo::Int32Interval {
-            static_cast<delo::timestamp_t>(begin),
-            static_cast<delo::timestamp_t>(end),
+            static_cast<delo::timestamp_t>(stateValueEntry.beginTs),
+            static_cast<delo::timestamp_t>(_ts),
             static_cast<delo::interval_key_t>(pathQuark)
         };
 
-        interval->setValue(static_cast<const Int32StateValue&>(stateValue).getValue());
+        interval->setValue(static_cast<const Int32StateValue&>(*stateValueEntry.value).getValue());
 
         return interval;
     };
 
-    static auto uint32Translator =
-        [] (quark_t pathQuark, const AbstractStateValue& stateValue, timestamp_t begin, timestamp_t end)
+    auto uint32Translator =
+        [this] (quark_t pathQuark, const StateHistorySink::StateValueEntry& stateValueEntry)
     {
         auto interval = new delo::Uint32Interval {
-            static_cast<delo::timestamp_t>(begin),
-            static_cast<delo::timestamp_t>(end),
+            static_cast<delo::timestamp_t>(stateValueEntry.beginTs),
+            static_cast<delo::timestamp_t>(_ts),
             static_cast<delo::interval_key_t>(pathQuark)
         };
 
-        interval->setValue(static_cast<const Uint32StateValue&>(stateValue).getValue());
+        interval->setValue(static_cast<const Uint32StateValue&>(*stateValueEntry.value).getValue());
 
         return interval;
     };
 
-    static auto int64Translator =
-        [] (quark_t pathQuark, const AbstractStateValue& stateValue, timestamp_t begin, timestamp_t end)
+    auto int64Translator =
+        [this] (quark_t pathQuark, const StateHistorySink::StateValueEntry& stateValueEntry)
     {
         auto interval = new delo::Int64Interval {
-            static_cast<delo::timestamp_t>(begin),
-            static_cast<delo::timestamp_t>(end),
+            static_cast<delo::timestamp_t>(stateValueEntry.beginTs),
+            static_cast<delo::timestamp_t>(_ts),
             static_cast<delo::interval_key_t>(pathQuark)
         };
 
-        interval->setValue(static_cast<const Int64StateValue&>(stateValue).getValue());
+        interval->setValue(static_cast<const Int64StateValue&>(*stateValueEntry.value).getValue());
 
         return interval;
     };
 
-    static auto uint64Translator =
-        [] (quark_t pathQuark, const AbstractStateValue& stateValue, timestamp_t begin, timestamp_t end)
+    auto uint64Translator =
+        [this] (quark_t pathQuark, const StateHistorySink::StateValueEntry& stateValueEntry)
     {
         auto interval = new delo::Uint64Interval {
-            static_cast<delo::timestamp_t>(begin),
-            static_cast<delo::timestamp_t>(end),
+            static_cast<delo::timestamp_t>(stateValueEntry.beginTs),
+            static_cast<delo::timestamp_t>(_ts),
             static_cast<delo::interval_key_t>(pathQuark)
         };
 
-        interval->setValue(static_cast<const Uint64StateValue&>(stateValue).getValue());
+        interval->setValue(static_cast<const Uint64StateValue&>(*stateValueEntry.value).getValue());
 
         return interval;
     };
 
-    static auto float32Translator =
-        [] (quark_t pathQuark, const AbstractStateValue& stateValue, timestamp_t begin, timestamp_t end)
+    auto float32Translator =
+        [this] (quark_t pathQuark, const StateHistorySink::StateValueEntry& stateValueEntry)
     {
         auto interval = new delo::Float32Interval {
-            static_cast<delo::timestamp_t>(begin),
-            static_cast<delo::timestamp_t>(end),
+            static_cast<delo::timestamp_t>(stateValueEntry.beginTs),
+            static_cast<delo::timestamp_t>(_ts),
             static_cast<delo::interval_key_t>(pathQuark)
         };
 
-        interval->setValue(static_cast<const Float32StateValue&>(stateValue).getValue());
+        interval->setValue(static_cast<const Float32StateValue&>(*stateValueEntry.value).getValue());
 
         return interval;
     };
 
-    static auto quarkTranslator =
-        [] (quark_t pathQuark, const AbstractStateValue& stateValue, timestamp_t begin, timestamp_t end)
+    auto quarkTranslator =
+        [this] (quark_t pathQuark, const StateHistorySink::StateValueEntry& stateValueEntry)
     {
         auto interval = new delo::QuarkInterval {
-            static_cast<delo::timestamp_t>(begin),
-            static_cast<delo::timestamp_t>(end),
+            static_cast<delo::timestamp_t>(stateValueEntry.beginTs),
+            static_cast<delo::timestamp_t>(_ts),
             static_cast<delo::interval_key_t>(pathQuark)
         };
 
-        interval->setValue(static_cast<const QuarkStateValue&>(stateValue).getValue());
+        interval->setValue(static_cast<const QuarkStateValue&>(*stateValueEntry.value).getValue());
 
         return interval;
     };
@@ -182,36 +184,60 @@ void StateHistorySink::close()
         return;
     }
 
+    // write files
     _intervalFileSink->close();
-
     this->writeStringDb(_pathsDb, _pathStrDbPath);
     this->writeStringDb(_strValuesDb, _valueStrDbPath);
 
+    // clear string databases
+    _pathsDb.clear();
+    _strValuesDb.clear();
+
+    // set as closed
     _opened = false;
 }
 
-quark_t StateHistorySink::getPathQuark(const char* path) const
+quark_t StateHistorySink::getQuark(StringDb& stringDb, const std::string& value)
 {
-    return 0;
+    // find in map
+    auto it = stringDb.find(value);
+
+    if (it == stringDb.end()) {
+        // not found: insert it and return new quark
+        stringDb[value] = _curPathQuark;
+        _curPathQuark++;
+
+        return _curPathQuark - 1;
+    } else {
+        return it->second;
+    }
 }
 
-quark_t StateHistorySink::getPathQuark(const std::string& path) const
+quark_t StateHistorySink::getPathQuark(const std::string& path)
 {
-    return 0;
+    return this->getQuark(_pathsDb, path);
 }
 
-quark_t StateHistorySink::getStringValueQuark(const char* path) const
+quark_t StateHistorySink::getStringValueQuark(const std::string& value)
 {
-    return 0;
+    return this->getQuark(_strValuesDb, value);
 }
 
-quark_t StateHistorySink::getStringValueQuark(const std::string& path) const
+void StateHistorySink::writeInterval(quark_t pathQuark,
+                                     const StateHistorySink::StateValueEntry& stateValueEntry)
 {
-    return 0;
-}
+    // translate from state value to interval
+    auto stateValueType = static_cast<std::size_t>(stateValueEntry.value->getType());
+    auto interval = _translators[stateValueType](pathQuark,
+                                                 stateValueEntry);
 
-void StateHistorySink::writeInterval(const AbstractStateValue& stateValue)
-{
+    // ignore if unknown state value
+    if (!interval) {
+        return;
+    }
+
+    // add to interval history
+    _intervalFileSink->addInterval(delo::AbstractInterval::UP {interval});
 }
 
 void StateHistorySink::setState(quark_t pathQuark, AbstractStateValue::UP value)

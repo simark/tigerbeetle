@@ -106,37 +106,17 @@ public:
      * @param path Path string for which to get the quark
      * @returns    Quark for given path
      */
-    quark_t getPathQuark(const char* path) const;
-
-    /**
-     * Returns a quark for a given path string.
-     *
-     * The quark will always be the same for the same path.
-     *
-     * @param path Path string for which to get the quark
-     * @returns    Quark for given path
-     */
-    quark_t getPathQuark(const std::string& path) const;
+    quark_t getPathQuark(const std::string& path);
 
     /**
      * Returns a quark for a given string state value.
      *
      * The quark will always be the same for the same string.
      *
-     * @param path String for which to get the quark
-     * @returns    Quark for given path
+     * @param value String for which to get the quark
+     * @returns     Quark for given value
      */
-    quark_t getStringValueQuark(const char* path) const;
-
-    /**
-     * Returns a quark for a given string state value.
-     *
-     * The quark will always be the same for the same string.
-     *
-     * @param path String for which to get the quark
-     * @returns    Quark for given path
-     */
-    quark_t getStringValueQuark(const std::string& path) const;
+    quark_t getStringValueQuark(const std::string& value);
 
     /**
      * Sets a state value.
@@ -197,9 +177,6 @@ private:
     // a string database
     typedef std::map<std::string, quark_t> StringDb;
 
-    // a (state value -> interval) translator
-    typedef std::function<delo::AbstractInterval* (quark_t, const AbstractStateValue&, timestamp_t, timestamp_t)> Translator;
-
     // this is used to keep the begin timestamp with a state value
     struct StateValueEntry
     {
@@ -207,11 +184,17 @@ private:
         AbstractStateValue::UP value;
     };
 
+    // a (state value -> interval) translator
+    typedef std::function<delo::AbstractInterval* (quark_t, const StateValueEntry&)> Translator;
+
 private:
     void initTranslators();
     void open();
-    void writeInterval(const AbstractStateValue& stateValue);
-    void writeStringDb(const StringDb& stringDb, const boost::filesystem::path& path);
+    void writeInterval(quark_t pathQuark,
+                       const StateValueEntry& stateValueEntry);
+    void writeStringDb(const StringDb& stringDb,
+                       const boost::filesystem::path& path);
+    quark_t getQuark(StringDb& stringDb, const std::string& value);
 
 private:
     // paths to files to create
@@ -230,6 +213,12 @@ private:
 
     // string database for state values
     StringDb _strValuesDb;
+
+    // current state path quark
+    quark_t _curPathQuark;
+
+    // current state value quark
+    quark_t _curStrValueQuark;
 
     // current state values
     std::map<quark_t, StateValueEntry> _stateValues;
