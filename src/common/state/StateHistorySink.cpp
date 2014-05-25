@@ -251,6 +251,11 @@ void StateHistorySink::writeInterval(quark_t pathQuark)
 
     const auto& stateValueEntry = it->second;
 
+    // do not bother writing a zero-length/weird interval
+    if (stateValueEntry.beginTs >= _ts) {
+        return;
+    }
+
     // translate from state value to interval
     auto stateValueType = static_cast<std::size_t>(stateValueEntry.value->getType());
     auto interval = _translators[stateValueType](pathQuark,
