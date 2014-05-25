@@ -7,3 +7,5 @@
 *.his
 /src/tibeecore/tibeecore
 /src/tibeebuild/tibeebuild
+__pycache__
+/src/qtibeeprogress/qtibeeprogress.egg-info
