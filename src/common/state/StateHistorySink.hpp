@@ -25,6 +25,7 @@
 #include <map>
 #include <boost/utility.hpp>
 #include <boost/filesystem/path.hpp>
+#include <delorean/HistoryFileSink.hpp>
 #include <delorean/interval/AbstractInterval.hpp>
 
 #include <common/BasicTypes.hpp>
@@ -209,6 +210,7 @@ private:
 private:
     void initTranslators();
     void open();
+    void writeInterval(const AbstractStateValue& stateValue);
     void writeStringDb(const StringDb& stringDb, const boost::filesystem::path& path);
 
 private:
@@ -237,6 +239,9 @@ private:
 
     // current state façade for state providers
     CurrentState _currentState;
+
+    // interval history sink
+    std::unique_ptr<delo::HistoryFileSink> _intervalFileSink;
 };
 
 }

@@ -54,6 +54,9 @@ StateHistorySink::StateHistorySink(const bfs::path& pathStrDbPath,
     _opened {false},
     _currentState {*this}
 {
+    _intervalFileSink = std::unique_ptr<delo::HistoryFileSink> {
+        new delo::HistoryFileSink
+    };
 }
 
 StateHistorySink::~StateHistorySink()
@@ -168,6 +171,8 @@ void StateHistorySink::initTranslators()
 
 void StateHistorySink::open()
 {
+    // open history sink
+    _intervalFileSink->open(_historyPath);
 }
 
 void StateHistorySink::close()
@@ -176,6 +181,13 @@ void StateHistorySink::close()
     if (!_opened) {
         return;
     }
+
+    _intervalFileSink->close();
+
+    this->writeStringDb(_pathsDb, _pathStrDbPath);
+    this->writeStringDb(_strValuesDb, _valueStrDbPath);
+
+    _opened = false;
 }
 
 quark_t StateHistorySink::getPathQuark(const char* path) const
@@ -196,6 +208,10 @@ quark_t StateHistorySink::getStringValueQuark(const char* path) const
 quark_t StateHistorySink::getStringValueQuark(const std::string& path) const
 {
     return 0;
+}
+
+void StateHistorySink::writeInterval(const AbstractStateValue& stateValue)
+{
 }
 
 void StateHistorySink::setState(quark_t pathQuark, AbstractStateValue::UP value)
