@@ -238,7 +238,7 @@ We plan to use:
   * **Python 3** for pretty much everything else
   * **ØMQ**
   * **Qt 5**/**PyQt5** for some GUI development
-  * UTF-8 **JSON** for message serialization/deserialization
+  * UTF-8 **JSON-RPC** for RPCs (requests/replies and notifications)
   * **YAML** for configuration files
 
 All those items also have the advantage of facilitating portability.
