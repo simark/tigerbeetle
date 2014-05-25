@@ -251,6 +251,13 @@ void StateHistorySink::writeInterval(quark_t pathQuark)
 
 void StateHistorySink::setState(quark_t pathQuark, AbstractStateValue::UP value)
 {
+    // write interval and set new state value
+    this->writeInterval(pathQuark);
+
+    _stateValues[pathQuark] = {
+        .beginTs = _ts,
+        .value = std::move(value)
+    };
 }
 
 void StateHistorySink::removeState(quark_t pathQuark)
