@@ -211,17 +211,18 @@ void StateHistorySink::close()
     _opened = false;
 }
 
-quark_t StateHistorySink::getQuark(StringDb& stringDb, const std::string& value)
+quark_t StateHistorySink::getQuark(StringDb& stringDb, const std::string& value,
+                                   quark_t& curQuark)
 {
     // find in map
     auto it = stringDb.find(value);
 
     if (it == stringDb.end()) {
         // not found: insert it and return new quark
-        stringDb[value] = _curPathQuark;
-        _curPathQuark++;
+        stringDb[value] = curQuark;
+        curQuark++;
 
-        return _curPathQuark - 1;
+        return curQuark - 1;
     } else {
         return it->second;
     }
@@ -229,12 +230,12 @@ quark_t StateHistorySink::getQuark(StringDb& stringDb, const std::string& value)
 
 quark_t StateHistorySink::getPathQuark(const std::string& path)
 {
-    return this->getQuark(_pathsDb, path);
+    return this->getQuark(_pathsDb, path, _curPathQuark);
 }
 
 quark_t StateHistorySink::getStringValueQuark(const std::string& value)
 {
-    return this->getQuark(_strValuesDb, value);
+    return this->getQuark(_strValuesDb, value, _curStrValueQuark);
 }
 
 void StateHistorySink::writeInterval(quark_t pathQuark)

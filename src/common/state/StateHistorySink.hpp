@@ -193,7 +193,8 @@ private:
     void writeInterval(quark_t pathQuark);
     void writeStringDb(const StringDb& stringDb,
                        const boost::filesystem::path& path);
-    quark_t getQuark(StringDb& stringDb, const std::string& value);
+    quark_t getQuark(StringDb& stringDb, const std::string& value,
+                     quark_t& curQuark);
 
 private:
     // paths to files to create
