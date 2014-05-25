@@ -255,6 +255,9 @@ void StateHistorySink::setState(quark_t pathQuark, AbstractStateValue::UP value)
 
 void StateHistorySink::removeState(quark_t pathQuark)
 {
+    // write interval and then remove entry in current state values
+    this->writeInterval(pathQuark);
+    _stateValues.erase(pathQuark);
 }
 
 }
