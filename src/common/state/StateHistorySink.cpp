@@ -17,6 +17,7 @@
  */
 #include <cstdint>
 #include <boost/filesystem/path.hpp>
+#include <fstream>
 #include <delorean/BasicTypes.hpp>
 #include <delorean/interval/AbstractInterval.hpp>
 #include <delorean/interval/Int32Interval.hpp>
@@ -273,6 +274,33 @@ void StateHistorySink::removeState(quark_t pathQuark)
     // write interval and then remove entry in current state values
     this->writeInterval(pathQuark);
     _stateValues.erase(pathQuark);
+}
+
+void StateHistorySink::writeStringDb(const StringDb& stringDb,
+                                     const boost::filesystem::path& path)
+{
+    // open output file for writing
+    bfs::ofstream output;
+
+    output.open(path, std::ios::binary);
+
+    // write all string/quark pairs
+    for (const auto& stringQuarkPair : stringDb) {
+        const auto& string = stringQuarkPair.first;
+        auto quark = stringQuarkPair.second;
+
+        // write string part
+        output.write(string.c_str(), string.size() + 1);
+
+        // align for quark
+        output.seekp((output.tellp() + static_cast<long>(sizeof(quark) - 1)) & sizeof(quark));
+
+        // write quark
+        output.write(reinterpret_cast<char*>(&quark), sizeof(quark));
+    }
+
+    // close output file
+    output.close();
 }
 
 }
