@@ -27,9 +27,16 @@ state_sources = [
     'StateHistorySink.cpp',
 ]
 
+mq_sources = [
+    'AbstractMqSocket.cpp',
+    'MqContext.cpp',
+    'MqMessage.cpp',
+]
+
 subs = [
     ('trace', trace_sources),
     ('state', state_sources),
+    ('mq', mq_sources),
 ]
 
 sources = []
