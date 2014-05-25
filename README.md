@@ -236,7 +236,7 @@ We plan to use:
   * **Travis CI** for continuous integration
   * **C++11** for performance-critical applications/libraries
   * **Python 3** for pretty much everything else
-  * **ØMQ**
+  * **ØMQ 4**
   * **Qt 5**/**PyQt5** for some GUI development
   * UTF-8 **JSON-RPC** for RPCs (requests/replies and notifications)
   * **YAML** for configuration files
