@@ -60,6 +60,9 @@ StateHistorySink::StateHistorySink(const bfs::path& pathStrDbPath,
     _intervalFileSink = std::unique_ptr<delo::HistoryFileSink> {
         new delo::HistoryFileSink
     };
+
+    this->initTranslators();
+    this->open();
 }
 
 StateHistorySink::~StateHistorySink()
@@ -176,6 +179,8 @@ void StateHistorySink::open()
 {
     // open history sink
     _intervalFileSink->open(_historyPath);
+
+    _opened = true;
 }
 
 void StateHistorySink::close()
@@ -293,7 +298,7 @@ void StateHistorySink::writeStringDb(const StringDb& stringDb,
         output.write(string.c_str(), string.size() + 1);
 
         // align for quark
-        output.seekp((output.tellp() + static_cast<long>(sizeof(quark) - 1)) & sizeof(quark));
+        output.seekp((output.tellp() + static_cast<long>(sizeof(quark) - 1)) & ~(sizeof(quark) - 1));
 
         // write quark
         output.write(reinterpret_cast<char*>(&quark), sizeof(quark));
