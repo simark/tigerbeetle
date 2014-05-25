@@ -173,6 +173,16 @@ public:
         return _currentState;
     }
 
+    /**
+     * Returns the number of state changes so far.
+     *
+     * @returns State changes count
+     */
+    std::size_t getStateChangesCount() const
+    {
+        return _stateChangesCount;
+    }
+
 private:
     // a string database
     typedef std::map<std::string, quark_t> StringDb;
@@ -231,6 +241,9 @@ private:
 
     // interval history sink
     std::unique_ptr<delo::HistoryFileSink> _intervalFileSink;
+
+    // count of state changes so far (including removals)
+    std::size_t _stateChangesCount;
 };
 
 }

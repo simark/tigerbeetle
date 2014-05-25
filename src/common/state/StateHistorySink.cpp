@@ -55,7 +55,8 @@ StateHistorySink::StateHistorySink(const bfs::path& pathStrDbPath,
     _opened {false},
     _curPathQuark {0},
     _curStrValueQuark {0},
-    _currentState {*this}
+    _currentState {*this},
+    _stateChangesCount {0}
 {
     _intervalFileSink = std::unique_ptr<delo::HistoryFileSink> {
         new delo::HistoryFileSink
@@ -262,6 +263,9 @@ void StateHistorySink::writeInterval(quark_t pathQuark)
 
     // add to interval history
     _intervalFileSink->addInterval(delo::AbstractInterval::UP {interval});
+
+    // update internal statistics
+    _stateChangesCount++;
 }
 
 void StateHistorySink::setState(quark_t pathQuark, AbstractStateValue::UP value)
