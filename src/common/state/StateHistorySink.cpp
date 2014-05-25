@@ -184,6 +184,14 @@ void StateHistorySink::close()
         return;
     }
 
+    // write all remaining state values as intervals
+    for (const auto& quarkStateEntryPair : _stateValues) {
+        this->writeInterval(quarkStateEntryPair.first);
+    }
+
+    // clear all state values now
+    _stateValues.clear();
+
     // write files
     _intervalFileSink->close();
     this->writeStringDb(_pathsDb, _pathStrDbPath);
