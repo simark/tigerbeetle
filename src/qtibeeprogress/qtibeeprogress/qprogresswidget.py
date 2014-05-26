@@ -4,6 +4,7 @@ from PyQt5 import QtGui
 from PyQt5 import QtCore
 from qtibeeprogress import config
 
+
 class QProgressWidget(Qt.QWidget):
     def __init__(self, dot_size, dot_spacing, padding):
         super().__init__()

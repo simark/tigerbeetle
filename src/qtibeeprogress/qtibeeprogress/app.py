@@ -9,15 +9,28 @@ from qtibeeprogress.qprogressmainwindow import QProgressMainWindow
 from qtibeeprogress.qupdatelistener import QUpdateListener
 
 
+logger = logging.getLogger(__name__)
+
+
 class _App(Qt.QApplication):
+    start_update_listener = QtCore.pyqtSignal()
+
     def __init__(self, args):
         super().__init__(args)
+
+        self._args = args
 
         self._start()
 
     def stop(self):
-        logging.debug('Stopping application')
+        logger.info('Stopping application')
 
+        self._update_listener.stop()
+        self._update_listener_thread.quit()
+
+        logger.debug('Joining update listener thread')
+
+        self._update_listener_thread.wait()
         self._main_wnd_progress.close()
 
     def _show_progress_main_window(self):
@@ -48,8 +61,6 @@ class _App(Qt.QApplication):
         palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
         palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
         palette.setColor(QtGui.QPalette.Text, QtGui.QColor('#ccc'))
-        palette.setColor(QtGui.QPalette.Button, QtGui.QColor('red'))
-        palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
         palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
         palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor('#8b1727'))
         palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor('#e5a9b1'))
@@ -63,17 +74,49 @@ class _App(Qt.QApplication):
         self._setup_palette()
         self._setup_font()
 
-    def _start(self):
-        logging.debug('Starting application')
+    def _on_update_available(self, update):
+        logger.debug('Update available')
 
+    def _start_update_listener(self):
+        # create update listener thread
+        self._update_listener_thread = Qt.QThread()
+
+        # start update listener thread
+        logger.debug('Starting update listener thread')
+        self._update_listener_thread.start()
+
+        # create update listener
+        self._update_listener = QUpdateListener(self._args[1])
+
+        # move update listener to update listener thread
+        logger.debug('Moving update listener to its own thread')
+        self._update_listener.moveToThread(self._update_listener_thread)
+
+        # connect stuff
+        ul = self._update_listener
+        self.start_update_listener.connect(ul.start)
+        ul.update_available.connect(self._on_update_available)
+
+        # start update listener
+        self.start_update_listener.emit()
+
+    def _on_about_to_quit(self):
+        self.stop()
+
+    def _start(self):
+        logger.info('Starting application')
+
+        self.aboutToQuit.connect(self._on_about_to_quit)
         self._setup_python_timer()
         self._setup_style()
         self._show_progress_main_window()
+        self._start_update_listener()
 
 
 def _register_sigint(app):
     if platform.system() == 'Linux':
         def handler(signal, frame):
+            logger.debug('Got SIGINT')
             app.stop()
 
         import signal
@@ -86,7 +129,11 @@ def _configure_logging():
 
 def run():
     _configure_logging()
+
+    logger.debug('Creating application')
     app = _App(sys.argv)
+
     _register_sigint(app)
 
+    logger.debug('Executing application')
     return app.exec_()
