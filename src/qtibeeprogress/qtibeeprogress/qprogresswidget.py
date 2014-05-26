@@ -18,7 +18,7 @@ class QProgressWidget(Qt.QWidget):
     def _setup_ui(self):
         self.setSizePolicy(Qt.QSizePolicy(Qt.QSizePolicy.Expanding,
                                           Qt.QSizePolicy.Expanding))
-        self.setMinimumSize(0, 150)
+        self.setMinimumSize(0, 70)
 
     def _draw(self, painter):
         w = self.width()
