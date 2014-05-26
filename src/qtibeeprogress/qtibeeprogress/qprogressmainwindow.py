@@ -24,8 +24,10 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
         self._labels = [
             self._lbl_begin_time,
             self._lbl_end_time,
+            self._lbl_duration,
             self._lbl_cur_time,
             self._lbl_processed_events,
+            self._lbl_percent,
             self._lbl_state_changes,
         ]
 
@@ -42,8 +44,10 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
         caption_labels = [
             self._lbl_begin_time_caption,
             self._lbl_end_time_caption,
+            self._lbl_duration_caption,
             self._lbl_cur_time_caption,
             self._lbl_processed_events_caption,
+            self._lbl_percent_caption,
             self._lbl_traces_caption,
             self._lbl_state_changes_caption,
             self._lbl_state_providers_caption,
@@ -134,11 +138,16 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
         # end time label
         self._lbl_end_time.setText(end_text)
 
+        # TODO: duration label
+
         # current time label
         self._lbl_cur_time.setText(cur_text)
 
         # processed events label
         self._lbl_processed_events.setText(str(processed_events))
+
+        # percent label
+        self._lbl_percent.setText('{:.2f} %'.format(done * 100))
 
         # state changes label
         self._lbl_state_changes.setText(str(state_changes))
