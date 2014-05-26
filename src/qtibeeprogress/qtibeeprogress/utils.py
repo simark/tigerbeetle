@@ -3,14 +3,6 @@ from pkg_resources import resource_filename
 from PyQt5 import Qt
 from PyQt5 import uic
 
-class QCommonDialog(Qt.QDialog):
-    def __init__(self):
-        super().__init__()
-
-    def show_move(self, pos):
-        self.move(pos)
-        self.exec()
-
 
 class QtUiLoad:
     def _load_ui(self, ui_name):

@@ -14,17 +14,10 @@ class QProgressWidget(Qt.QWidget):
         self._dot_spacing = dot_spacing
         self._padding = padding
 
-        self._timer = Qt.QTimer()
-        self._timer.start(300)
-        self._timer.timeout.connect(self._update)
-
     def _setup_ui(self):
         self.setSizePolicy(Qt.QSizePolicy(Qt.QSizePolicy.Expanding,
                                           Qt.QSizePolicy.Expanding))
         self.setMinimumSize(0, 150)
-
-    def _update(self):
-        self.set_value(self._value + 0.001)
 
     def _draw(self, painter):
         w = self.width()

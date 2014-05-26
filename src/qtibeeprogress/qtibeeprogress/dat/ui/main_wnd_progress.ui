@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>tigerbeetle build progress</string>
   </property>
   <widget class="QWidget" name="_widget_central">
    <layout class="QVBoxLayout" name="verticalLayout">

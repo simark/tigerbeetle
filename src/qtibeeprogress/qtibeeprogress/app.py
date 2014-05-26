@@ -28,6 +28,7 @@ class _App(Qt.QApplication):
         y = (res.height() - self._main_wnd_progress.height()) // 2
 
         self._main_wnd_progress.move(Qt.QPoint(x, y))
+        self._main_wnd_progress.set_waiting()
         self._main_wnd_progress.show()
 
     def _setup_python_timer(self):
@@ -38,6 +39,7 @@ class _App(Qt.QApplication):
 
     def _setup_palette(self):
         self.setStyle('Fusion')
+
         palette = QtGui.QPalette()
         palette.setColor(QtGui.QPalette.Window, QtGui.QColor('#222'))
         palette.setColor(QtGui.QPalette.WindowText, QtGui.QColor('#ccc'))
@@ -51,6 +53,7 @@ class _App(Qt.QApplication):
         palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
         palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor('#8b1727'))
         palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor('#e5a9b1'))
+
         self.setPalette(palette)
 
     def _setup_font(self):
