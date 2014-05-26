@@ -45,7 +45,7 @@ class SubscribeMqSocket :
 
 private:
     /**
-     * Builds a reply socket.
+     * Builds a subscribe socket.
      */
     SubscribeMqSocket(MqContext* context) :
         AbstractMqSocket {context, ZMQ_SUB}

@@ -45,7 +45,7 @@ class PublishMqSocket :
 
 private:
     /**
-     * Builds a reply socket.
+     * Builds a publish socket.
      */
     PublishMqSocket(MqContext* context) :
         AbstractMqSocket {context, ZMQ_PUB}
