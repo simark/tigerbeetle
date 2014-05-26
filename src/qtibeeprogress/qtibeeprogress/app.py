@@ -63,9 +63,13 @@ class _App(Qt.QApplication):
         self._setup_palette()
         self._setup_font()
 
+    def _on_about_to_quit(self):
+        self._python_timer.stop()
+
     def _start(self):
         logging.debug('Starting application')
 
+        self.aboutToQuit.connect(self._on_about_to_quit)
         self._setup_python_timer()
         self._setup_style()
         self._show_progress_main_window()
