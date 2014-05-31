@@ -26,6 +26,7 @@
 #include <common/BasicTypes.hpp>
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
+#include <common/mq/MqContext.hpp>
 #include "ITracePlaybackListener.hpp"
 #include "StateHistoryBuilder.hpp"
 #include "rpc/ProgressUpdateRpcNotification.hpp"
@@ -107,6 +108,12 @@ private:
 
     // last system time
     boost::posix_time::ptime _lastTime;
+
+    // message queue context
+    std::unique_ptr<common::MqContext> _mqContext;
+
+    // message queue socket
+    std::unique_ptr<common::PublishMqSocket> _mqSocket;
 };
 
 }

@@ -20,7 +20,9 @@
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
+#include <common/mq/MqMessage.hpp>
 #include "ProgressPublisher.hpp"
+#include "ex/MqBindError.hpp"
 
 namespace bfs = boost::filesystem;
 namespace bptime = boost::posix_time;
@@ -45,19 +47,32 @@ ProgressPublisher::ProgressPublisher(const std::string& bindAddr,
     _tmpEvCounter {0},
     _lastTs {beginTs}
 {
-    std::cout << "progress publisher: binding socket to " << bindAddr << std::endl;
-
+    // initially set progress update RPC notification
     _rpcNotification->setBeginTs(beginTs);
     _rpcNotification->setCurTs(beginTs);
     _rpcNotification->setEndTs(endTs);
     _rpcNotification->setTracesPaths(tracesPaths);
     _rpcNotification->setStateProvidersPaths(stateProvidersPaths);
     _rpcNotification->setStateChanges(0);
+
+    // create and bind to message queue publish socket
+    _mqContext = std::unique_ptr<common::MqContext> {
+        new common::MqContext {1}
+    };
+    _mqSocket = _mqContext->createPublishSocket();
+
+    if (!_mqSocket->bind(bindAddr)) {
+        _mqSocket = nullptr;
+        _mqContext = nullptr;
+
+        throw ex::MqBindError {bindAddr};
+    };
 }
 
 ProgressPublisher::~ProgressPublisher()
 {
-    std::cout << "progress publisher: closing socket to " << std::endl;
+    _mqSocket = nullptr;
+    _mqContext = nullptr;
 }
 
 bool ProgressPublisher::onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
@@ -82,6 +97,11 @@ void ProgressPublisher::onEvent(const common::Event& event)
     // increase event count
     _evCount++;
 
+    /* TODO: remove this (present to slow down the traversal to have
+     * some progress to work with)
+     */
+    std::cout << event.getFields()->toString() << std::endl;
+
     // update?
     if (_tmpEvCounter++ == _updatePeriodEvents) {
         // reset temporary counter
@@ -89,6 +109,7 @@ void ProgressPublisher::onEvent(const common::Event& event)
 
         // really update?
         bptime::ptime curTime {bptime::microsec_clock::local_time()};
+
         if (curTime - _lastTime > bptime::milliseconds(_updatePeriodMs)) {
             // publish now
             _lastTs = event.getTimestamp();
@@ -110,8 +131,11 @@ void ProgressPublisher::publish()
     // get JSON-RPC notification
     auto json = _rpcMessageEncoder->encodeProgressUpdateRpcNotification(*_rpcNotification);
 
-    // publish progress update
-    std::cout << *json << std::endl;
+    // create message to publish
+    common::MqMessage::UP msg {new common::MqMessage {json->c_str(), json->size()}};
+
+    // publish message
+    _mqSocket->send(std::move(msg));
 }
 
 bool ProgressPublisher::onStop()

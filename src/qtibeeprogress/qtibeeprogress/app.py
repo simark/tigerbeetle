@@ -2,9 +2,11 @@ import os
 import sys
 import logging
 import platform
+import argparse
 from PyQt5 import Qt
 from PyQt5 import QtGui
 from PyQt5 import QtCore
+from qtibeeprogress import __version__
 from qtibeeprogress.qprogressmainwindow import QProgressMainWindow
 from qtibeeprogress.qupdatelistener import QUpdateListener
 
@@ -12,18 +14,14 @@ from qtibeeprogress.qupdatelistener import QUpdateListener
 logger = logging.getLogger(__name__)
 
 
-usage = '''usage: qtibeeprogress <address>
-
-  <address>    Address to connect to for progress updates'''
-
-
 class _App(Qt.QApplication):
     start_update_listener = QtCore.pyqtSignal()
 
-    def __init__(self, args):
-        super().__init__(args)
+    def __init__(self, args, addr, quit_after):
+        super().__init__(args[0:1])
 
-        self._args = args
+        self._addr = addr
+        self._quit_after = quit_after
 
         self._start()
 
@@ -80,10 +78,16 @@ class _App(Qt.QApplication):
         self._setup_font()
 
     def _on_update_available(self, update):
-        logger.debug('Update available')
+        if update.is_done() and self._quit_after:
+            logger.debug('Build completed: quitting')
+            Qt.QTimer.singleShot(0, self.stop)
+
+            return
+
+        self._main_wnd_progress.set_progress_update(update)
 
     def _on_zmq_error(self):
-        msg = 'error: cannot bind to "{}"'.format(sys.argv[1])
+        msg = 'error: cannot connect to "{}"'.format(self._addr)
         print(msg, file=sys.stderr)
         Qt.QTimer.singleShot(0, self.stop)
 
@@ -96,7 +100,7 @@ class _App(Qt.QApplication):
         self._update_listener_thread.start()
 
         # create update listener
-        self._update_listener = QUpdateListener(self._args[1])
+        self._update_listener = QUpdateListener(self._addr, self._quit_after)
 
         # move update listener to update listener thread
         logger.debug('Moving update listener to its own thread')
@@ -114,20 +118,8 @@ class _App(Qt.QApplication):
     def _on_about_to_quit(self):
         self.stop()
 
-    def _check_args(self):
-        if len(self._args) <= 1 or self._args[1] == '-h':
-            print(usage, file=sys.stderr)
-            Qt.QTimer.singleShot(0, self.quit)
-
-            return False
-
-        return True
-
     def _start(self):
         logger.info('Starting application')
-
-        if not self._check_args():
-            return
 
         self.aboutToQuit.connect(self._on_about_to_quit)
         self._setup_python_timer()
@@ -146,15 +138,34 @@ def _register_sigint(app):
         signal.signal(signal.SIGINT, handler)
 
 
-def _configure_logging():
+def _configure_logging(args):
     logging.basicConfig(level=logging.DEBUG)
 
 
+def _parse_args():
+    parser = argparse.ArgumentParser()
+
+    version = 'qtibeeprogress v{}'.format(__version__)
+    parser.add_argument('-V, --version', action='version',
+                        help='print version and quit',
+                        version=version)
+    parser.add_argument('-q', action='store_true',
+                        help='quit when finished')
+    parser.add_argument('addr', type=str, nargs=1,
+                        help='address to connect to')
+
+    args = parser.parse_args()
+
+    return args
+
+
 def run():
-    _configure_logging()
+    args = _parse_args()
+
+    _configure_logging(args)
 
     logger.debug('Creating application')
-    app = _App(sys.argv)
+    app = _App(sys.argv, args.addr[0], args.q)
 
     _register_sigint(app)
 

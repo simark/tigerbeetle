@@ -79,7 +79,7 @@ int parseOptions(int argc, char* argv[], tibee::Arguments& args)
             "  -h, --help           print this help message" << std::endl <<
             "  -b, --bind-progress  bind address for build progress (default: none)" << std::endl <<
             "  -d, --cache-dir      write caches to this directory (default: CWD)" << std::endl <<
-            "  -s                   state provider file path (at least one)" << std::endl <<
+            "  -s <provider path>   state provider file path (at least one)" << std::endl <<
             "  -v, --verbose        verbose" << std::endl;
 
         return -1;

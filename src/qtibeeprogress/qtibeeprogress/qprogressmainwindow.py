@@ -70,8 +70,6 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
             return
 
     def set_waiting(self):
-        logger.debug('Setting wait mode')
-
         waiting_text = 'Waiting for data...'
 
         for lbl in self._labels:
@@ -94,8 +92,8 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
 
     @staticmethod
     def _format_time(ts):
-        dt = _datetime_from_ts(ts)
-        ns = _ns_from_ts(ts)
+        dt = QProgressMainWindow._datetime_from_ts(ts)
+        ns = QProgressMainWindow._ns_from_ts(ts)
 
         dt_str = dt.strftime('%Y/%m/%d %H:%M:%S')
 
@@ -104,15 +102,13 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
         return text
 
     def set_progress_update(self, update):
-        logger.debug('Setting progress update mode')
-
         # get begin, current and end times
-        begin = update.get_trace_begin()
-        begin_text = _format_time(begin)
-        end = update.get_trace_end()
-        end_text = _format_time(end)
-        cur = update.get_current_time()
-        cur_text = _format_time(cur)
+        begin = update.get_begin_ts()
+        begin_text = QProgressMainWindow._format_time(begin)
+        end = update.get_end_ts()
+        end_text = QProgressMainWindow._format_time(end)
+        cur = update.get_cur_ts()
+        cur_text = QProgressMainWindow._format_time(cur)
 
         # range (ns)
         trace_range = end - begin
@@ -127,10 +123,10 @@ class QProgressMainWindow(Qt.QMainWindow, utils.QtUiLoad):
         state_changes = update.get_state_changes()
 
         # traces
-        traces = update.get_traces()
+        traces = update.get_traces_paths()
 
         # state providers
-        state_providers = update.get_state_providers()
+        state_providers = update.get_state_providers_paths()
 
         # begin time label
         self._lbl_begin_time.setText(begin_text)

@@ -33,36 +33,40 @@ class ProgressUpdate:
     def is_valid(self):
         return self._valid
 
-    def get_trace_begin(self):
-        return self._infos['traces-begin-timestamp']
+    def get_begin_ts(self):
+        return self._infos['traces-begin-ts']
 
-    def get_trace_end(self):
-        return self._infos['traces-end-timestamp']
+    def get_end_ts(self):
+        return self._infos['traces-end-ts']
 
-    def get_current_time(self):
-        return self._infos['current-timestamp']
+    def get_cur_ts(self):
+        return self._infos['traces-cur-ts']
 
     def get_processed_events(self):
-        return self._infos['traces-processed-events']
+        return self._infos['processed-events']
 
     def get_state_changes(self):
         return self._infos['state-changes']
 
-    def get_traces(self):
-        return self._infos['traces']
+    def get_traces_paths(self):
+        return self._infos['traces-paths']
 
-    def get_state_providers(self):
-        return self._infos['state-providers']
+    def get_state_providers_paths(self):
+        return self._infos['state-providers-paths']
+
+    def is_done(self):
+        return self.get_cur_ts() == self.get_end_ts()
 
 
 class QUpdateListener(Qt.QObject):
     update_available = QtCore.pyqtSignal(object)
     zmq_error = QtCore.pyqtSignal()
 
-    def __init__(self, addr):
+    def __init__(self, addr, quit_after):
         super().__init__()
 
         self._addr = addr
+        self._quit_after = quit_after
         self._stop = False
 
     def start(self):

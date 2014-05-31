@@ -26,6 +26,7 @@
 #include "TraceDeck.hpp"
 #include "Arguments.hpp"
 #include "BuilderBeetle.hpp"
+#include "ex/MqBindError.hpp"
 
 namespace bfs = boost::filesystem;
 
@@ -59,18 +60,26 @@ bool BuilderBeetle::run()
     };
 
     // create a progress publisher
-    std::unique_ptr<ProgressPublisher> progressPublisher {
-        new ProgressPublisher {
-            _args.bindProgress,
-            traceSet->getBegin(),
-            traceSet->getEnd(),
-            _args.traces,
-            _args.stateProviders,
-            *stateHistoryBuilder,
-            10000,
-            250
-        }
-    };
+    std::unique_ptr<ProgressPublisher> progressPublisher;
+    try {
+        progressPublisher = std::unique_ptr<ProgressPublisher> {
+            new ProgressPublisher {
+                _args.bindProgress,
+                traceSet->getBegin(),
+                traceSet->getEnd(),
+                _args.traces,
+                _args.stateProviders,
+                *stateHistoryBuilder,
+                2801,
+                200
+            }
+        };
+    } catch (const ex::MqBindError& ex) {
+        std::cerr << "Error: cannot bind to address \"" <<
+                     ex.getBindAddr() << "\"" << std::endl;
+
+        return false;
+    }
 
     // create a list of trace listeners
     std::vector<ITracePlaybackListener::UP> listeners;
