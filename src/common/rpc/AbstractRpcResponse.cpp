@@ -15,34 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _BASIC_TYPES_HPP
-#define _BASIC_TYPES_HPP
-
-#include <cstdint>
+#include <common/rpc/AbstractRpcResponse.hpp>
 
 namespace tibee
 {
 namespace common
 {
 
-/**
- * @file
- * This header holds basic type definitions used throughout tigerbeetle.
- */
+AbstractRpcResponse::AbstractRpcResponse(rpc_msg_id_t id) :
+    _id {id}
+{
+}
 
-/// Trace/state timestamp
-typedef std::uint64_t   timestamp_t;
+AbstractRpcResponse::~AbstractRpcResponse()
+{
+}
 
-/// Trace cycles
-typedef std::uint64_t   trace_cycles_t;
-
-/// State quark
-typedef std::uint32_t   quark_t;
-
-/// RPC message ID
-typedef std::uint32_t   rpc_msg_id_t;
+bool AbstractRpcResponse::hasError() const
+{
+    return this->hasErrorImpl();
+}
 
 }
 }
-
-#endif // _BASIC_TYPES_HPP

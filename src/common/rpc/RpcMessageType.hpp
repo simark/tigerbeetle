@@ -15,10 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _BASIC_TYPES_HPP
-#define _BASIC_TYPES_HPP
-
-#include <cstdint>
+#ifndef _RPCMESSAGETYPE_HPP
+#define _RPCMESSAGETYPE_HPP
 
 namespace tibee
 {
@@ -26,23 +24,18 @@ namespace common
 {
 
 /**
- * @file
- * This header holds basic type definitions used throughout tigerbeetle.
+ * RPC message type.
+ *
+ * @author Philippe Proulx
  */
-
-/// Trace/state timestamp
-typedef std::uint64_t   timestamp_t;
-
-/// Trace cycles
-typedef std::uint64_t   trace_cycles_t;
-
-/// State quark
-typedef std::uint32_t   quark_t;
-
-/// RPC message ID
-typedef std::uint32_t   rpc_msg_id_t;
+enum class RpcMessageType
+{
+    REQUEST,
+    RESPONSE,
+    NOTIFICATION,
+};
 
 }
 }
 
-#endif // _BASIC_TYPES_HPP
+#endif // _RPCMESSAGETYPE_HPP

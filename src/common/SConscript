@@ -33,10 +33,19 @@ mq_sources = [
     'MqMessage.cpp',
 ]
 
+rpc_sources = [
+    'AbstractRpcRequest.cpp',
+    'AbstractRpcResponse.cpp',
+    'AbstractRpcNotification.cpp',
+    'AbstractJsonRpcMessageEncoder.cpp',
+    'AbstractJsonRpcMessageDecoder.cpp',
+]
+
 subs = [
     ('trace', trace_sources),
     ('state', state_sources),
     ('mq', mq_sources),
+    ('rpc', rpc_sources),
 ]
 
 sources = []
