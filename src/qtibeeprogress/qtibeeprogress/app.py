@@ -12,6 +12,11 @@ from qtibeeprogress.qupdatelistener import QUpdateListener
 logger = logging.getLogger(__name__)
 
 
+usage = '''usage: qtibeeprogress <address>
+
+  <address>    Address to connect to for progress updates'''
+
+
 class _App(Qt.QApplication):
     start_update_listener = QtCore.pyqtSignal()
 
@@ -77,6 +82,11 @@ class _App(Qt.QApplication):
     def _on_update_available(self, update):
         logger.debug('Update available')
 
+    def _on_zmq_error(self):
+        msg = 'error: cannot bind to "{}"'.format(sys.argv[1])
+        print(msg, file=sys.stderr)
+        Qt.QTimer.singleShot(0, self.stop)
+
     def _start_update_listener(self):
         # create update listener thread
         self._update_listener_thread = Qt.QThread()
@@ -96,6 +106,7 @@ class _App(Qt.QApplication):
         ul = self._update_listener
         self.start_update_listener.connect(ul.start)
         ul.update_available.connect(self._on_update_available)
+        ul.zmq_error.connect(self._on_zmq_error)
 
         # start update listener
         self.start_update_listener.emit()
@@ -103,8 +114,20 @@ class _App(Qt.QApplication):
     def _on_about_to_quit(self):
         self.stop()
 
+    def _check_args(self):
+        if len(self._args) <= 1 or self._args[1] == '-h':
+            print(usage, file=sys.stderr)
+            Qt.QTimer.singleShot(0, self.quit)
+
+            return False
+
+        return True
+
     def _start(self):
         logger.info('Starting application')
+
+        if not self._check_args():
+            return
 
         self.aboutToQuit.connect(self._on_about_to_quit)
         self._setup_python_timer()

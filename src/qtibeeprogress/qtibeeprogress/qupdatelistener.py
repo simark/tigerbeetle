@@ -57,6 +57,7 @@ class ProgressUpdate:
 
 class QUpdateListener(Qt.QObject):
     update_available = QtCore.pyqtSignal(object)
+    zmq_error = QtCore.pyqtSignal()
 
     def __init__(self, addr):
         super().__init__()
@@ -67,11 +68,14 @@ class QUpdateListener(Qt.QObject):
     def start(self):
         logger.info('Starting update listener with address {}'.format(self._addr))
 
-        self._zmq_context = zmq.Context(1)
-        self._zmq_socket = self._zmq_context.socket(zmq.SUB)
-        self._zmq_socket.setsockopt(zmq.SUBSCRIBE, bytes())
-        self._zmq_socket.setsockopt(zmq.RCVTIMEO, 500)
-        self._zmq_socket.connect(self._addr)
+        try:
+            self._zmq_context = zmq.Context(1)
+            self._zmq_socket = self._zmq_context.socket(zmq.SUB)
+            self._zmq_socket.setsockopt(zmq.SUBSCRIBE, bytes())
+            self._zmq_socket.setsockopt(zmq.RCVTIMEO, 500)
+            self._zmq_socket.connect(self._addr)
+        except:
+            self.zmq_error.emit()
 
         while not self._stop:
             try:
