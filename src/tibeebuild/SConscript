@@ -9,7 +9,7 @@ libs = [
     'boost_program_options',
     'boost_filesystem',
     'boost_system',
-    'delorean',
+    'dl',
     common,
 ]
 
@@ -43,7 +43,6 @@ app_env = env.Clone()
 
 app_env.Append(LIBS=libs)
 app_env.ParseConfig('pkg-config --cflags --libs yajl')
-app_env.ParseConfig('pkg-config --cflags --libs libzmq')
 
 app = app_env.Program(target=target, source=sources)
 

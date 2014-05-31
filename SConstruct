@@ -11,6 +11,7 @@ ccflags = [
     '-std=c++11',
     '-Wall',
     '-g',
+    '-O2',
 ]
 
 # this is to allow colorgcc
@@ -27,10 +28,13 @@ if 'CXX' in os.environ:
     root_env['CXX'] = os.environ['CXX']
 
 if 'LIBDELOREAN_CPPPATH' in os.environ:
-    root_env.Append(CPPPATH=[os.environ['LIBDELOREAN_CPPPATH']])
+    root_env.Append(CPPPATH=os.environ['LIBDELOREAN_CPPPATH'])
 
 if 'LIBDELOREAN_LIBPATH' in os.environ:
-    root_env.Append(LIBPATH=[os.environ['LIBDELOREAN_LIBPATH']])
+    root_env.Append(LIBPATH=os.environ['LIBDELOREAN_LIBPATH'])
+
+if 'LD_LIBRARY_PATH' in os.environ:
+    root_env['ENV']['LD_LIBRARY_PATH'] = os.environ['LD_LIBRARY_PATH']
 
 Export('root_env')
 

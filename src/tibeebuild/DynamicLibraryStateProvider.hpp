@@ -18,6 +18,7 @@
 #ifndef _DYNAMICLIBRARYSTATEPROVIDER_HPP
 #define _DYNAMICLIBRARYSTATEPROVIDER_HPP
 
+#include <string>
 #include <boost/filesystem.hpp>
 
 #include <common/trace/EventValueType.hpp>
@@ -49,6 +50,18 @@ public:
     void onInit(common::CurrentState& state);
     void onEvent(common::CurrentState& state, const common::Event& event);
     void onFini(common::CurrentState& state);
+
+protected:
+    static std::string getErrorMsg(const std::string& base);
+
+private:
+    // DL handle
+    void* _dlHandle;
+
+    // DL resolved symbols
+    void (*_dlOnInit)(common::CurrentState&);
+    void (*_dlOnEvent)(common::CurrentState&, const common::Event&);
+    void (*_dlOnFini)(common::CurrentState&);
 };
 
 }

@@ -1,0 +1,14 @@
+import os.path
+
+
+Import('env', 'common')
+
+target = 'linux'
+
+sources = [
+    'linux.cpp',
+]
+
+lib = env.SharedLibrary(target=target, source=sources)
+
+Return('lib')

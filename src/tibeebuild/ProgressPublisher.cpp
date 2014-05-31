@@ -97,11 +97,6 @@ void ProgressPublisher::onEvent(const common::Event& event)
     // increase event count
     _evCount++;
 
-    /* TODO: remove this (present to slow down the traversal to have
-     * some progress to work with)
-     */
-    std::cout << event.getFields()->toString() << std::endl;
-
     // update?
     if (_tmpEvCounter++ == _updatePeriodEvents) {
         // reset temporary counter

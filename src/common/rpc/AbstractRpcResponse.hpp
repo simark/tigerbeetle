@@ -91,7 +91,7 @@ public:
     }
 
 protected:
-    virtual bool hasErrorImpl() const;
+    virtual bool hasErrorImpl() const = 0;
 
 
 private:

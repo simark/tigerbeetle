@@ -27,6 +27,7 @@
 #include "Arguments.hpp"
 #include "BuilderBeetle.hpp"
 #include "ex/MqBindError.hpp"
+#include "ex/WrongStateProvider.hpp"
 
 namespace bfs = boost::filesystem;
 
@@ -46,18 +47,28 @@ bool BuilderBeetle::run()
     // add traces to trace set
     for (const auto& tracePath : _args.traces) {
         if (!traceSet->addTrace(tracePath)) {
-            std::cerr << "could not add trace " << tracePath << std::endl;
+            std::cerr << "Error: could not add trace " << tracePath << std::endl;
+
             return false;
         }
     }
 
     // create a state history builder
-    std::unique_ptr<StateHistoryBuilder> stateHistoryBuilder {
-        new StateHistoryBuilder {
-            _args.cacheDir,
-            _args.stateProviders
-        }
-    };
+    std::unique_ptr<StateHistoryBuilder> stateHistoryBuilder;
+    try {
+        stateHistoryBuilder = std::unique_ptr<StateHistoryBuilder> {
+            new StateHistoryBuilder {
+                _args.cacheDir,
+                _args.stateProviders
+            }
+        };
+    } catch (const ex::WrongStateProvider& ex) {
+        std::cerr << "Error: wrong state provider (" <<
+                     ex.getPath() << ")" << std::endl <<
+                     "  " << ex.what() << std::endl;
+
+        return false;
+    }
 
     // create a progress publisher
     std::unique_ptr<ProgressPublisher> progressPublisher;
