@@ -78,15 +78,34 @@ protected:
     void publish();
 
 private:
+    // bind address
     boost::filesystem::path _bindAddr;
+
+    // number of processed events so far
     std::size_t _evCount;
+
+    // RPC message encoder
     std::unique_ptr<BuilderJsonRpcMessageEncoder> _rpcMessageEncoder;
+
+    // RPC notification (progress update)
     std::unique_ptr<ProgressUpdateRpcNotification> _rpcNotification;
+
+    // state history builder reference
     const StateHistoryBuilder& _stateHistoryBuilder;
+
+    // update period in number of events
     std::size_t _updatePeriodEvents;
+
+    // update period in milliseconds
     std::size_t _updatePeriodMs;
+
+    // temporary event counter
     std::size_t _tmpEvCounter;
+
+    // last event timestamp (set before publishing)
     common::timestamp_t _lastTs;
+
+    // last system time
     boost::posix_time::ptime _lastTime;
 };
 
