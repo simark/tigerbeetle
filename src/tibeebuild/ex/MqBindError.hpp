@@ -20,7 +20,6 @@
 
 #include <string>
 #include <stdexcept>
-#include <boost/filesystem/path.hpp>
 
 namespace tibee
 {
