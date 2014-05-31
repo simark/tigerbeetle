@@ -22,6 +22,7 @@
 #include <memory>
 #include <boost/filesystem.hpp>
 
+#include <common/state/StateHistorySink.hpp>
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
 #include "AbstractCacheBuilder.hpp"
@@ -70,6 +71,7 @@ public:
 private:
     std::vector<boost::filesystem::path> _providersPaths;
     std::vector<AbstractStateProvider::UP> _providers;
+    std::unique_ptr<common::StateHistorySink> _stateHistorySink;
 };
 
 }

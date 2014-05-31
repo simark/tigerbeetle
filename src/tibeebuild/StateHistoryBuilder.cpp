@@ -71,9 +71,18 @@ bool StateHistoryBuilder::onStart(const std::shared_ptr<const common::TraceSet>&
 {
     std::cout << "state history builder: starting" << std::endl;
 
+    // create new state history sink (destroying the previous one)
+    _stateHistorySink = std::unique_ptr<common::StateHistorySink> {
+        new common::StateHistorySink {
+            this->getCacheDir() / "paths-quarks.db",
+            this->getCacheDir() / "values-quarks.db",
+            this->getCacheDir() / "history"
+        }
+    };
+
     // also notify each state provider
     for (auto& provider : _providers) {
-        provider->onStart(traceSet);
+        provider->onInit(_stateHistorySink->getCurrentState());
     }
 
     return true;
@@ -83,7 +92,7 @@ void StateHistoryBuilder::onEvent(const common::Event& event)
 {
     // also notify each state provider
     for (auto& provider : _providers) {
-        provider->onEvent(event);
+        provider->onEvent(_stateHistorySink->getCurrentState(), event);
     }
 }
 
@@ -93,7 +102,7 @@ bool StateHistoryBuilder::onStop()
 
     // also notify each state provider
     for (auto& provider : _providers) {
-        provider->onStop();
+        provider->onFini(_stateHistorySink->getCurrentState());
     }
 
     return true;

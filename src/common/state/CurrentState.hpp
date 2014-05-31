@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <boost/utility.hpp>
 
+#include <common/state/AbstractStateValue.hpp>
 #include <common/BasicTypes.hpp>
 
 namespace tibee

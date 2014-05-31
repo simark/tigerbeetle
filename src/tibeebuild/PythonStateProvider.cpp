@@ -38,22 +38,19 @@ PythonStateProvider::~PythonStateProvider()
     std::cout << "python state provider: unloading script" << std::endl;
 }
 
-bool PythonStateProvider::onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
+void PythonStateProvider::onInit(common::CurrentState& state)
 {
-    std::cout << "python state provider: starting" << std::endl;
-
-    return true;
+    std::cout << "python state provider: initializing" << std::endl;
 }
 
-void PythonStateProvider::onEvent(const common::Event& event)
+void PythonStateProvider::onEvent(common::CurrentState& state, const common::Event& event)
 {
+    // getting event
 }
 
-bool PythonStateProvider::onStop()
+void PythonStateProvider::onFini(common::CurrentState& state)
 {
-    std::cout << "python state provider: stopping" << std::endl;
-
-    return true;
+    std::cout << "python state provider: finishing" << std::endl;
 }
 
 }

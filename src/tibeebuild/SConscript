@@ -9,7 +9,8 @@ libs = [
     'boost_program_options',
     'boost_filesystem',
     'boost_system',
-    common
+    'delorean',
+    common,
 ]
 
 main_sources = [

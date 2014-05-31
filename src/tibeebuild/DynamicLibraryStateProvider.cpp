@@ -38,22 +38,19 @@ DynamicLibraryStateProvider::~DynamicLibraryStateProvider()
     std::cout << "dynamic library state provider: unloading library" << std::endl;
 }
 
-bool DynamicLibraryStateProvider::onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
+void DynamicLibraryStateProvider::onInit(common::CurrentState& state)
 {
-    std::cout << "dynamic library state provider: starting" << std::endl;
-
-    return true;
+    std::cout << "dynamic library state provider: initializing" << std::endl;
 }
 
-void DynamicLibraryStateProvider::onEvent(const common::Event& event)
+void DynamicLibraryStateProvider::onEvent(common::CurrentState& state, const common::Event& event)
 {
+    // getting event
 }
 
-bool DynamicLibraryStateProvider::onStop()
+void DynamicLibraryStateProvider::onFini(common::CurrentState& state)
 {
-    std::cout << "dynamic library state provider: stopping" << std::endl;
-
-    return true;
+    std::cout << "dynamic library state provider: finishing" << std::endl;
 }
 
 }

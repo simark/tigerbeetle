@@ -46,9 +46,9 @@ public:
 
     ~DynamicLibraryStateProvider();
 
-    bool onStart(const std::shared_ptr<const common::TraceSet>& traceSet);
-    void onEvent(const common::Event& event);
-    bool onStop();
+    void onInit(common::CurrentState& state);
+    void onEvent(common::CurrentState& state, const common::Event& event);
+    void onFini(common::CurrentState& state);
 };
 
 }

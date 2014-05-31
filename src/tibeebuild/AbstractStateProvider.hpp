@@ -20,18 +20,19 @@
 
 #include <boost/filesystem.hpp>
 
+#include <common/state/CurrentState.hpp>
 #include "ITracePlaybackListener.hpp"
 
 namespace tibee
 {
 
 /**
- * An abstract state provider. Any state provider must inherit this class.
+ * An abstract state provider. Any state provider must inherit
+ * this class.
  *
  * @author Philippe Proulx
  */
-class AbstractStateProvider :
-    public ITracePlaybackListener
+class AbstractStateProvider
 {
 public:
     /// Unique pointer to abstract state provider
@@ -46,6 +47,28 @@ public:
     AbstractStateProvider(const boost::filesystem::path& path);
 
     virtual ~AbstractStateProvider();
+
+    /**
+     * Called before processing any event.
+     *
+     * @param state Current state (empty when getting it)
+     */
+    virtual void onInit(common::CurrentState& state) = 0;
+
+    /**
+     * New event notification.
+     *
+     * @param state Current state
+     * @param event New event
+     */
+    virtual void onEvent(common::CurrentState& state, const common::Event& event) = 0;
+
+    /**
+     * Called after having processed all events.
+     *
+     * @param state Current state
+     */
+    virtual void onFini(common::CurrentState& state) = 0;
 
     /**
      * Returns this provider path.
