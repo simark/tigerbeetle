@@ -76,6 +76,7 @@ class QUpdateListener(Qt.QObject):
             self._zmq_socket.connect(self._addr)
         except:
             self.zmq_error.emit()
+            return
 
         while not self._stop:
             try:
