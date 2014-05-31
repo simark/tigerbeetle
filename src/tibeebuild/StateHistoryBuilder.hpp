@@ -57,6 +57,16 @@ public:
     void onEvent(const common::Event& event);
     bool onStop();
 
+    /**
+     * Returns the number of state changes so far.
+     *
+     * @returns State changes so far
+     */
+    unsigned int getStateChanges() const
+    {
+        return 0;
+    }
+
 private:
     std::vector<boost::filesystem::path> _providersPaths;
     std::vector<AbstractStateProvider::UP> _providers;

@@ -60,7 +60,16 @@ bool BuilderBeetle::run()
 
     // create a progress publisher
     std::unique_ptr<ProgressPublisher> progressPublisher {
-        new ProgressPublisher {_args.bindProgress}
+        new ProgressPublisher {
+            _args.bindProgress,
+            traceSet->getBegin(),
+            traceSet->getEnd(),
+            _args.traces,
+            _args.stateProviders,
+            *stateHistoryBuilder,
+            10000,
+            250
+        }
     };
 
     // create a list of trace listeners

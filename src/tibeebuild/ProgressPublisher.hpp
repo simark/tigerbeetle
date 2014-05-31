@@ -21,10 +21,15 @@
 #include <memory>
 #include <string>
 #include <boost/filesystem/path.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
+#include <common/BasicTypes.hpp>
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
 #include "ITracePlaybackListener.hpp"
+#include "StateHistoryBuilder.hpp"
+#include "rpc/ProgressUpdateRpcNotification.hpp"
+#include "rpc/BuilderJsonRpcMessageEncoder.hpp"
 
 namespace tibee
 {
@@ -41,9 +46,27 @@ public:
     /**
      * Builds a progress publisher.
      *
-     * @param bindAddr Bind address for publishing progress
+     * The publisher will check the current system timestamp every
+     * \p updatePeriodEvents events. If the difference since the last
+     * check is greater than \p updatePeriodMs milliseconds, there will
+     * be a progress publication.
+     *
+     * @param bindAddr            Bind address for publishing progress
+     * @param beginTs             Begin timestamp of trace set
+     * @param endTs               End timestamp of trace set
+     * @param tracesPaths         Paths of all traces
+     * @param stateProvidersPaths Paths of all state providers
+     * @param stateHistoryBuilder State history builder reference
+     * @param updatePeriodEvents  Update emission period in number of events
+     * @param updatePeriodMs      Update emission period in milliseconds
      */
-    ProgressPublisher(const std::string& bindAddr);
+    ProgressPublisher(const std::string& bindAddr,
+                      common::timestamp_t beginTs, common::timestamp_t endTs,
+                      const std::vector<boost::filesystem::path>& tracesPaths,
+                      const std::vector<boost::filesystem::path>& stateProvidersPaths,
+                      const StateHistoryBuilder& stateHistoryBuilder,
+                      std::size_t updatePeriodEvents,
+                      std::size_t updatePeriodMs);
 
     ~ProgressPublisher();
 
@@ -51,9 +74,20 @@ public:
     void onEvent(const common::Event& event);
     bool onStop();
 
+protected:
+    void publish();
+
 private:
     boost::filesystem::path _bindAddr;
     std::size_t _evCount;
+    std::unique_ptr<BuilderJsonRpcMessageEncoder> _rpcMessageEncoder;
+    std::unique_ptr<ProgressUpdateRpcNotification> _rpcNotification;
+    const StateHistoryBuilder& _stateHistoryBuilder;
+    std::size_t _updatePeriodEvents;
+    std::size_t _updatePeriodMs;
+    std::size_t _tmpEvCounter;
+    common::timestamp_t _lastTs;
+    boost::posix_time::ptime _lastTime;
 };
 
 }

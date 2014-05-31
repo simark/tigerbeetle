@@ -47,7 +47,6 @@ bool DynamicLibraryStateProvider::onStart(const std::shared_ptr<const common::Tr
 
 void DynamicLibraryStateProvider::onEvent(const common::Event& event)
 {
-    std::cout << "dynamic library state provider: processing event: " << event.getName() << std::endl;
 }
 
 bool DynamicLibraryStateProvider::onStop()

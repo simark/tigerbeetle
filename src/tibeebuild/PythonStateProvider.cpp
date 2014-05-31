@@ -47,7 +47,6 @@ bool PythonStateProvider::onStart(const std::shared_ptr<const common::TraceSet>&
 
 void PythonStateProvider::onEvent(const common::Event& event)
 {
-    std::cout << "python state provider: processing event: " << event.getName() << std::endl;
 }
 
 bool PythonStateProvider::onStop()

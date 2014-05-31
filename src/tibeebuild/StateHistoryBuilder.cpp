@@ -81,8 +81,6 @@ bool StateHistoryBuilder::onStart(const std::shared_ptr<const common::TraceSet>&
 
 void StateHistoryBuilder::onEvent(const common::Event& event)
 {
-    std::cout << "state history builder: processing event: " << event.getName() << std::endl;
-
     // also notify each state provider
     for (auto& provider : _providers) {
         provider->onEvent(event);

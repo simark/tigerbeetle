@@ -23,15 +23,36 @@
 #include "ProgressPublisher.hpp"
 
 namespace bfs = boost::filesystem;
+namespace bptime = boost::posix_time;
 
 namespace tibee
 {
 
-ProgressPublisher::ProgressPublisher(const std::string& bindAddr) :
+ProgressPublisher::ProgressPublisher(const std::string& bindAddr,
+                                     common::timestamp_t beginTs, common::timestamp_t endTs,
+                                     const std::vector<boost::filesystem::path>& tracesPaths,
+                                     const std::vector<boost::filesystem::path>& stateProvidersPaths,
+                                     const StateHistoryBuilder& stateHistoryBuilder,
+                                     std::size_t updatePeriodEvents,
+                                     std::size_t updatePeriodMs) :
     _bindAddr {bindAddr},
-    _evCount {0}
+    _evCount {0},
+    _rpcMessageEncoder {new BuilderJsonRpcMessageEncoder},
+    _rpcNotification {new ProgressUpdateRpcNotification},
+    _stateHistoryBuilder {stateHistoryBuilder},
+    _updatePeriodEvents {updatePeriodEvents},
+    _updatePeriodMs {updatePeriodMs},
+    _tmpEvCounter {0},
+    _lastTs {beginTs}
 {
     std::cout << "progress publisher: binding socket to " << bindAddr << std::endl;
+
+    _rpcNotification->setBeginTs(beginTs);
+    _rpcNotification->setCurTs(beginTs);
+    _rpcNotification->setEndTs(endTs);
+    _rpcNotification->setTracesPaths(tracesPaths);
+    _rpcNotification->setStateProvidersPaths(stateProvidersPaths);
+    _rpcNotification->setStateChanges(0);
 }
 
 ProgressPublisher::~ProgressPublisher()
@@ -43,22 +64,61 @@ bool ProgressPublisher::onStart(const std::shared_ptr<const common::TraceSet>& t
 {
     std::cout << "progress publisher: publishing start" << std::endl;
 
+    // first publication
     _evCount = 0;
+    _tmpEvCounter = 0;
+    _lastTs = _rpcNotification->getBeginTs();
+    _rpcNotification->setStateChanges(0);
+    this->publish();
+
+    // update last time
+    _lastTime = bptime::microsec_clock::local_time();
 
     return true;
 }
 
 void ProgressPublisher::onEvent(const common::Event& event)
 {
+    // increase event count
     _evCount++;
-    if (_evCount % 5 == 0) {
-        std::cout << "progress publisher: publishing: at event #" << _evCount << std::endl;
+
+    // update?
+    if (_tmpEvCounter++ == _updatePeriodEvents) {
+        // reset temporary counter
+        _tmpEvCounter = 0;
+
+        // really update?
+        bptime::ptime curTime {bptime::microsec_clock::local_time()};
+        if (curTime - _lastTime > bptime::milliseconds(_updatePeriodMs)) {
+            // publish now
+            _lastTs = event.getTimestamp();
+            this->publish();
+
+            // update last time
+            _lastTime = curTime;
+        }
     }
+}
+
+void ProgressPublisher::publish()
+{
+    // update RPC notification object
+    _rpcNotification->setCurTs(_lastTs);
+    _rpcNotification->setStateChanges(_stateHistoryBuilder.getStateChanges());
+    _rpcNotification->setProcessedEvents(_evCount);
+
+    // get JSON-RPC notification
+    auto json = _rpcMessageEncoder->encodeProgressUpdateRpcNotification(*_rpcNotification);
+
+    // publish progress update
+    std::cout << *json << std::endl;
 }
 
 bool ProgressPublisher::onStop()
 {
-    std::cout << "progress publisher: publishing stop" << std::endl;
+    // publish one last time
+    _lastTs = _rpcNotification->getEndTs();
+    this->publish();
 
     return true;
 }
