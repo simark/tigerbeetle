@@ -52,6 +52,7 @@ int parseOptions(int argc, char* argv[], tibee::Arguments& args)
         ("stateprov,s", bpo::value<std::vector<std::string>>()->multitoken())
         ("bind-progress,b", bpo::value<std::string>())
         ("cache-dir,d", bpo::value<std::string>())
+        ("force,f", bpo::bool_switch()->default_value(false))
     ;
 
     bpo::positional_options_description pos;
@@ -79,6 +80,7 @@ int parseOptions(int argc, char* argv[], tibee::Arguments& args)
             "  -h, --help           print this help message" << std::endl <<
             "  -b, --bind-progress  bind address for build progress (default: none)" << std::endl <<
             "  -d, --cache-dir      write caches to this directory (default: CWD)" << std::endl <<
+            "  -f, --force          force cache building, even if already existing" << std::endl <<
             "  -s <provider path>   state provider file path (at least one)" << std::endl <<
             "  -v, --verbose        verbose" << std::endl;
 
@@ -151,6 +153,9 @@ int parseOptions(int argc, char* argv[], tibee::Arguments& args)
 
     // verbose
     args.verbose = vm["verbose"].as<bool>();
+
+    // force
+    args.force = vm["force"].as<bool>();
 
     return 0;
 }

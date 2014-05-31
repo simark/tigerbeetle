@@ -37,6 +37,7 @@ struct Arguments
     std::string bindProgress;
     boost::filesystem::path cacheDir;
     bool verbose;
+    bool force;
 };
 
 }
