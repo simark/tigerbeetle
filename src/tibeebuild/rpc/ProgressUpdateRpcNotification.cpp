@@ -22,7 +22,11 @@ namespace tibee
 
 ProgressUpdateRpcNotification::ProgressUpdateRpcNotification() :
     AbstractRpcNotification {"progress-update"},
-    _processedEvents {0}
+    _processedEvents {0},
+    _beginTs {0},
+    _endTs {0},
+    _curTs {0},
+    _stateChanges {0}
 {
 }
 

@@ -19,7 +19,9 @@
 #define _PROGRESSUPDATERPCNOTIFICATION_HPP
 
 #include <cstddef>
+#include <boost/filesystem/path.hpp>
 
+#include <common/BasicTypes.hpp>
 #include <common/rpc/AbstractRpcNotification.hpp>
 
 namespace tibee
@@ -65,8 +67,134 @@ public:
         return _processedEvents;
     }
 
+    /**
+     * Sets the trace set begin timestamp.
+     *
+     * @param beginTs Trace set begin timestamp
+     */
+    void setBeginTs(common::timestamp_t beginTs)
+    {
+        _beginTs = beginTs;
+    }
+
+    /**
+     * Returns the trace set begin timestamp.
+     *
+     * @returns Trace set begin timestamp
+     */
+    common::timestamp_t getBeginTs() const
+    {
+        return _beginTs;
+    }
+
+    /**
+     * Sets the trace set end timestamp.
+     *
+     * @param endTs Trace set end timestamp
+     */
+    void setEndTs(common::timestamp_t endTs)
+    {
+        _endTs = endTs;
+    }
+
+    /**
+     * Returns the trace set end timestamp.
+     *
+     * @returns Trace set end timestamp
+     */
+    common::timestamp_t getEndTs() const
+    {
+        return _endTs;
+    }
+
+    /**
+     * Sets the current timestamp.
+     *
+     * @param curTs Current timestamp
+     */
+    void setCurTs(common::timestamp_t curTs)
+    {
+        _curTs = curTs;
+    }
+
+    /**
+     * Returns the current timestamp.
+     *
+     * @returns Trace set current timestamp
+     */
+    common::timestamp_t getCurTs() const
+    {
+        return _curTs;
+    }
+
+    /**
+     * Sets the number of state changes so far.
+     *
+     * @param stateChanges State changes so far
+     */
+    void setStateChanges(unsigned int stateChanges)
+    {
+        _stateChanges = stateChanges;
+    }
+
+    /**
+     * Returns the number of state changes so far.
+     *
+     * @returns Number of state changes so far
+     */
+    unsigned int getStateChanges() const
+    {
+        return _stateChanges;
+    }
+
+    /**
+     * Sets the traces paths used to build the caches.
+     *
+     * @param tracesPaths Trace paths
+     */
+    void setTracesPaths(const std::vector<boost::filesystem::path>& tracesPaths)
+    {
+        _tracesPaths = tracesPaths;
+    }
+
+    /**
+     * Returns the traces paths used to build the caches.
+     *
+     * @returns Trace paths
+     */
+    const std::vector<boost::filesystem::path>& getTracesPaths() const
+    {
+        return _tracesPaths;
+    }
+
+    /**
+     * Sets the state providers paths used to build the caches.
+     *
+     * @param stateProvidersPaths State providers paths
+     */
+    void setStateProvidersPaths(const std::vector<boost::filesystem::path>& stateProvidersPaths)
+    {
+        _stateProvidersPaths = stateProvidersPaths;
+    }
+
+    /**
+     * Returns the state providers paths used to build the caches.
+     *
+     * @returns State providers paths
+     */
+    const std::vector<boost::filesystem::path>& getStateProvidersPaths() const
+    {
+        return _stateProvidersPaths;
+    }
+
 private:
     unsigned int _processedEvents;
+    common::timestamp_t _beginTs;
+    common::timestamp_t _endTs;
+    common::timestamp_t _curTs;
+    unsigned int _stateChanges;
+    std::vector<boost::filesystem::path> _tracesPaths;
+    std::vector<boost::filesystem::path> _stateProvidersPaths;
 };
 
 }
