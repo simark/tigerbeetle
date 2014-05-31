@@ -52,6 +52,10 @@ sources = []
 for base, files in subs:
     sources += [os.path.join(base, f) for f in files]
 
-lib = env.Library(target=target, source=sources)
+lib_env = env.Clone()
+
+lib_env.ParseConfig('pkg-config --cflags yajl')
+
+lib = lib_env.Library(target=target, source=sources)
 
 Return('lib')

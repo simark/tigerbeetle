@@ -18,7 +18,7 @@
 #ifndef _ABSTRACTJSONRPCMESSAGEDECODER_HPP
 #define _ABSTRACTJSONRPCMESSAGEDECODER_HPP
 
-#include <yajl/yajl_parse.h>
+#include <yajl_parse.h>
 #include <vector>
 #include <cstdint>
 #include <memory>

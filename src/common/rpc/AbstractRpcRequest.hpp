@@ -41,9 +41,9 @@ public:
     /**
      * Builds an abstract RPC request.
      *
-     * @param id     RPC request ID
+     * @param method RPC request method name
      */
-    AbstractRpcRequest(rpc_msg_id_t id);
+    AbstractRpcRequest(const std::string& method);
 
     virtual ~AbstractRpcRequest();
 
@@ -72,7 +72,20 @@ public:
      *
      * @returns RPC request method name
      */
-    const std::string& getMethod() const;
+    const std::string& getMethod() const
+    {
+        return _method;
+    }
+
+    /**
+     * Sets the RPC request ID.
+     *
+     * @param id RPC request ID
+     */
+    void setId(rpc_msg_id_t id)
+    {
+        _id = id;
+    }
 
     /**
      * Returns the RPC request ID.
@@ -84,11 +97,9 @@ public:
         return _id;
     }
 
-protected:
-    virtual const std::string& getMethodImpl() const = 0;
-
 private:
     rpc_msg_id_t _id;
+    std::string _method;
 };
 
 }

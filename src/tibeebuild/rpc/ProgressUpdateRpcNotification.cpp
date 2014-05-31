@@ -15,26 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <common/rpc/AbstractRpcResponse.hpp>
+#include "ProgressUpdateRpcNotification.hpp"
 
 namespace tibee
 {
-namespace common
-{
 
-AbstractRpcResponse::AbstractRpcResponse() :
-    _id {0}
-{
-}
-
-AbstractRpcResponse::~AbstractRpcResponse()
+ProgressUpdateRpcNotification::ProgressUpdateRpcNotification() :
+    AbstractRpcNotification {"progress-update"},
+    _processedEvents {0}
 {
 }
 
-bool AbstractRpcResponse::hasError() const
-{
-    return this->hasErrorImpl();
-}
-
-}
 }

@@ -37,14 +37,16 @@ namespace common
 class IRpcMessage
 {
 public:
-    virtual ~IRpcMessage() = 0;
+    virtual ~IRpcMessage()
+    {
+    }
 
     /**
      * Returns the type of this message.
      *
      * @returns Message type
      */
-    virtual RpcMessageType getType() = 0;
+    virtual RpcMessageType getType() const = 0;
 
     /**
      * Returns whether or not this message is a request.

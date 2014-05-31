@@ -18,7 +18,7 @@
 #ifndef _ABSTRACTJSONRPCMESSAGEENCODER_HPP
 #define _ABSTRACTJSONRPCMESSAGEENCODER_HPP
 
-#include <yajl/yajl_gen.h>
+#include <yajl_gen.h>
 #include <vector>
 #include <cstdint>
 #include <memory>
@@ -45,9 +45,6 @@ namespace common
 class AbstractJsonRpcMessageEncoder
 {
 public:
-    typedef std::unique_ptr<std::vector<std::uint8_t>> ByteArray;
-
-public:
     /**
      * Builds an abstract JSON-RPC message encoder.
      */
@@ -55,22 +52,10 @@ public:
 
     virtual ~AbstractJsonRpcMessageEncoder();
 
-    /**
-     * Encodes an RPC message to a byte array.
-     *
-     * @param msg RPC message to encode
-     * @returns   Encoded message or \a nullptr if an error occured
-     */
-    ByteArray encode(const IRpcMessage& msg);
+protected:
+    typedef std::function<bool (const IRpcMessage&, ::yajl_gen)> ObjectEncodeFunc;
 
 protected:
-    typedef std::function<bool (const IRpcMessage& msg, ::yajl_gen)> ObjectEncodeFunc;
-
-protected:
-    virtual ByteArray encodeRequestImpl(const AbstractRpcRequest& request);
-    virtual ByteArray encodeResponseImpl(const AbstractRpcResponse& response);
-    virtual ByteArray encodeNotificationImpl(const AbstractRpcNotification& notification);
-
     /**
      * Encodes an RPC request as JSON-RPC.
      *
@@ -78,8 +63,8 @@ protected:
      * @param paramsEncodeFunc Encode function to use for parameters
      * @returns                Encoded request or \a nullptr if an error occured
      */
-    ByteArray encodeRequest(const AbstractRpcRequest& request,
-                            const ObjectEncodeFunc& paramsEncodeFunc);
+    std::unique_ptr<std::string> encodeRequest(const AbstractRpcRequest& request,
+                                               const ObjectEncodeFunc& paramsEncodeFunc);
 
     /**
      * Encodes an RPC response as JSON-RPC.
@@ -89,9 +74,9 @@ protected:
      * @param errorEncodeFunc  Encode function to use for error
      * @returns                Encoded response or \a nullptr if an error occured
      */
-    ByteArray encodeResponse(const AbstractRpcResponse& response,
-                             const ObjectEncodeFunc& resultEncodeFunc,
-                             const ObjectEncodeFunc& errorEncodeFunc);
+    std::unique_ptr<std::string> encodeResponse(const AbstractRpcResponse& response,
+                                                const ObjectEncodeFunc& resultEncodeFunc,
+                                                const ObjectEncodeFunc& errorEncodeFunc);
 
     /**
      * Encodes an RPC notification as JSON-RPC.
@@ -100,11 +85,12 @@ protected:
      * @param paramsEncodeFunc Encode function to use for parameters
      * @returns                Encoded notification or \a nullptr if an error occured
      */
-    ByteArray encodeNotification(const AbstractRpcNotification& notification,
-                                 const ObjectEncodeFunc& paramsEncodeFunc);
+    std::unique_ptr<std::string> encodeNotification(const AbstractRpcNotification& notification,
+                                                    const ObjectEncodeFunc& paramsEncodeFunc);
 
 private:
-    ByteArray getCurrentByteArray();
+    void resetGenerator();
+    std::unique_ptr<std::string> getJsonStringFromBuffer();
 
 private:
     ::yajl_gen _yajlGen;

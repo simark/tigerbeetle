@@ -12,7 +12,7 @@ libs = [
     common
 ]
 
-sources = [
+main_sources = [
     'main.cpp',
     'AbstractCacheBuilder.cpp',
     'AbstractStateProvider.cpp',
@@ -24,9 +24,24 @@ sources = [
     'TraceDeck.cpp',
 ]
 
+rpc_sources = [
+    'BuilderJsonRpcMessageEncoder.cpp',
+    'ProgressUpdateRpcNotification.cpp',
+]
+
+subs = [
+    ('.', main_sources),
+    ('rpc', rpc_sources),
+]
+
+sources = []
+for base, files in subs:
+    sources += [os.path.join(base, f) for f in files]
+
 app_env = env.Clone()
 
 app_env.Append(LIBS=libs)
+app_env.ParseConfig('pkg-config --cflags --libs yajl')
 
 app = app_env.Program(target=target, source=sources)
 

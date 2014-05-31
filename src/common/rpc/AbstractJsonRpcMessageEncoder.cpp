@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <yajl/yajl_gen.h>
+#include <yajl_gen.h>
 
 #include <common/rpc/AbstractJsonRpcMessageEncoder.hpp>
 
@@ -37,30 +37,18 @@ AbstractJsonRpcMessageEncoder::~AbstractJsonRpcMessageEncoder()
     }
 }
 
-AbstractJsonRpcMessageEncoder::ByteArray
-AbstractJsonRpcMessageEncoder::encode(const IRpcMessage& msg)
+void AbstractJsonRpcMessageEncoder::resetGenerator()
 {
-    // make sure to reset/clear the generator
     ::yajl_gen_reset(_yajlGen, nullptr);
     ::yajl_gen_clear(_yajlGen);
-
-    // encode the right RPC message
-    if (msg.isRequest()) {
-        return std::move(this->encodeRequestImpl(static_cast<const AbstractRpcRequest&>(msg)));
-    } else if (msg.isResponse()) {
-        return std::move(this->encodeResponseImpl(static_cast<const AbstractRpcResponse&>(msg)));
-    } else if (msg.isNotification()) {
-        return std::move(this->encodeNotificationImpl(static_cast<const AbstractRpcNotification&>(msg)));
-    }
-
-    // should never happen
-    return nullptr;
 }
 
-AbstractJsonRpcMessageEncoder::ByteArray
+std::unique_ptr<std::string>
 AbstractJsonRpcMessageEncoder::encodeRequest(const AbstractRpcRequest& request,
                                              const ObjectEncodeFunc& paramsEncodeFunc)
 {
+    this->resetGenerator();
+
     // open object
     ::yajl_gen_map_open(_yajlGen);
 
@@ -86,14 +74,16 @@ AbstractJsonRpcMessageEncoder::encodeRequest(const AbstractRpcRequest& request,
     // close object
     ::yajl_gen_map_close(_yajlGen);
 
-    return this->getCurrentByteArray();
+    return this->getJsonStringFromBuffer();
 }
 
-AbstractJsonRpcMessageEncoder::ByteArray
+std::unique_ptr<std::string>
 AbstractJsonRpcMessageEncoder::encodeResponse(const AbstractRpcResponse& response,
                                               const ObjectEncodeFunc& resultEncodeFunc,
                                               const ObjectEncodeFunc& errorEncodeFunc)
 {
+    this->resetGenerator();
+
     // open object
     ::yajl_gen_map_open(_yajlGen);
 
@@ -118,13 +108,15 @@ AbstractJsonRpcMessageEncoder::encodeResponse(const AbstractRpcResponse& respons
     // close object
     ::yajl_gen_map_close(_yajlGen);
 
-    return this->getCurrentByteArray();
+    return this->getJsonStringFromBuffer();
 }
 
-AbstractJsonRpcMessageEncoder::ByteArray
+std::unique_ptr<std::string>
 AbstractJsonRpcMessageEncoder::encodeNotification(const AbstractRpcNotification& notification,
                                                   const ObjectEncodeFunc& paramsEncodeFunc)
 {
+    this->resetGenerator();
+
     // open object
     ::yajl_gen_map_open(_yajlGen);
 
@@ -150,11 +142,11 @@ AbstractJsonRpcMessageEncoder::encodeNotification(const AbstractRpcNotification&
     // close object
     ::yajl_gen_map_close(_yajlGen);
 
-    return this->getCurrentByteArray();
+    return this->getJsonStringFromBuffer();
 }
 
-AbstractJsonRpcMessageEncoder::ByteArray
-AbstractJsonRpcMessageEncoder::getCurrentByteArray()
+std::unique_ptr<std::string>
+AbstractJsonRpcMessageEncoder::getJsonStringFromBuffer()
 {
     // copy buffer
     const unsigned char* buf;
@@ -162,12 +154,11 @@ AbstractJsonRpcMessageEncoder::getCurrentByteArray()
 
     ::yajl_gen_get_buf(_yajlGen, std::addressof(buf), std::addressof(len));
 
-    ByteArray byteArray {new std::vector<std::uint8_t>};
+    std::unique_ptr<std::string> str {
+        new std::string {reinterpret_cast<const char*>(buf), len}
+    };
 
-    byteArray->reserve(len);
-    byteArray->insert(byteArray->end(), buf, buf + len);
-
-    return byteArray;
+    return str;
 }
 
 }

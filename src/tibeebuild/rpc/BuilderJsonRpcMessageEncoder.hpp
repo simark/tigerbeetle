@@ -15,61 +15,43 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _ABSTRACTRPCNOTIFICATION_HPP
-#define _ABSTRACTRPCNOTIFICATION_HPP
+#ifndef _BUILDERJSONRPCMESSAGEENCODER_HPP
+#define _BUILDERJSONRPCMESSAGEENCODER_HPP
 
+#include <memory>
 #include <string>
+#include <common/rpc/AbstractJsonRpcMessageEncoder.hpp>
 
-#include <common/rpc/IRpcMessage.hpp>
-#include <common/rpc/RpcMessageType.hpp>
+#include "ProgressUpdateRpcNotification.hpp"
 
 namespace tibee
 {
-namespace common
-{
 
 /**
- * Abstract RPC notification. All RPC notifications must inherit
- * this class.
+ * JSON-RPC message encoder for builder messages.
  *
  * @author Philippe Proulx
  */
-class AbstractRpcNotification :
-    public IRpcMessage
+class BuilderJsonRpcMessageEncoder :
+    public common::AbstractJsonRpcMessageEncoder
 {
 public:
     /**
-     * Builds an abstract RPC notification.
-     *
-     * @param method RPC notification method name
+     * Builds a JSON-RPC encoder for builder messages.
      */
-    AbstractRpcNotification(const std::string& method);
-
-    virtual ~AbstractRpcNotification();
-
-    RpcMessageType getType() const;
-
-    bool isRequest() const;
-
-    bool isResponse() const;
-
-    bool isNotification() const;
+    BuilderJsonRpcMessageEncoder();
 
     /**
-     * Returns the RPC request method name.
+     * Encodes a ProgressUpdateRpcNotification object.
      *
-     * @returns RPC request method name
+     * @param object Object to encode
      */
-    const std::string& getMethod() const
-    {
-        return _method;
-    }
+    std::unique_ptr<std::string> encodeProgressUpdateRpcNotification(const ProgressUpdateRpcNotification& object);
 
 protected:
-    std::string _method;
+    static bool encodeProgressUpdateRpcNotificationParams(const common::IRpcMessage& msg, ::yajl_gen);
 };
 
 }
-}
 
-#endif // _ABSTRACTRPCNOTIFICATION_HPP
+#endif // _BUILDERJSONRPCMESSAGEENCODER_HPP

@@ -22,7 +22,8 @@ namespace tibee
 namespace common
 {
 
-AbstractRpcNotification::AbstractRpcNotification()
+AbstractRpcNotification::AbstractRpcNotification(const std::string& method) :
+    _method {method}
 {
 }
 
@@ -30,9 +31,24 @@ AbstractRpcNotification::~AbstractRpcNotification()
 {
 }
 
-const std::string& AbstractRpcNotification::getMethod() const
+RpcMessageType AbstractRpcNotification::getType() const
 {
-    return this->getMethodImpl();
+    return RpcMessageType::NOTIFICATION;
+}
+
+bool AbstractRpcNotification::isRequest() const
+{
+    return false;
+}
+
+bool AbstractRpcNotification::isResponse() const
+{
+    return false;
+}
+
+bool AbstractRpcNotification::isNotification() const
+{
+    return true;
 }
 
 }

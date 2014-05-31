@@ -22,18 +22,14 @@ namespace tibee
 namespace common
 {
 
-AbstractRpcRequest::AbstractRpcRequest(rpc_msg_id_t id) :
-    _id {id}
+AbstractRpcRequest::AbstractRpcRequest(const std::string& method) :
+    _id {0},
+    _method {method}
 {
 }
 
 AbstractRpcRequest::~AbstractRpcRequest()
 {
-}
-
-const std::string& AbstractRpcRequest::getMethod() const
-{
-    return this->getMethodImpl();
 }
 
 }

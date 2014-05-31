@@ -38,10 +38,8 @@ class AbstractRpcResponse :
 public:
     /**
      * Builds an abstract RPC response.
-     *
-     * @param id RPC request ID
      */
-    AbstractRpcResponse(rpc_msg_id_t id);
+    AbstractRpcResponse();
 
     virtual ~AbstractRpcResponse();
 
@@ -73,9 +71,19 @@ public:
     bool hasError() const;
 
     /**
-     * Returns the RPC request ID.
+     * Sets the RPC response ID.
      *
-     * @returns RPC request ID.
+     * @param id RPC response ID
+     */
+    void setId(rpc_msg_id_t id)
+    {
+        _id = id;
+    }
+
+    /**
+     * Returns the RPC response ID.
+     *
+     * @returns RPC response ID.
      */
     rpc_msg_id_t getId() const
     {

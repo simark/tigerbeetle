@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <yajl/yajl_parse.h>
+#include <yajl_parse.h>
 
 #include <common/rpc/AbstractJsonRpcMessageDecoder.hpp>
 
