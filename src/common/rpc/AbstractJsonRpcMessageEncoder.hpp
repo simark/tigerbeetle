@@ -22,12 +22,17 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
+#include <cstring>
 #include <functional>
 
 #include <common/rpc/IRpcMessage.hpp>
 #include <common/rpc/AbstractRpcRequest.hpp>
 #include <common/rpc/AbstractRpcResponse.hpp>
 #include <common/rpc/AbstractRpcNotification.hpp>
+
+#define TIBEE_DEF_YAJL_STR(name, str) \
+    static const unsigned char* name = reinterpret_cast<const unsigned char*>(str); \
+    static const std::size_t name##_LEN = std::strlen(reinterpret_cast<const char*>(name))
 
 namespace tibee
 {

@@ -36,45 +36,43 @@ bool BuilderJsonRpcMessageEncoder::encodeProgressUpdateRpcNotificationParams(con
 {
     auto pu = static_cast<const ProgressUpdateRpcNotification&>(msg);
 
+    // keys
+    TIBEE_DEF_YAJL_STR(PROCESSED_EVENTS, "processed-events");
+    TIBEE_DEF_YAJL_STR(TRACES_BEGIN_TS, "traces-begin-ts");
+    TIBEE_DEF_YAJL_STR(TRACES_END_TS, "traces-end-ts");
+    TIBEE_DEF_YAJL_STR(TRACES_CUR_TS, "traces-cur-ts");
+    TIBEE_DEF_YAJL_STR(STATE_CHANGES, "state-changes");
+    TIBEE_DEF_YAJL_STR(TRACES_PATHS, "traces-paths");
+    TIBEE_DEF_YAJL_STR(STATE_PROVIDERS_PATHS, "state-providers-paths");
+
     // open object
     ::yajl_gen_map_open(yajlGen);
 
     // processed events
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("processed-events"),
-                      16);
+    ::yajl_gen_string(yajlGen, PROCESSED_EVENTS, PROCESSED_EVENTS_LEN);
     ::yajl_gen_integer(yajlGen, pu.getProcessedEvents());
 
     // trace set begin timestamp
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("traces-begin-ts"),
-                      15);
+    ::yajl_gen_string(yajlGen, TRACES_BEGIN_TS, TRACES_BEGIN_TS_LEN);
     ::yajl_gen_integer(yajlGen, static_cast<long long int>(pu.getBeginTs()));
 
     // trace set end timestamp
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("traces-end-ts"),
-                      13);
+    ::yajl_gen_string(yajlGen, TRACES_END_TS, TRACES_END_TS_LEN);
     ::yajl_gen_integer(yajlGen, static_cast<long long int>(pu.getEndTs()));
 
     // trace set current timestamp
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("traces-cur-ts"),
-                      13);
+    ::yajl_gen_string(yajlGen, TRACES_CUR_TS, TRACES_CUR_TS_LEN);
     ::yajl_gen_integer(yajlGen, static_cast<long long int>(pu.getCurTs()));
 
     // state changes
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("state-changes"),
-                      13);
+    ::yajl_gen_string(yajlGen, STATE_CHANGES, STATE_CHANGES_LEN);
     ::yajl_gen_integer(yajlGen, pu.getStateChanges());
 
     // traces paths
-    const auto& tracesPaths = pu.getTracesPaths();
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("traces-paths"),
-                      12);
+    ::yajl_gen_string(yajlGen, TRACES_PATHS, TRACES_PATHS_LEN);
     ::yajl_gen_array_open(yajlGen);
+
+    const auto& tracesPaths = pu.getTracesPaths();
 
     for (const auto& path : tracesPaths) {
         const auto& pathStr = path.string();
@@ -88,9 +86,7 @@ bool BuilderJsonRpcMessageEncoder::encodeProgressUpdateRpcNotificationParams(con
 
     // state providers paths
     const auto& stateProvidersPaths = pu.getStateProvidersPaths();
-    ::yajl_gen_string(yajlGen,
-                      reinterpret_cast<const unsigned char*>("state-providers-paths"),
-                      21);
+    ::yajl_gen_string(yajlGen, STATE_PROVIDERS_PATHS, STATE_PROVIDERS_PATHS_LEN);
     ::yajl_gen_array_open(yajlGen);
 
     for (const auto& path : stateProvidersPaths) {
