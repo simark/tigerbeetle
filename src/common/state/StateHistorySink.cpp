@@ -55,7 +55,7 @@ StateHistorySink::StateHistorySink(const bfs::path& pathStrDbPath,
     _opened {false},
     _curPathQuark {0},
     _curStrValueQuark {0},
-    _currentState {*this},
+    _currentState {this},
     _stateChangesCount {0}
 {
     _intervalFileSink = std::unique_ptr<delo::HistoryFileSink> {

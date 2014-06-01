@@ -32,7 +32,7 @@ namespace tibee
 namespace common
 {
 
-CurrentState::CurrentState(StateHistorySink& sink) :
+CurrentState::CurrentState(StateHistorySink* sink) :
     _sink {sink}
 {
 }
@@ -40,77 +40,77 @@ CurrentState::CurrentState(StateHistorySink& sink) :
 quark_t CurrentState::getPathQuark(const char* path) const
 {
     // delegate to state history sink
-    return _sink.getPathQuark(path);
+    return _sink->getPathQuark(path);
 }
 
 quark_t CurrentState::getPathQuark(const std::string& path) const
 {
     // delegate to state history sink
-    return _sink.getPathQuark(path);
+    return _sink->getPathQuark(path);
 }
 
 quark_t CurrentState::getStringValueQuark(const char* path) const
 {
     // delegate to state history sink
-    return _sink.getStringValueQuark(path);
+    return _sink->getStringValueQuark(path);
 }
 
 quark_t CurrentState::getStringValueQuark(const std::string& path) const
 {
     // delegate to state history sink
-    return _sink.getStringValueQuark(path);
+    return _sink->getStringValueQuark(path);
 }
 
 void CurrentState::setInt32State(quark_t pathQuark, std::int32_t value)
 {
     AbstractStateValue::UP stateValue {new Int32StateValue {value}};
 
-    _sink.setState(pathQuark, std::move(stateValue));
+    _sink->setState(pathQuark, std::move(stateValue));
 }
 
 void CurrentState::setUint32State(quark_t pathQuark, std::uint32_t value)
 {
     AbstractStateValue::UP stateValue {new Uint32StateValue {value}};
 
-    _sink.setState(pathQuark, std::move(stateValue));
+    _sink->setState(pathQuark, std::move(stateValue));
 }
 
 void CurrentState::setInt64State(quark_t pathQuark, std::int64_t value)
 {
     AbstractStateValue::UP stateValue {new Int64StateValue {value}};
 
-    _sink.setState(pathQuark, std::move(stateValue));
+    _sink->setState(pathQuark, std::move(stateValue));
 }
 
 void CurrentState::setUint64State(quark_t pathQuark, std::uint64_t value)
 {
     AbstractStateValue::UP stateValue {new Uint64StateValue {value}};
 
-    _sink.setState(pathQuark, std::move(stateValue));
+    _sink->setState(pathQuark, std::move(stateValue));
 }
 
 void CurrentState::setFloat32State(quark_t pathQuark, float value)
 {
     AbstractStateValue::UP stateValue {new Float32StateValue {value}};
 
-    _sink.setState(pathQuark, std::move(stateValue));
+    _sink->setState(pathQuark, std::move(stateValue));
 }
 
 void CurrentState::setQuarkState(quark_t pathQuark, quark_t value)
 {
     AbstractStateValue::UP stateValue {new QuarkStateValue {value}};
 
-    _sink.setState(pathQuark, std::move(stateValue));
+    _sink->setState(pathQuark, std::move(stateValue));
 }
 
 void CurrentState::setState(quark_t pathQuark, AbstractStateValue::UP value)
 {
-    _sink.setState(pathQuark, std::move(value));
+    _sink->setState(pathQuark, std::move(value));
 }
 
 bool CurrentState::incState(quark_t pathQuark, std::int64_t value)
 {
-    auto stateValue = _sink.getState(pathQuark);
+    auto stateValue = _sink->getState(pathQuark);
 
     if (!stateValue) {
         return false;
@@ -149,12 +149,12 @@ bool CurrentState::decState(quark_t pathQuark, std::int64_t value)
 
 void CurrentState::removeState(quark_t pathQuark)
 {
-    _sink.removeState(pathQuark);
+    _sink->removeState(pathQuark);
 }
 
 const AbstractStateValue* CurrentState::getState(quark_t pathQuark) const
 {
-    return _sink.getState(pathQuark);
+    return _sink->getState(pathQuark);
 }
 
 }

@@ -226,10 +226,10 @@ public:
 
 private:
     // only StateHistorySink may build a CurrentState object
-    CurrentState(StateHistorySink& sink);
+    CurrentState(StateHistorySink* sink);
 
 private:
-    StateHistorySink& _sink;
+    StateHistorySink* _sink;
 };
 
 }
