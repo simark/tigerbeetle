@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _SIMPLESTATEVALUE_HPP
-#define _SIMPLESTATEVALUE_HPP
+#ifndef _TIBEE_COMMON_SIMPLESTATEVALUE_HPP
+#define _TIBEE_COMMON_SIMPLESTATEVALUE_HPP
 
 #include <common/state/AbstractStateValue.hpp>
 #include <common/state/StateValueType.hpp>
@@ -75,4 +75,4 @@ SimpleStateValue<T, SVT>::~SimpleStateValue()
 }
 }
 
-#endif // _SIMPLESTATEVALUE_HPP
+#endif // _TIBEE_COMMON_SIMPLESTATEVALUE_HPP

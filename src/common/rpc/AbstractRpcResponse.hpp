@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _ABSTRACTRPCRESPONSE_HPP
-#define _ABSTRACTRPCRESPONSE_HPP
+#ifndef _TIBEE_COMMON_ABSTRACTRPCRESPONSE_HPP
+#define _TIBEE_COMMON_ABSTRACTRPCRESPONSE_HPP
 
 #include <common/BasicTypes.hpp>
 #include <common/rpc/IRpcMessage.hpp>
@@ -101,4 +101,4 @@ private:
 }
 }
 
-#endif // _ABSTRACTRPCRESPONSE_HPP
+#endif // _TIBEE_COMMON_ABSTRACTRPCRESPONSE_HPP

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _RPCMESSAGETYPE_HPP
-#define _RPCMESSAGETYPE_HPP
+#ifndef _TIBEE_COMMON_RPCMESSAGETYPE_HPP
+#define _TIBEE_COMMON_RPCMESSAGETYPE_HPP
 
 namespace tibee
 {
@@ -38,4 +38,4 @@ enum class RpcMessageType
 }
 }
 
-#endif // _RPCMESSAGETYPE_HPP
+#endif // _TIBEE_COMMON_RPCMESSAGETYPE_HPP

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _EVENTVALUEPOOL_HPP
-#define _EVENTVALUEPOOL_HPP
+#ifndef _TIBEE_COMMON_EVENTVALUEPOOL_HPP
+#define _TIBEE_COMMON_EVENTVALUEPOOL_HPP
 
 #include <cstddef>
 #include <list>
@@ -133,4 +133,4 @@ void EventValuePool<T>::reset()
 }
 }
 
-#endif // _EVENTVALUEPOOL_HPP
+#endif // _TIBEE_COMMON_EVENTVALUEPOOL_HPP

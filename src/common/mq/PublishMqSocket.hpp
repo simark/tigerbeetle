@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _PUBLISHMQSOCKET_HPP
-#define _PUBLISHMQSOCKET_HPP
+#ifndef _TIBEE_COMMON_PUBLISHMQSOCKET_HPP
+#define _TIBEE_COMMON_PUBLISHMQSOCKET_HPP
 
 #include <zmq.h>
 
@@ -56,4 +56,4 @@ private:
 }
 }
 
-#endif // _PUBLISHMQSOCKET_HPP
+#endif // _TIBEE_COMMON_PUBLISHMQSOCKET_HPP

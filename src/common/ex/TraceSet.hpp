@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _TRACESETEX_HPP
-#define _TRACESETEX_HPP
+#ifndef _TIBEE_COMMON_TRACESETEX_HPP
+#define _TIBEE_COMMON_TRACESETEX_HPP
 
 #include <string>
 #include <stdexcept>
@@ -43,4 +43,4 @@ public:
 }
 }
 
-#endif // _TRACESETEX_HPP
+#endif // _TIBEE_COMMON_TRACESETEX_HPP

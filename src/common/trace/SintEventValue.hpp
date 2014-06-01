@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _SINTEVENTVALUE_HPP
-#define _SINTEVENTVALUE_HPP
+#ifndef _TIBEE_COMMON_SINTEVENTVALUE_HPP
+#define _TIBEE_COMMON_SINTEVENTVALUE_HPP
 
 #include <cstdint>
 #include <babeltrace/ctf/events.h>
@@ -64,4 +64,4 @@ private:
 }
 }
 
-#endif // _SINTEVENTVALUE_HPP
+#endif // _TIBEE_COMMON_SINTEVENTVALUE_HPP

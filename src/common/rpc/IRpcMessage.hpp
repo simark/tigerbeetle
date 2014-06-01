@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _IRPCMESSAGE_HPP
-#define _IRPCMESSAGE_HPP
+#ifndef _TIBEE_COMMON_IRPCMESSAGE_HPP
+#define _TIBEE_COMMON_IRPCMESSAGE_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -73,4 +73,4 @@ public:
 }
 }
 
-#endif // _IRPCMESSAGE_HPP
+#endif // _TIBEE_COMMON_IRPCMESSAGE_HPP

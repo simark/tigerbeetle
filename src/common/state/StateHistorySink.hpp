@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _STATEHISTORYSINK_HPP
-#define _STATEHISTORYSINK_HPP
+#ifndef _TIBEE_COMMON_STATEHISTORYSINK_HPP
+#define _TIBEE_COMMON_STATEHISTORYSINK_HPP
 
 #include <memory>
 #include <cstdint>
@@ -249,4 +249,4 @@ private:
 }
 }
 
-#endif // _STATEHISTORYSINK_HPP
+#endif // _TIBEE_COMMON_STATEHISTORYSINK_HPP

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _EVENTVALUETYPE_HPP
-#define _EVENTVALUETYPE_HPP
+#ifndef _TIBEE_COMMON_EVENTVALUETYPE_HPP
+#define _TIBEE_COMMON_EVENTVALUETYPE_HPP
 
 namespace tibee
 {
@@ -43,4 +43,4 @@ enum class EventValueType
 }
 }
 
-#endif // _EVENTVALUETYPE_HPP
+#endif // _TIBEE_COMMON_EVENTVALUETYPE_HPP

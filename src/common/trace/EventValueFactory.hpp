@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _EVENTVALUEFACTORY_HPP
-#define _EVENTVALUEFACTORY_HPP
+#ifndef _TIBEE_COMMON_EVENTVALUEFACTORY_HPP
+#define _TIBEE_COMMON_EVENTVALUEFACTORY_HPP
 
 #include <array>
 #include <functional>
@@ -105,4 +105,4 @@ private:
 }
 }
 
-#endif // _EVENTVALUEFACTORY_HPP
+#endif // _TIBEE_COMMON_EVENTVALUEFACTORY_HPP

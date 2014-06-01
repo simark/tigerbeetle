@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _MQCONTEXT_HPP
-#define _MQCONTEXT_HPP
+#ifndef _TIBEE_COMMON_MQCONTEXT_HPP
+#define _TIBEE_COMMON_MQCONTEXT_HPP
 
 #include <boost/utility.hpp>
 #include <memory>
@@ -87,4 +87,4 @@ private:
 }
 }
 
-#endif // _MQCONTEXT_HPP
+#endif // _TIBEE_COMMON_MQCONTEXT_HPP

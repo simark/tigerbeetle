@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _MQMESSAGE_HPP
-#define _MQMESSAGE_HPP
+#ifndef _TIBEE_COMMON_MQMESSAGE_HPP
+#define _TIBEE_COMMON_MQMESSAGE_HPP
 
 #include <zmq.h>
 #include <memory>
@@ -83,4 +83,4 @@ private:
 }
 }
 
-#endif // _MQMESSAGE_HPP
+#endif // _TIBEE_COMMON_MQMESSAGE_HPP

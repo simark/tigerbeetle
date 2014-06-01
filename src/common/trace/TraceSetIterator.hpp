@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _TRACESETITERATOR_HPP
-#define _TRACESETITERATOR_HPP
+#ifndef _TIBEE_COMMON_TRACESETITERATOR_HPP
+#define _TIBEE_COMMON_TRACESETITERATOR_HPP
 
 #include <iterator>
 #include <babeltrace/ctf/events.h>
@@ -81,4 +81,4 @@ private:
 }
 }
 
-#endif // _TRACESETITERATOR_HPP
+#endif // _TIBEE_COMMON_TRACESETITERATOR_HPP

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _FLOATEVENTVALUE_HPP
-#define _FLOATEVENTVALUE_HPP
+#ifndef _TIBEE_COMMON_FLOATEVENTVALUE_HPP
+#define _TIBEE_COMMON_FLOATEVENTVALUE_HPP
 
 #include <babeltrace/ctf/events.h>
 
@@ -62,4 +62,4 @@ private:
 }
 }
 
-#endif // _FLOATEVENTVALUE_HPP
+#endif // _TIBEE_COMMON_FLOATEVENTVALUE_HPP

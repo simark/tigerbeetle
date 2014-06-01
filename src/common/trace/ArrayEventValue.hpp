@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _ARRAYEVENTVALUE_HPP
-#define _ARRAYEVENTVALUE_HPP
+#ifndef _TIBEE_COMMON_ARRAYEVENTVALUE_HPP
+#define _TIBEE_COMMON_ARRAYEVENTVALUE_HPP
 
 #include <cstddef>
 #include <vector>
@@ -115,4 +115,4 @@ private:
 }
 }
 
-#endif // _ARRAYEVENTVALUE_HPP
+#endif // _TIBEE_COMMON_ARRAYEVENTVALUE_HPP

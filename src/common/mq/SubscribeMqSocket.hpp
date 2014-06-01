@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _SUBSCRIBEMQSOCKET_HPP
-#define _SUBSCRIBEMQSOCKET_HPP
+#ifndef _TIBEE_COMMON_SUBSCRIBEMQSOCKET_HPP
+#define _TIBEE_COMMON_SUBSCRIBEMQSOCKET_HPP
 
 #include <zmq.h>
 
@@ -60,4 +60,4 @@ private:
 }
 }
 
-#endif // _SUBSCRIBEMQSOCKET_HPP
+#endif // _TIBEE_COMMON_SUBSCRIBEMQSOCKET_HPP

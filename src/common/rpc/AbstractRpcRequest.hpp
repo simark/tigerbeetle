@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _ABSTRACTRPCREQUEST_HPP
-#define _ABSTRACTRPCREQUEST_HPP
+#ifndef _TIBEE_COMMON_ABSTRACTRPCREQUEST_HPP
+#define _TIBEE_COMMON_ABSTRACTRPCREQUEST_HPP
 
 #include <string>
 
@@ -105,4 +105,4 @@ private:
 }
 }
 
-#endif // _ABSTRACTRPCREQUEST_HPP
+#endif // _TIBEE_COMMON_ABSTRACTRPCREQUEST_HPP

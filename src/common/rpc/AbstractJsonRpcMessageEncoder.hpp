@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _ABSTRACTJSONRPCMESSAGEENCODER_HPP
-#define _ABSTRACTJSONRPCMESSAGEENCODER_HPP
+#ifndef _TIBEE_COMMON_ABSTRACTJSONRPCMESSAGEENCODER_HPP
+#define _TIBEE_COMMON_ABSTRACTJSONRPCMESSAGEENCODER_HPP
 
 #include <yajl_gen.h>
 #include <vector>
@@ -104,4 +104,4 @@ private:
 }
 }
 
-#endif // _ABSTRACTJSONRPCMESSAGEENCODER_HPP
+#endif // _TIBEE_COMMON_ABSTRACTJSONRPCMESSAGEENCODER_HPP

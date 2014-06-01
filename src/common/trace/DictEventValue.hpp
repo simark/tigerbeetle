@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _DICTEVENTVALUE_HPP
-#define _DICTEVENTVALUE_HPP
+#ifndef _TIBEE_COMMON_DICTEVENTVALUE_HPP
+#define _TIBEE_COMMON_DICTEVENTVALUE_HPP
 
 #include <cstddef>
 #include <memory>
@@ -127,4 +127,4 @@ private:
 }
 }
 
-#endif // _DICTEVENTVALUE_HPP
+#endif // _TIBEE_COMMON_DICTEVENTVALUE_HPP

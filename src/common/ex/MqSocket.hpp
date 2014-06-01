@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _MQSOCKETEX_HPP
-#define _MQSOCKETEX_HPP
+#ifndef _TIBEE_COMMON_MQSOCKETEX_HPP
+#define _TIBEE_COMMON_MQSOCKETEX_HPP
 
 #include <string>
 #include <stdexcept>
@@ -43,4 +43,4 @@ public:
 }
 }
 
-#endif // _MQSOCKETEX_HPP
+#endif // _TIBEE_COMMON_MQSOCKETEX_HPP

@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _INT64STATEVALUE_HPP
-#define _INT64STATEVALUE_HPP
+#ifndef _TIBEE_COMMON_INT64STATEVALUE_HPP
+#define _TIBEE_COMMON_INT64STATEVALUE_HPP
 
 #include <memory>
 #include <cstdint>
@@ -48,4 +48,4 @@ public:
 }
 }
 
-#endif // _INT64STATEVALUE_HPP
+#endif // _TIBEE_COMMON_INT64STATEVALUE_HPP

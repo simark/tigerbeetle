@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _BASIC_TYPES_HPP
-#define _BASIC_TYPES_HPP
+#ifndef _TIBEE_COMMON_BASICTYPES_HPP
+#define _TIBEE_COMMON_BASICTYPES_HPP
 
 #include <cstdint>
 
@@ -45,4 +45,4 @@ typedef std::uint32_t   rpc_msg_id_t;
 }
 }
 
-#endif // _BASIC_TYPES_HPP
+#endif // _TIBEE_COMMON_BASICTYPES_HPP
