@@ -95,6 +95,16 @@ const AbstractEventValue* Event::getField(const std::string& name) const
     return this->getField(name.c_str());
 }
 
+const AbstractEventValue* Event::operator[](const char* name) const
+{
+    return this->getField(name);
+}
+
+const AbstractEventValue* Event::operator[](const std::string& name) const
+{
+    return this->getField(name);
+}
+
 const DictEventValue* Event::getContext() const
 {
     return this->getTopLevelScope(::BT_EVENT_CONTEXT);

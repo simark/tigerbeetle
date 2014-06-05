@@ -82,6 +82,9 @@ public:
 
     const AbstractEventValue* getField(const char* name) const;
     const AbstractEventValue* getField(const std::string& name) const;
+    const AbstractEventValue* operator[](const char* name) const;
+    const AbstractEventValue* operator[](const std::string& name) const;
+
 
     /**
      * Returns the event context.
