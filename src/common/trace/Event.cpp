@@ -16,6 +16,7 @@
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <string>
+#include <cstring>
 #include <babeltrace/ctf/events.h>
 
 #include <common/trace/DictEventValue.hpp>
@@ -70,6 +71,24 @@ const DictEventValue* Event::getTopLevelScope(::bt_ctf_scope topLevelScope) cons
 const DictEventValue* Event::getFields() const
 {
     return this->getTopLevelScope(::BT_EVENT_FIELDS);
+}
+
+const AbstractEventValue* Event::getField(const char* name) const
+{
+    auto fields = this->getFields();
+
+    for (std::size_t i = 0; i < fields->size(); i++) {
+        if (::strcmp(name, fields->getKeyName(i)) == 0) {
+            return (*fields)[i];
+        }
+    }
+
+    return nullptr;
+}
+
+const AbstractEventValue* Event::getField(const std::string& name) const
+{
+    return this->getField(name.c_str());
 }
 
 const DictEventValue* Event::getContext() const

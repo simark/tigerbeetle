@@ -79,6 +79,10 @@ public:
      */
     const DictEventValue* getFields() const;
 
+
+    const AbstractEventValue* getField(const char* name) const;
+    const AbstractEventValue* getField(const std::string& name) const;
+
     /**
      * Returns the event context.
      *
