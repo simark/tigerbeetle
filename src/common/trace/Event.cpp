@@ -77,6 +77,10 @@ const AbstractEventValue* Event::getField(const char* name) const
 {
     auto fields = this->getFields();
 
+    if (fields == nullptr) {
+		return nullptr;
+	}
+
     for (std::size_t i = 0; i < fields->size(); i++) {
         if (::strcmp(name, fields->getKeyName(i)) == 0) {
             return (*fields)[i];
