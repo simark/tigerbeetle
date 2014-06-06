@@ -27,6 +27,14 @@ namespace tibee
 namespace common
 {
 
+class SintEventValue;
+class UintEventValue;
+class FloatEventValue;
+class EnumEventValue;
+class StringEventValue;
+class ArrayEventValue;
+class DictEventValue;
+
 /**
  * Abstract event value. All event values must inherit this class.
  *
@@ -69,6 +77,146 @@ public:
     EventValueType getType() const
     {
         return _type;
+    }
+
+    /**
+     * Statically casts this event value to a signed integer event
+     * value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as a signed integer event value
+     */
+    const SintEventValue* asSint() const;
+
+    /**
+     * Statically casts this event value to an unsigned integer event
+     * value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as an unsigned integer event value
+     */
+    const UintEventValue* asUint() const;
+
+    /**
+     * Statically casts this event value to a floating point number
+     * event value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as a floating point number event value
+     */
+    const FloatEventValue* asFloat() const;
+
+    /**
+     * Statically casts this event value to an enumeration event
+     * value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as an enumeration event value
+     */
+    const EnumEventValue* asEnum() const;
+
+    /**
+     * Statically casts this event value to a string event
+     * value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as a string event value
+     */
+    const StringEventValue* asString() const;
+
+    /**
+     * Statically casts this event value to an array event
+     * value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as an array event value
+     */
+    const ArrayEventValue* asArray() const;
+
+    /**
+     * Statically casts this event value to a dictionary event
+     * value.
+     *
+     * No runtime check is performed.
+     *
+     * @returns This event value as a dictionary event value
+     */
+    const DictEventValue* asDict() const;
+
+    /**
+     * Returns whether or not this is a signed integer event value.
+     *
+     * @returns True if this is a signed integer event value
+     */
+    bool isSint() const
+    {
+        return _type == EventValueType::SINT;
+    }
+
+    /**
+     * Returns whether or not this is an unsigned integer event value.
+     *
+     * @returns True if this is an unsigned integer event value
+     */
+    bool isUint() const
+    {
+        return _type == EventValueType::UINT;
+    }
+
+    /**
+     * Returns whether or not this is a floating point number event value.
+     *
+     * @returns True if this is a floating point number integer event value
+     */
+    bool isFloat() const
+    {
+        return _type == EventValueType::FLOAT;
+    }
+
+    /**
+     * Returns whether or not this is an enumeration event value.
+     *
+     * @returns True if this is an enumeration event value
+     */
+    bool isEnum() const
+    {
+        return _type == EventValueType::ENUM;
+    }
+
+    /**
+     * Returns whether or not this is a string event value.
+     *
+     * @returns True if this is a string event value
+     */
+    bool isString() const
+    {
+        return _type == EventValueType::STRING;
+    }
+
+    /**
+     * Returns whether or not this is an array event value.
+     *
+     * @returns True if this is an array event value
+     */
+    bool isArray() const
+    {
+        return _type == EventValueType::ARRAY;
+    }
+
+    /**
+     * Returns whether or not this is a dictionary event value.
+     *
+     * @returns True if this is a dictionary event value
+     */
+    bool isDict() const
+    {
+        return _type == EventValueType::DICT;
     }
 
 private:
