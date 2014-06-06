@@ -53,6 +53,9 @@ bool BuilderBeetle::run()
         }
     }
 
+    // create a list of trace listeners
+    std::vector<ITracePlaybackListener::UP> listeners;
+
     // create a state history builder
     std::unique_ptr<StateHistoryBuilder> stateHistoryBuilder;
     try {
@@ -70,34 +73,33 @@ bool BuilderBeetle::run()
         return false;
     }
 
-    // create a progress publisher
-    std::unique_ptr<ProgressPublisher> progressPublisher;
-    try {
-        progressPublisher = std::unique_ptr<ProgressPublisher> {
-            new ProgressPublisher {
-                _args.bindProgress,
-                traceSet->getBegin(),
-                traceSet->getEnd(),
-                _args.traces,
-                _args.stateProviders,
-                stateHistoryBuilder.get(),
-                2801,
-                200
-            }
-        };
-    } catch (const ex::MqBindError& ex) {
-        std::cerr << "Error: cannot bind to address \"" <<
-                     ex.getBindAddr() << "\"" << std::endl;
-
-        return false;
-    }
-
-    // create a list of trace listeners
-    std::vector<ITracePlaybackListener::UP> listeners;
-
-    // add listeners
     listeners.push_back(std::move(stateHistoryBuilder));
-    listeners.push_back(std::move(progressPublisher));
+
+    // create a progress publisher
+    if (!_args.bindProgress.empty()) {
+        std::unique_ptr<ProgressPublisher> progressPublisher;
+        try {
+            progressPublisher = std::unique_ptr<ProgressPublisher> {
+                new ProgressPublisher {
+                    _args.bindProgress,
+                    traceSet->getBegin(),
+                    traceSet->getEnd(),
+                    _args.traces,
+                    _args.stateProviders,
+                    stateHistoryBuilder.get(),
+                    2801,
+                    200
+                }
+            };
+        } catch (const ex::MqBindError& ex) {
+            std::cerr << "Error: cannot bind to address \"" <<
+                         ex.getBindAddr() << "\"" << std::endl;
+
+            return false;
+        }
+
+        listeners.push_back(std::move(progressPublisher));
+    }
 
     // ready for the deck
     return _traceDeck.play(traceSet, listeners);
