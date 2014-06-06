@@ -28,6 +28,7 @@
 #include "BuilderBeetle.hpp"
 #include "ex/MqBindError.hpp"
 #include "ex/WrongStateProvider.hpp"
+#include "ex/UnknownStateProviderType.hpp"
 
 namespace bfs = boost::filesystem;
 
@@ -66,9 +67,14 @@ bool BuilderBeetle::run()
             }
         };
     } catch (const ex::WrongStateProvider& ex) {
-        std::cerr << "Error: wrong state provider (" <<
-                     ex.getPath() << ")" << std::endl <<
+        std::cerr << "Error: wrong state provider: " <<
+                     ex.getPath() << std::endl <<
                      "  " << ex.what() << std::endl;
+
+        return false;
+    } catch (const ex::UnknownStateProviderType& ex) {
+        std::cerr << "Error: unknown state provider type: " <<
+                     ex.getPath() << std::endl;
 
         return false;
     }
