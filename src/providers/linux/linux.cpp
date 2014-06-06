@@ -5,11 +5,6 @@
 
 extern "C" {
 
-void onInit(tibee::common::CurrentState& state)
-{
-    std::cout << "from linux.so: onInit()" << std::endl;
-}
-
 void onEvent(tibee::common::CurrentState& state, const tibee::common::Event& event)
 {
     auto fields = event.getFields();
@@ -17,11 +12,6 @@ void onEvent(tibee::common::CurrentState& state, const tibee::common::Event& eve
     if (fields) {
         std::cout << fields->toString() << std::endl;
     }
-}
-
-void onFini(tibee::common::CurrentState& state)
-{
-    std::cout << "from linux.so: onFini()" << std::endl;
 }
 
 }
