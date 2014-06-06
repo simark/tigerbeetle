@@ -83,6 +83,14 @@ public:
     std::vector<const AbstractEventValue*> getVector() const;
 
     /**
+     * @see operator[]()
+     */
+    const AbstractEventValue* get(std::size_t index) const
+    {
+        return this->operator[](index);
+    }
+
+    /**
      * Returns whether this array is in fact a string of representable
      * characters.
      *

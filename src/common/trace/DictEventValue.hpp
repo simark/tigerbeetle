@@ -97,6 +97,14 @@ public:
     const AbstractEventValue* operator[](std::size_t index) const;
 
     /**
+     * @see operator[]()
+     */
+    const AbstractEventValue* get(std::size_t index) const
+    {
+        return this->operator[](index);
+    }
+
+    /**
      * Convenience method which builds a (key name -> event value) map
      * using data contained in this dictionary.
      *
