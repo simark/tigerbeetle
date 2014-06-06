@@ -219,6 +219,16 @@ public:
         return _type == EventValueType::DICT;
     }
 
+    /**
+     * Returns whether or not this is an unknown event value.
+     *
+     * @returns True if this is an unknown event value
+     */
+    bool isUnknown() const
+    {
+        return _type == EventValueType::UNKNOWN;
+    }
+
 private:
     EventValueType _type;
 };
