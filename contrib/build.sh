@@ -4,8 +4,10 @@
 # update them and build them.
 
 # init/update Git submodules
+pushd ..
 git submodule init
 git submodule update
+popd
 
 # build babeltrace
 cd babeltrace
