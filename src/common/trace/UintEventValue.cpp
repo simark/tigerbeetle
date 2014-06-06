@@ -18,8 +18,6 @@
 #include <cstdint>
 #include <babeltrace/ctf/events.h>
 
-#include <common/trace/EventValueType.hpp>
-#include <common/trace/AbstractEventValue.hpp>
 #include <common/trace/UintEventValue.hpp>
 
 namespace tibee
@@ -28,14 +26,13 @@ namespace common
 {
 
 UintEventValue::UintEventValue(const ::bt_definition* def) :
-    AbstractEventValue {EventValueType::UINT},
-    _btDef {def}
+    AbstractIntegerEventValue {def, EventValueType::UINT}
 {
 }
 
 std::uint64_t UintEventValue::getValue() const
 {
-    return ::bt_ctf_get_uint64(_btDef);
+    return ::bt_ctf_get_uint64(this->getDef());
 }
 
 std::string UintEventValue::toString() const

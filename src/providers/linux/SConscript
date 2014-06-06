@@ -9,6 +9,6 @@ sources = [
     'linux.cpp',
 ]
 
-lib = env.SharedLibrary(target=target, source=sources)
+lib = env.SharedLibrary(target=target, source=sources, SHLIBPREFIX='')
 
 Return('lib')

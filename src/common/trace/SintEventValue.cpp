@@ -18,8 +18,6 @@
 #include <cstdint>
 #include <babeltrace/ctf/events.h>
 
-#include <common/trace/EventValueType.hpp>
-#include <common/trace/AbstractEventValue.hpp>
 #include <common/trace/SintEventValue.hpp>
 
 namespace tibee
@@ -28,14 +26,13 @@ namespace common
 {
 
 SintEventValue::SintEventValue(const ::bt_definition* def) :
-    AbstractEventValue {EventValueType::SINT},
-    _btDef {def}
+    AbstractIntegerEventValue {def, EventValueType::SINT}
 {
 }
 
 std::int64_t SintEventValue::getValue() const
 {
-    return ::bt_ctf_get_int64(_btDef);
+    return ::bt_ctf_get_int64(this->getDef());
 }
 
 std::string SintEventValue::toString() const

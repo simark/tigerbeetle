@@ -21,7 +21,7 @@
 #include <cstdint>
 #include <babeltrace/ctf/events.h>
 
-#include <common/trace/AbstractEventValue.hpp>
+#include <common/trace/AbstractIntegerEventValue.hpp>
 #include <common/trace/EventValueType.hpp>
 
 namespace tibee
@@ -35,7 +35,7 @@ namespace common
  * @author Philippe Proulx
  */
 class SintEventValue :
-    public AbstractEventValue
+    public AbstractIntegerEventValue
 {
 public:
     /**
@@ -56,9 +56,6 @@ public:
      * @see AbstractEventValue::toString()
      */
     std::string toString() const;
-
-private:
-    const ::bt_definition* _btDef;
 };
 
 }
