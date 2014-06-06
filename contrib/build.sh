@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # this script will initialize the submodules of the contrib system,
 # update them and build them.
