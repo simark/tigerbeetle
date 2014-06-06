@@ -177,7 +177,5 @@ int main(int argc, char* argv[])
     // create the builder beetle and run it
     std::unique_ptr<tibee::BuilderBeetle> builderBeetle {new tibee::BuilderBeetle {args}};
 
-    builderBeetle->run();
-
-    return 0;
+    return builderBeetle->run() ? 0 : 1;
 }
