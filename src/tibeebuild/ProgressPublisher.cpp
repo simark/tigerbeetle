@@ -34,7 +34,7 @@ ProgressPublisher::ProgressPublisher(const std::string& bindAddr,
                                      common::timestamp_t beginTs, common::timestamp_t endTs,
                                      const std::vector<boost::filesystem::path>& tracesPaths,
                                      const std::vector<boost::filesystem::path>& stateProvidersPaths,
-                                     const StateHistoryBuilder& stateHistoryBuilder,
+                                     const StateHistoryBuilder* stateHistoryBuilder,
                                      std::size_t updatePeriodEvents,
                                      std::size_t updatePeriodMs) :
     _bindAddr {bindAddr},
@@ -120,7 +120,7 @@ void ProgressPublisher::publish()
 {
     // update RPC notification object
     _rpcNotification->setCurTs(_lastTs);
-    _rpcNotification->setStateChanges(_stateHistoryBuilder.getStateChanges());
+    _rpcNotification->setStateChanges(_stateHistoryBuilder->getStateChanges());
     _rpcNotification->setProcessedEvents(_evCount);
 
     // get JSON-RPC notification

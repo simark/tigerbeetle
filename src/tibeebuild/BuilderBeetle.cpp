@@ -80,7 +80,7 @@ bool BuilderBeetle::run()
                 traceSet->getEnd(),
                 _args.traces,
                 _args.stateProviders,
-                *stateHistoryBuilder,
+                stateHistoryBuilder.get(),
                 2801,
                 200
             }

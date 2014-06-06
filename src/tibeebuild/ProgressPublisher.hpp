@@ -65,7 +65,7 @@ public:
                       common::timestamp_t beginTs, common::timestamp_t endTs,
                       const std::vector<boost::filesystem::path>& tracesPaths,
                       const std::vector<boost::filesystem::path>& stateProvidersPaths,
-                      const StateHistoryBuilder& stateHistoryBuilder,
+                      const StateHistoryBuilder* stateHistoryBuilder,
                       std::size_t updatePeriodEvents,
                       std::size_t updatePeriodMs);
 
@@ -92,7 +92,7 @@ private:
     std::unique_ptr<ProgressUpdateRpcNotification> _rpcNotification;
 
     // state history builder reference
-    const StateHistoryBuilder& _stateHistoryBuilder;
+    const StateHistoryBuilder* _stateHistoryBuilder;
 
     // update period in number of events
     std::size_t _updatePeriodEvents;
