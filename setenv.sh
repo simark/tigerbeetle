@@ -1,9 +1,14 @@
 #!/bin/sh
 
-if [ -z "$1" ]; then
-    echo "please provide the path to libdelorean's root as the first argument"
-else
-    export LIBDELOREAN_CPPPATH="$1/include"
-    export LIBDELOREAN_LIBPATH="$1/src"
-    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$1/src:$(pwd)/src/common"
-fi
+# build contrib system submodules
+cd contrib
+./build.sh
+cd ..
+
+# export a few mandatory environment variables
+export LIBDELOREAN_CPPPATH="$(pwd)/contrib/libdelorean/include"
+export LIBDELOREAN_LIBPATH="$(pwd)/contrib/libdelorean/src"
+export BABELTRACE_CPPPATH="$(pwd)/contrib/babeltrace/include"
+export BABELTRACE_LIBPATH="$(pwd)/contrib/babeltrace/lib/.libs"
+export BABELTRACE_CTF_LIBPATH="$(pwd)/contrib/babeltrace/formats/ctf/.libs/"
+export LD_LIBRARY_PATH="$LIBDELOREAN_LIBPATH:$BABELTRACE_LIBPATH:$BABELTRACE_CTF_LIBPATH:$LD_LIBRARY_PATH"

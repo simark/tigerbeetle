@@ -28,10 +28,19 @@ if 'CXX' in os.environ:
     root_env['CXX'] = os.environ['CXX']
 
 if 'LIBDELOREAN_CPPPATH' in os.environ:
-    root_env.Append(CPPPATH=os.environ['LIBDELOREAN_CPPPATH'])
+    root_env.Append(CPPPATH=[os.environ['LIBDELOREAN_CPPPATH']])
 
 if 'LIBDELOREAN_LIBPATH' in os.environ:
-    root_env.Append(LIBPATH=os.environ['LIBDELOREAN_LIBPATH'])
+    root_env.Append(LIBPATH=[os.environ['LIBDELOREAN_LIBPATH']])
+
+if 'BABELTRACE_CPPPATH' in os.environ:
+    root_env.Append(CPPPATH=[os.environ['BABELTRACE_CPPPATH']])
+
+if 'BABELTRACE_LIBPATH' in os.environ:
+    root_env.Append(LIBPATH=[os.environ['BABELTRACE_LIBPATH']])
+
+if 'BABELTRACE_CTF_LIBPATH' in os.environ:
+    root_env.Append(LIBPATH=[os.environ['BABELTRACE_CTF_LIBPATH']])
 
 if 'LD_LIBRARY_PATH' in os.environ:
     root_env['ENV']['LD_LIBRARY_PATH'] = os.environ['LD_LIBRARY_PATH']

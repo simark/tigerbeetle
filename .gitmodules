@@ -1,0 +1,12 @@
+[submodule "contribs/babeltrace"]
+	path = contribs/babeltrace
+	url = git://git.efficios.com/babeltrace.git
+[submodule "contribs/libdelorean"]
+	path = contribs/libdelorean
+	url = https://github.com/eepp/libdelorean
+[submodule "contrib/libdelorean"]
+	path = contrib/libdelorean
+	url = https://github.com/eepp/libdelorean
+[submodule "contrib/babeltrace"]
+	path = contrib/babeltrace
+	url = git://git.efficios.com/babeltrace.git
