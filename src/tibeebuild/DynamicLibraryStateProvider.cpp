@@ -49,18 +49,9 @@ DynamicLibraryStateProvider::DynamicLibraryStateProvider(const boost::filesystem
     // resolve symbols
     _dlOnInit = reinterpret_cast<decltype(_dlOnInit)>(::dlsym(_dlHandle, "onInit"));
 
-    if (!_dlOnInit) {
-        ::dlclose(_dlHandle);
-
-        throw ex::WrongStateProvider {
-            DynamicLibraryStateProvider::getErrorMsg("cannot find \"onInit\" symbol"),
-            path
-        };
-    }
-
     _dlOnEvent = reinterpret_cast<decltype(_dlOnEvent)>(::dlsym(_dlHandle, "onEvent"));
 
-    if (!_dlOnInit) {
+    if (!_dlOnEvent) {
         ::dlclose(_dlHandle);
 
         throw ex::WrongStateProvider {
@@ -70,15 +61,6 @@ DynamicLibraryStateProvider::DynamicLibraryStateProvider(const boost::filesystem
     }
 
     _dlOnFini = reinterpret_cast<decltype(_dlOnFini)>(::dlsym(_dlHandle, "onFini"));
-
-    if (!_dlOnInit) {
-        ::dlclose(_dlHandle);
-
-        throw ex::WrongStateProvider {
-            DynamicLibraryStateProvider::getErrorMsg("cannot find \"onFini\" symbol"),
-            path
-        };
-    }
 }
 
 std::string DynamicLibraryStateProvider::getErrorMsg(const std::string& base)
@@ -106,7 +88,9 @@ DynamicLibraryStateProvider::~DynamicLibraryStateProvider()
 void DynamicLibraryStateProvider::onInit(common::CurrentState& state)
 {
     // delegate
-    _dlOnInit(state);
+    if (_dlOnInit) {
+        _dlOnInit(state);
+    }
 }
 
 void DynamicLibraryStateProvider::onEvent(common::CurrentState& state, const common::Event& event)
@@ -118,7 +102,9 @@ void DynamicLibraryStateProvider::onEvent(common::CurrentState& state, const com
 void DynamicLibraryStateProvider::onFini(common::CurrentState& state)
 {
     // delegate
-    _dlOnFini(state);
+    if (_dlOnFini) {
+        _dlOnFini(state);
+    }
 }
 
 }
