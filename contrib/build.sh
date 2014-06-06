@@ -10,13 +10,13 @@ git submodule update
 popd
 
 # build babeltrace
-cd babeltrace
+pushd babeltrace
 ./bootstrap
 ./configure
 make
-cd ..
+popd
 
 # build libdelorean
-cd libdelorean
+pushd libdelorean
 scons
-cd ..
+popd

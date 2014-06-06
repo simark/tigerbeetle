@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 # build contrib system submodules
-cd contrib
+pushd contrib
 ./build.sh
-cd ..
+popd
 
 # export a few mandatory environment variables
 export LIBDELOREAN_CPPPATH="$(pwd)/contrib/libdelorean/include"
