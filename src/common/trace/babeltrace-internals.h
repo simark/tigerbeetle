@@ -49,6 +49,7 @@
 
 #include <sys/types.h>
 #include <glib.h>
+#include <dirent.h>
 
 struct tibee_bt_context;
 struct tibee_ctf_trace;
