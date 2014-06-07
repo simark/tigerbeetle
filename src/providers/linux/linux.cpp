@@ -9,9 +9,11 @@ void onEvent(tibee::common::CurrentState& state, tibee::common::Event& event)
 {
     auto fields = event.getFields();
 
-    if (fields) {
+    /*if (fields) {
         std::cout << fields->toString() << std::endl;
-    }
+        std::cout << event.getId() << std::endl;
+        std::cout << event.getTraceId() << std::endl;
+    }*/
 }
 
 }

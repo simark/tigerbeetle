@@ -42,6 +42,7 @@ TraceSetIterator::TraceSetIterator(::bt_ctf_iter* btCtfIter) :
     if (!_btEvent) {
         _btIter = nullptr;
         _btCtfIter = nullptr;
+        return;
     }
 
     // create event
@@ -78,6 +79,11 @@ TraceSetIterator& TraceSetIterator::operator=(const TraceSetIterator& rhs)
 
 TraceSetIterator& TraceSetIterator::operator++()
 {
+    if (!_btIter) {
+        // disabled
+        return *this;
+    }
+
     if (::bt_iter_next(_btIter) < 0) {
         // disable this iterator
         _btIter = nullptr;
@@ -92,6 +98,7 @@ TraceSetIterator& TraceSetIterator::operator++()
     if (!_btEvent) {
         _btIter = nullptr;
         _btCtfIter = nullptr;
+        return *this;
     }
 
     // reset value factory pools

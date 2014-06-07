@@ -151,6 +151,26 @@ public:
      */
     const AbstractEventValue* operator[](std::size_t index);
 
+    /**
+     * Returns this event's numeric ID.
+     *
+     * @returns Event numeric ID
+     */
+    const event_id_t getId() const
+    {
+        return _id;
+    }
+
+    /**
+     * Returns this event's trace numeric ID.
+     *
+     * @returns Numeric ID of trace this event is in
+     */
+    const trace_id_t getTraceId() const
+    {
+        return _traceId;
+    }
+
 private:
     Event(const EventValueFactory* valueFactory);
     const DictEventValue* getTopLevelScope(::bt_ctf_scope topLevelScope);
@@ -163,6 +183,8 @@ private:
     const DictEventValue* _contextDict;
     const DictEventValue* _streamEventContextDict;
     const DictEventValue* _streamPacketContextDict;
+    event_id_t _id;
+    trace_id_t _traceId;
 };
 
 }

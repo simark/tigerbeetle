@@ -42,6 +42,12 @@ typedef std::uint32_t   quark_t;
 /// RPC message ID
 typedef std::uint32_t   rpc_msg_id_t;
 
+/// Trace ID
+typedef std::int32_t    trace_id_t;
+
+/// Event ID
+typedef std::int32_t    event_id_t;
+
 }
 }
 

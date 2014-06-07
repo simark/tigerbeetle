@@ -17,8 +17,8 @@
  */
 #include <string>
 #include <cstring>
-#include <babeltrace/ctf/events.h>
 
+#include <common/trace/babeltrace-internals.h>
 #include <common/trace/DictEventValue.hpp>
 #include <common/trace/Event.hpp>
 
@@ -147,6 +147,28 @@ void Event::setPrivateEvent(::bt_ctf_event* btEvent)
     _contextDict = nullptr;
     _streamEventContextDict = nullptr;
     _streamPacketContextDict = nullptr;
+
+    /* In CTF, an event ID is unique within its _stream_, so in order
+     * to keep a real unique ID for the whole trace, we include the
+     * CTF stream ID and the CTF event ID in our version of an event ID.
+     * The Event class user should not have to care about internal
+     * concepts like streams, specific to a trace format.
+     *
+     * Left-shifting the stream ID by 20 positions makes it possible
+     * to have 1 mibievents per stream and 4096 different streams per
+     * trace, which seems reasonable.
+     */
+    auto tibeeBtCtfEvent = reinterpret_cast<::tibee_bt_ctf_event*>(btEvent);
+    auto tibeeStream = tibeeBtCtfEvent->parent->stream;
+    auto ctfEventId = static_cast<std::uint32_t>(tibeeStream->event_id);
+    auto ctfStreamId = static_cast<std::uint32_t>(tibeeStream->stream_id);
+    _id = (ctfStreamId << 20) | (ctfEventId & 0xfffff);
+
+    /* Let's use the trace handle (an integer starting at 0) here, which
+     * is unique for each trace in the same Babeltrace context (and we
+     * only have one).
+     */
+    _traceId = tibeeStream->stream_class->trace->parent.handle->id;
 }
 
 }
