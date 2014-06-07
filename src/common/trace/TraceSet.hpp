@@ -48,7 +48,7 @@ class TraceSet :
     boost::noncopyable
 {
 public:
-    typedef TraceSetIterator iterator;
+    typedef TraceSetIterator Iterator;
 
 public:
     /**
@@ -92,14 +92,14 @@ public:
      *
      * @returns Iterator pointing to the first event of the set
      */
-    iterator begin() const;
+    Iterator begin() const;
 
     /**
      * Returns an iterator pointing after the last event of the set.
      *
      * @returns Iterator pointing after the last event of the set
      */
-    iterator end() const;
+    Iterator end() const;
 
 private:
     void seekBegin() const;

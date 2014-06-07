@@ -156,20 +156,20 @@ timestamp_t TraceSet::getEnd() const
 }
 
 
-TraceSet::iterator TraceSet::begin() const
+TraceSet::Iterator TraceSet::begin() const
 {
     // go back to beginning (will also affect all existing iterators)
     this->seekBegin();
 
     // create new iterator
-    return TraceSet::iterator {_btCtfIter};
+    return TraceSet::Iterator {_btCtfIter};
 }
 
 
-TraceSet::iterator TraceSet::end() const
+TraceSet::Iterator TraceSet::end() const
 {
     // "end" is just a null iterator
-    return TraceSet::iterator {nullptr};
+    return TraceSet::Iterator {nullptr};
 }
 
 }
