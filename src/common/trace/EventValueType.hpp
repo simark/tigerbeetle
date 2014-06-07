@@ -37,7 +37,6 @@ enum class EventValueType
     ENUM,
     ARRAY,
     DICT,
-    UNKNOWN,
 };
 
 }
