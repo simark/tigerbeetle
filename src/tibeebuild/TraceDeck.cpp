@@ -33,7 +33,7 @@ TraceDeck::TraceDeck() :
 {
 }
 
-bool TraceDeck::play(std::shared_ptr<const common::TraceSet> traceSet,
+bool TraceDeck::play(const common::TraceSet* traceSet,
                      const std::vector<AbstractTracePlaybackListener::UP>& listeners)
 {
     // mark as playing

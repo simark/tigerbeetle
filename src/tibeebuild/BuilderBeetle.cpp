@@ -43,7 +43,7 @@ BuilderBeetle::BuilderBeetle(const Arguments& args) :
 bool BuilderBeetle::run()
 {
     // create a trace set
-    std::shared_ptr<common::TraceSet> traceSet {new common::TraceSet};
+    std::unique_ptr<common::TraceSet> traceSet {new common::TraceSet};
 
     // add traces to trace set
     for (const auto& tracePath : _args.traces) {
@@ -108,7 +108,7 @@ bool BuilderBeetle::run()
     }
 
     // ready for the deck
-    return _traceDeck.play(traceSet, listeners);
+    return _traceDeck.play(traceSet.get(), listeners);
 }
 
 void BuilderBeetle::stop()

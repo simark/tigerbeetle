@@ -75,7 +75,7 @@ ProgressPublisher::~ProgressPublisher()
     _mqContext = nullptr;
 }
 
-bool ProgressPublisher::onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet)
+bool ProgressPublisher::onStartImpl(const common::TraceSet* traceSet)
 {
     std::cout << "progress publisher: publishing start" << std::endl;
 

@@ -46,10 +46,13 @@ public:
     /**
      * Playback start notification.
      *
+     * The trace set pointer passed as parameter \p traceSet remains
+     * valid until onStop() is called and returns.
+     *
      * @param traceSet Trace set which will be used for reading
      * @returns        True if the initialization was successful
      */
-    bool onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
+    bool onStart(const common::TraceSet* traceSet)
     {
         return this->onStartImpl(traceSet);
     }
@@ -75,7 +78,7 @@ public:
     }
 
 private:
-    virtual bool onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet) = 0;
+    virtual bool onStartImpl(const common::TraceSet* traceSet) = 0;
     virtual void onEventImpl(common::Event& event) = 0;
     virtual bool onStopImpl() = 0;
 };

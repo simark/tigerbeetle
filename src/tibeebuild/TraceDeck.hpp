@@ -50,7 +50,7 @@ public:
      * @param listeners Listeners which will listen to the trace
      * @returns         True if the trace was played without interruption
      */
-    bool play(std::shared_ptr<const common::TraceSet> traceSet,
+    bool play(const common::TraceSet* traceSet,
               const std::vector<AbstractTracePlaybackListener::UP>& listeners);
 
     /**

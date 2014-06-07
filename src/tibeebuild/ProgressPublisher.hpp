@@ -72,7 +72,7 @@ public:
     ~ProgressPublisher();
 
 protected:
-    bool onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet);
+    bool onStartImpl(const common::TraceSet* traceSet);
     void onEventImpl(common::Event& event);
     bool onStopImpl();
     void publish();

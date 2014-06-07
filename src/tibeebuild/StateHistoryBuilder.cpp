@@ -67,7 +67,7 @@ StateHistoryBuilder::~StateHistoryBuilder()
     std::cout << "state history builder: closing files" << std::endl;
 }
 
-bool StateHistoryBuilder::onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet)
+bool StateHistoryBuilder::onStartImpl(const common::TraceSet* traceSet)
 {
     std::cout << "state history builder: starting" << std::endl;
 
