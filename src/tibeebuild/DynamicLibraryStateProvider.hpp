@@ -51,6 +51,18 @@ protected:
     static std::string getErrorMsg(const std::string& base);
 
 private:
+    static constexpr const char* ON_INIT_SYMBOL_NAME() {
+        return "onInit";
+    }
+
+    static constexpr const char* ON_EVENT_SYMBOL_NAME() {
+        return "onEvent";
+    }
+
+    static constexpr const char* ON_FINI_SYMBOL_NAME() {
+        return "onFini";
+    }
+
     void onInitImpl(common::CurrentState& state);
     void onEventImpl(common::CurrentState& state, common::Event& event);
     void onFiniImpl(common::CurrentState& state);

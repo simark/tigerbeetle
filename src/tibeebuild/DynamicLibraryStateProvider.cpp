@@ -47,20 +47,32 @@ DynamicLibraryStateProvider::DynamicLibraryStateProvider(const boost::filesystem
     }
 
     // resolve symbols
-    _dlOnInit = reinterpret_cast<decltype(_dlOnInit)>(::dlsym(_dlHandle, "onInit"));
+    _dlOnInit = reinterpret_cast<decltype(_dlOnInit)>(
+        ::dlsym(_dlHandle, DynamicLibraryStateProvider::ON_INIT_SYMBOL_NAME())
+    );
 
-    _dlOnEvent = reinterpret_cast<decltype(_dlOnEvent)>(::dlsym(_dlHandle, "onEvent"));
+    _dlOnEvent = reinterpret_cast<decltype(_dlOnEvent)>(
+        ::dlsym(_dlHandle, DynamicLibraryStateProvider::ON_EVENT_SYMBOL_NAME())
+    );
 
     if (!_dlOnEvent) {
         ::dlclose(_dlHandle);
 
+        std::string msg;
+
+        msg += "cannot find \"";
+        msg += DynamicLibraryStateProvider::ON_EVENT_SYMBOL_NAME();
+        msg += "\" symbol";
+
         throw ex::WrongStateProvider {
-            DynamicLibraryStateProvider::getErrorMsg("cannot find \"onEvent\" symbol"),
+            DynamicLibraryStateProvider::getErrorMsg(msg),
             path
         };
     }
 
-    _dlOnFini = reinterpret_cast<decltype(_dlOnFini)>(::dlsym(_dlHandle, "onFini"));
+    _dlOnFini = reinterpret_cast<decltype(_dlOnFini)>(
+        ::dlsym(_dlHandle, DynamicLibraryStateProvider::ON_FINI_SYMBOL_NAME())
+    );
 }
 
 std::string DynamicLibraryStateProvider::getErrorMsg(const std::string& base)
