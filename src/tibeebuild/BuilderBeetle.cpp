@@ -55,7 +55,7 @@ bool BuilderBeetle::run()
     }
 
     // create a list of trace listeners
-    std::vector<ITracePlaybackListener::UP> listeners;
+    std::vector<AbstractTracePlaybackListener::UP> listeners;
 
     // create a state history builder
     std::unique_ptr<StateHistoryBuilder> stateHistoryBuilder;

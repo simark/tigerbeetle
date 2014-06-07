@@ -67,7 +67,7 @@ StateHistoryBuilder::~StateHistoryBuilder()
     std::cout << "state history builder: closing files" << std::endl;
 }
 
-bool StateHistoryBuilder::onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
+bool StateHistoryBuilder::onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet)
 {
     std::cout << "state history builder: starting" << std::endl;
 
@@ -88,7 +88,7 @@ bool StateHistoryBuilder::onStart(const std::shared_ptr<const common::TraceSet>&
     return true;
 }
 
-void StateHistoryBuilder::onEvent(const common::Event& event)
+void StateHistoryBuilder::onEventImpl(const common::Event& event)
 {
     // also notify each state provider
     for (auto& provider : _providers) {
@@ -96,7 +96,7 @@ void StateHistoryBuilder::onEvent(const common::Event& event)
     }
 }
 
-bool StateHistoryBuilder::onStop()
+bool StateHistoryBuilder::onStopImpl()
 {
     std::cout << "state history builder: stopping" << std::endl;
 

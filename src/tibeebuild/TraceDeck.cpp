@@ -21,7 +21,6 @@
 
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
-#include "ITracePlaybackListener.hpp"
 #include "TraceDeck.hpp"
 
 namespace bfs = boost::filesystem;
@@ -35,7 +34,7 @@ TraceDeck::TraceDeck() :
 }
 
 bool TraceDeck::play(std::shared_ptr<const common::TraceSet> traceSet,
-                     const std::vector<ITracePlaybackListener::UP>& listeners)
+                     const std::vector<AbstractTracePlaybackListener::UP>& listeners)
 {
     // mark as playing
     _playing = true;

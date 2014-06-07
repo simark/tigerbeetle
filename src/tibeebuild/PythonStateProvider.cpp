@@ -38,17 +38,17 @@ PythonStateProvider::~PythonStateProvider()
     std::cout << "python state provider: unloading script" << std::endl;
 }
 
-void PythonStateProvider::onInit(common::CurrentState& state)
+void PythonStateProvider::onInitImpl(common::CurrentState& state)
 {
     std::cout << "python state provider: initializing" << std::endl;
 }
 
-void PythonStateProvider::onEvent(common::CurrentState& state, const common::Event& event)
+void PythonStateProvider::onEventImpl(common::CurrentState& state, const common::Event& event)
 {
     // getting event
 }
 
-void PythonStateProvider::onFini(common::CurrentState& state)
+void PythonStateProvider::onFiniImpl(common::CurrentState& state)
 {
     std::cout << "python state provider: finishing" << std::endl;
 }

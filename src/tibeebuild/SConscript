@@ -15,6 +15,7 @@ libs = [
 
 main_sources = [
     'main.cpp',
+    'AbstractTracePlaybackListener.cpp',
     'AbstractCacheBuilder.cpp',
     'AbstractStateProvider.cpp',
     'BuilderBeetle.cpp',

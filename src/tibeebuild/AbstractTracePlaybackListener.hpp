@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _ITRACEPLAYBACKLISTENER_HPP
-#define _ITRACEPLAYBACKLISTENER_HPP
+#ifndef _ABSTRACTTRACEPLAYBACKLISTENER_HPP
+#define _ABSTRACTTRACEPLAYBACKLISTENER_HPP
 
 #include <memory>
 
@@ -27,43 +27,59 @@ namespace tibee
 {
 
 /**
- * Trace playback observer interface.
+ * Abstract trace playback listener (observer).
  *
  * This is a simple interface which gets notified when beginning the
  * playback of a trace, on each event, and at the end.
  *
  * @author Philippe Proulx
  */
-class ITracePlaybackListener
+class AbstractTracePlaybackListener
 {
 public:
     /// Unique pointer to track playback listener
-    typedef std::unique_ptr<ITracePlaybackListener> UP;
+    typedef std::unique_ptr<AbstractTracePlaybackListener> UP;
 
 public:
+    virtual ~AbstractTracePlaybackListener() = 0;
+
     /**
      * Playback start notification.
      *
      * @param traceSet Trace set which will be used for reading
      * @returns        True if the initialization was successful
      */
-    virtual bool onStart(const std::shared_ptr<const common::TraceSet>& traceSet) = 0;
+    bool onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
+    {
+        return this->onStartImpl(traceSet);
+    }
 
     /**
      * New event notification.
      *
      * @param event New event
      */
-    virtual void onEvent(const common::Event& event) = 0;
+    void onEvent(const common::Event& event)
+    {
+        this->onEventImpl(event);
+    }
 
     /**
      * Playback stop notification.
      *
      * @returns True if the finalization was successful
      */
-    virtual bool onStop() = 0;
+    bool onStop()
+    {
+        return this->onStopImpl();
+    }
+
+private:
+    virtual bool onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet) = 0;
+    virtual void onEventImpl(const common::Event& event) = 0;
+    virtual bool onStopImpl() = 0;
 };
 
 }
 
-#endif // _ITRACEPLAYBACKLISTENER_HPP
+#endif // _ABSTRACTTRACEPLAYBACKLISTENER_HPP

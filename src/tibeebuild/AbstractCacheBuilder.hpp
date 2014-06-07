@@ -23,7 +23,7 @@
 
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
-#include "ITracePlaybackListener.hpp"
+#include "AbstractTracePlaybackListener.hpp"
 
 namespace tibee
 {
@@ -34,7 +34,7 @@ namespace tibee
  * @author Philippe Proulx
  */
 class AbstractCacheBuilder :
-    public ITracePlaybackListener
+    public AbstractTracePlaybackListener
 {
 public:
     /**
@@ -44,7 +44,7 @@ public:
      */
     AbstractCacheBuilder(const boost::filesystem::path& dir);
 
-    virtual ~AbstractCacheBuilder();
+    virtual ~AbstractCacheBuilder() = 0;
 
     /**
      * Returns the cache directory holding this cache.

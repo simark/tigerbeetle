@@ -46,9 +46,10 @@ public:
 
     ~PythonStateProvider();
 
-    void onInit(common::CurrentState& state);
-    void onEvent(common::CurrentState& state, const common::Event& event);
-    void onFini(common::CurrentState& state);
+private:
+    void onInitImpl(common::CurrentState& state);
+    void onEventImpl(common::CurrentState& state, const common::Event& event);
+    void onFiniImpl(common::CurrentState& state);
 };
 
 }

@@ -21,7 +21,7 @@
 #include <boost/filesystem.hpp>
 
 #include <common/state/CurrentState.hpp>
-#include "ITracePlaybackListener.hpp"
+#include <common/trace/Event.hpp>
 
 namespace tibee
 {
@@ -53,7 +53,10 @@ public:
      *
      * @param state Current state (empty when getting it)
      */
-    virtual void onInit(common::CurrentState& state) = 0;
+    void onInit(common::CurrentState& state)
+    {
+        this->onInitImpl(state);
+    }
 
     /**
      * New event notification.
@@ -61,14 +64,20 @@ public:
      * @param state Current state
      * @param event New event
      */
-    virtual void onEvent(common::CurrentState& state, const common::Event& event) = 0;
+    void onEvent(common::CurrentState& state, const common::Event& event)
+    {
+        this->onEventImpl(state, event);
+    }
 
     /**
      * Called after having processed all events.
      *
      * @param state Current state
      */
-    virtual void onFini(common::CurrentState& state) = 0;
+    void onFini(common::CurrentState& state)
+    {
+        this->onFiniImpl(state);
+    }
 
     /**
      * Returns this provider path.
@@ -79,6 +88,11 @@ public:
     {
         return _path;
     }
+
+private:
+    virtual void onInitImpl(common::CurrentState& state);
+    virtual void onEventImpl(common::CurrentState& state, const common::Event& event) = 0;
+    virtual void onFiniImpl(common::CurrentState& state);
 
 private:
     boost::filesystem::path _path;

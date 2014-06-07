@@ -47,12 +47,13 @@ public:
 
     ~DynamicLibraryStateProvider();
 
-    void onInit(common::CurrentState& state);
-    void onEvent(common::CurrentState& state, const common::Event& event);
-    void onFini(common::CurrentState& state);
-
 protected:
     static std::string getErrorMsg(const std::string& base);
+
+private:
+    void onInitImpl(common::CurrentState& state);
+    void onEventImpl(common::CurrentState& state, const common::Event& event);
+    void onFiniImpl(common::CurrentState& state);
 
 private:
     // DL handle

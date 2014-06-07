@@ -75,7 +75,7 @@ ProgressPublisher::~ProgressPublisher()
     _mqContext = nullptr;
 }
 
-bool ProgressPublisher::onStart(const std::shared_ptr<const common::TraceSet>& traceSet)
+bool ProgressPublisher::onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet)
 {
     std::cout << "progress publisher: publishing start" << std::endl;
 
@@ -92,7 +92,7 @@ bool ProgressPublisher::onStart(const std::shared_ptr<const common::TraceSet>& t
     return true;
 }
 
-void ProgressPublisher::onEvent(const common::Event& event)
+void ProgressPublisher::onEventImpl(const common::Event& event)
 {
     // increase event count
     _evCount++;
@@ -133,7 +133,7 @@ void ProgressPublisher::publish()
     _mqSocket->send(std::move(msg));
 }
 
-bool ProgressPublisher::onStop()
+bool ProgressPublisher::onStopImpl()
 {
     // publish one last time
     _lastTs = _rpcNotification->getEndTs();

@@ -85,7 +85,7 @@ DynamicLibraryStateProvider::~DynamicLibraryStateProvider()
     }
 }
 
-void DynamicLibraryStateProvider::onInit(common::CurrentState& state)
+void DynamicLibraryStateProvider::onInitImpl(common::CurrentState& state)
 {
     // delegate
     if (_dlOnInit) {
@@ -93,13 +93,13 @@ void DynamicLibraryStateProvider::onInit(common::CurrentState& state)
     }
 }
 
-void DynamicLibraryStateProvider::onEvent(common::CurrentState& state, const common::Event& event)
+void DynamicLibraryStateProvider::onEventImpl(common::CurrentState& state, const common::Event& event)
 {
     // delegate
     _dlOnEvent(state, event);
 }
 
-void DynamicLibraryStateProvider::onFini(common::CurrentState& state)
+void DynamicLibraryStateProvider::onFiniImpl(common::CurrentState& state)
 {
     // delegate
     if (_dlOnFini) {

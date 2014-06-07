@@ -54,10 +54,6 @@ public:
 
     ~StateHistoryBuilder();
 
-    bool onStart(const std::shared_ptr<const common::TraceSet>& traceSet);
-    void onEvent(const common::Event& event);
-    bool onStop();
-
     /**
      * Returns the number of state changes so far.
      *
@@ -67,6 +63,11 @@ public:
     {
         return 0;
     }
+
+private:
+    bool onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet);
+    void onEventImpl(const common::Event& event);
+    bool onStopImpl();
 
 private:
     std::vector<boost::filesystem::path> _providersPaths;

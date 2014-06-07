@@ -24,7 +24,7 @@
 
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
-#include "ITracePlaybackListener.hpp"
+#include "AbstractTracePlaybackListener.hpp"
 
 namespace tibee
 {
@@ -51,7 +51,7 @@ public:
      * @returns         True if the trace was played without interruption
      */
     bool play(std::shared_ptr<const common::TraceSet> traceSet,
-              const std::vector<ITracePlaybackListener::UP>& listeners);
+              const std::vector<AbstractTracePlaybackListener::UP>& listeners);
 
     /**
      * Stops any current playback.

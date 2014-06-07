@@ -27,7 +27,7 @@
 #include <common/trace/TraceSet.hpp>
 #include <common/trace/Event.hpp>
 #include <common/mq/MqContext.hpp>
-#include "ITracePlaybackListener.hpp"
+#include "AbstractTracePlaybackListener.hpp"
 #include "StateHistoryBuilder.hpp"
 #include "rpc/ProgressUpdateRpcNotification.hpp"
 #include "rpc/BuilderJsonRpcMessageEncoder.hpp"
@@ -41,7 +41,7 @@ namespace tibee
  * @author Philippe Proulx
  */
 class ProgressPublisher :
-    public ITracePlaybackListener
+    public AbstractTracePlaybackListener
 {
 public:
     /**
@@ -71,11 +71,10 @@ public:
 
     ~ProgressPublisher();
 
-    bool onStart(const std::shared_ptr<const common::TraceSet>& traceSet);
-    void onEvent(const common::Event& event);
-    bool onStop();
-
 protected:
+    bool onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet);
+    void onEventImpl(const common::Event& event);
+    bool onStopImpl();
     void publish();
 
 private:
