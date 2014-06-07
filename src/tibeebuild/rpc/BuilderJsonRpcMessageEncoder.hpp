@@ -49,7 +49,7 @@ public:
     std::unique_ptr<std::string> encodeProgressUpdateRpcNotification(const ProgressUpdateRpcNotification& object);
 
 protected:
-    static bool encodeProgressUpdateRpcNotificationParams(const common::IRpcMessage& msg, ::yajl_gen);
+    static bool encodeProgressUpdateRpcNotificationParams(const common::AbstractRpcMessage& msg, ::yajl_gen);
 };
 
 }

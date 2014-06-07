@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _TIBEE_COMMON_IRPCMESSAGE_HPP
-#define _TIBEE_COMMON_IRPCMESSAGE_HPP
+#ifndef _TIBEE_COMMON_ABSTRACTRPCMESSAGE_HPP
+#define _TIBEE_COMMON_ABSTRACTRPCMESSAGE_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -30,47 +30,70 @@ namespace common
 {
 
 /**
- * RPC message interface. All RPC messages must implement this interface.
+ * Abstract RPC message. All RPC messages must inherit this class.
  *
  * @author Philippe Proulx
  */
-class IRpcMessage
+class AbstractRpcMessage
 {
 public:
-    virtual ~IRpcMessage()
+    /**
+     * Builds an abstract RPC message of a given type.
+     *
+     * @param type Concrete RPC message type
+     */
+    AbstractRpcMessage(RpcMessageType type) :
+        _type {type}
     {
     }
+
+    virtual ~AbstractRpcMessage() = 0;
 
     /**
      * Returns the type of this message.
      *
      * @returns Message type
      */
-    virtual RpcMessageType getType() const = 0;
+    RpcMessageType getType() const
+    {
+        return _type;
+    }
 
     /**
      * Returns whether or not this message is a request.
      *
      * @returns True if this message is a request
      */
-    virtual bool isRequest() const = 0;
+    bool isRequest() const
+    {
+        return _type == RpcMessageType::REQUEST;
+    }
 
     /**
      * Returns whether or not this message is a response.
      *
      * @returns True if this message is a response
      */
-    virtual bool isResponse() const = 0;
+    bool isResponse() const
+    {
+        return _type == RpcMessageType::RESPONSE;
+    }
 
     /**
      * Returns whether or not this message is a notification.
      *
      * @returns True if this message is a notification
      */
-    virtual bool isNotification() const = 0;
+    bool isNotification() const
+    {
+        return _type == RpcMessageType::NOTIFICATION;
+    }
+
+private:
+    RpcMessageType _type;
 };
 
 }
 }
 
-#endif // _TIBEE_COMMON_IRPCMESSAGE_HPP
+#endif // _TIBEE_COMMON_ABSTRACTRPCMESSAGE_HPP

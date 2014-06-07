@@ -24,11 +24,6 @@
 #include <memory>
 #include <functional>
 
-#include <common/rpc/IRpcMessage.hpp>
-#include <common/rpc/AbstractRpcRequest.hpp>
-#include <common/rpc/AbstractRpcResponse.hpp>
-#include <common/rpc/AbstractRpcNotification.hpp>
-
 namespace tibee
 {
 namespace common
@@ -54,7 +49,7 @@ public:
 
     virtual ~AbstractJsonRpcMessageDecoder();
 
-protected:
+private:
     virtual void processNull() = 0;
     virtual void processBoolean(bool value) = 0;
     virtual void processInteger(long long value) = 0;
@@ -77,7 +72,6 @@ protected:
      */
     bool parse(const char* json, std::size_t len);
 
-private:
     static int processNullCb(void* ctx);
     static int processBooleanCb(void* ctx, int value);
     static int processIntegerCb(void* ctx, long long value);

@@ -19,7 +19,7 @@
 #define _TIBEE_COMMON_ABSTRACTRPCRESPONSE_HPP
 
 #include <common/BasicTypes.hpp>
-#include <common/rpc/IRpcMessage.hpp>
+#include <common/rpc/AbstractRpcMessage.hpp>
 #include <common/rpc/RpcMessageType.hpp>
 
 namespace tibee
@@ -33,7 +33,7 @@ namespace common
  * @author Philippe Proulx
  */
 class AbstractRpcResponse :
-    public IRpcMessage
+    public AbstractRpcMessage
 {
 public:
     /**
@@ -42,26 +42,6 @@ public:
     AbstractRpcResponse();
 
     virtual ~AbstractRpcResponse();
-
-    RpcMessageType getType() const
-    {
-        return RpcMessageType::RESPONSE;
-    }
-
-    bool isRequest() const
-    {
-        return false;
-    }
-
-    bool isResponse() const
-    {
-        return true;
-    }
-
-    bool isNotification() const
-    {
-        return false;
-    }
 
     /**
      * Returns whether this response contains an error.
@@ -90,9 +70,8 @@ public:
         return _id;
     }
 
-protected:
+private:
     virtual bool hasErrorImpl() const = 0;
-
 
 private:
     rpc_msg_id_t _id;

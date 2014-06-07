@@ -31,7 +31,7 @@ BuilderJsonRpcMessageEncoder::encodeProgressUpdateRpcNotification(const Progress
                                     BuilderJsonRpcMessageEncoder::encodeProgressUpdateRpcNotificationParams);
 }
 
-bool BuilderJsonRpcMessageEncoder::encodeProgressUpdateRpcNotificationParams(const common::IRpcMessage& msg,
+bool BuilderJsonRpcMessageEncoder::encodeProgressUpdateRpcNotificationParams(const common::AbstractRpcMessage& msg,
                                                                              ::yajl_gen yajlGen)
 {
     auto pu = static_cast<const ProgressUpdateRpcNotification&>(msg);

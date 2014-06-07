@@ -23,32 +23,13 @@ namespace common
 {
 
 AbstractRpcNotification::AbstractRpcNotification(const std::string& method) :
+    AbstractRpcMessage {RpcMessageType::NOTIFICATION},
     _method {method}
 {
 }
 
 AbstractRpcNotification::~AbstractRpcNotification()
 {
-}
-
-RpcMessageType AbstractRpcNotification::getType() const
-{
-    return RpcMessageType::NOTIFICATION;
-}
-
-bool AbstractRpcNotification::isRequest() const
-{
-    return false;
-}
-
-bool AbstractRpcNotification::isResponse() const
-{
-    return false;
-}
-
-bool AbstractRpcNotification::isNotification() const
-{
-    return true;
 }
 
 }

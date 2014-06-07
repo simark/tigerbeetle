@@ -25,7 +25,7 @@
 #include <cstring>
 #include <functional>
 
-#include <common/rpc/IRpcMessage.hpp>
+#include <common/rpc/AbstractRpcMessage.hpp>
 #include <common/rpc/AbstractRpcRequest.hpp>
 #include <common/rpc/AbstractRpcResponse.hpp>
 #include <common/rpc/AbstractRpcNotification.hpp>
@@ -58,7 +58,7 @@ public:
     virtual ~AbstractJsonRpcMessageEncoder();
 
 protected:
-    typedef std::function<bool (const IRpcMessage&, ::yajl_gen)> ObjectEncodeFunc;
+    typedef std::function<bool (const AbstractRpcMessage&, ::yajl_gen)> ObjectEncodeFunc;
 
 protected:
     /**

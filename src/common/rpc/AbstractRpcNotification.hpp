@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include <common/rpc/IRpcMessage.hpp>
+#include <common/rpc/AbstractRpcMessage.hpp>
 #include <common/rpc/RpcMessageType.hpp>
 
 namespace tibee
@@ -35,7 +35,7 @@ namespace common
  * @author Philippe Proulx
  */
 class AbstractRpcNotification :
-    public IRpcMessage
+    public AbstractRpcMessage
 {
 public:
     /**
@@ -46,14 +46,6 @@ public:
     AbstractRpcNotification(const std::string& method);
 
     virtual ~AbstractRpcNotification();
-
-    RpcMessageType getType() const;
-
-    bool isRequest() const;
-
-    bool isResponse() const;
-
-    bool isNotification() const;
 
     /**
      * Returns the RPC request method name.

@@ -15,21 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <common/rpc/AbstractRpcRequest.hpp>
+#include <common/rpc/AbstractRpcNotification.hpp>
 
 namespace tibee
 {
 namespace common
 {
 
-AbstractRpcRequest::AbstractRpcRequest(const std::string& method) :
-    AbstractRpcMessage {RpcMessageType::REQUEST},
-    _id {0},
-    _method {method}
-{
-}
-
-AbstractRpcRequest::~AbstractRpcRequest()
+AbstractRpcMessage::~AbstractRpcMessage()
 {
 }
 

@@ -23,6 +23,7 @@ namespace common
 {
 
 AbstractRpcResponse::AbstractRpcResponse() :
+    AbstractRpcMessage {RpcMessageType::RESPONSE},
     _id {0}
 {
 }

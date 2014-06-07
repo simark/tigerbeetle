@@ -34,6 +34,7 @@ mq_sources = [
 ]
 
 rpc_sources = [
+    'AbstractRpcMessage.cpp',
     'AbstractRpcRequest.cpp',
     'AbstractRpcResponse.cpp',
     'AbstractRpcNotification.cpp',
