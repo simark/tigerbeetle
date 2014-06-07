@@ -45,10 +45,8 @@ public:
      */
     UnknownEventValue();
 
-    /**
-     * @see AbstractEventValue::toString()
-     */
-    std::string toString() const;
+private:
+    std::string toStringImpl() const;
 };
 
 }

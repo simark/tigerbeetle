@@ -106,10 +106,9 @@ public:
      */
     const char* getString() const;
 
-    std::string toString() const;
-
 private:
     void buildCache();
+    std::string toStringImpl() const;
 
 private:
     const ::bt_definition* _btDef;

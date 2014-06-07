@@ -35,7 +35,7 @@ std::int64_t SintEventValue::getValue() const
     return ::bt_ctf_get_int64(this->getDef());
 }
 
-std::string SintEventValue::toString() const
+std::string SintEventValue::toStringImpl() const
 {
     return std::to_string(this->getValue());
 }

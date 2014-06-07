@@ -57,7 +57,7 @@ public:
     {
     }
 
-    virtual ~AbstractEventValue();
+    virtual ~AbstractEventValue() = 0;
 
     /**
      * Returns a string representation of this event value.
@@ -67,7 +67,7 @@ public:
      *
      * @returns String representation of this event value.
      */
-    virtual std::string toString() const = 0;
+    std::string toString() const;
 
     /**
      * Returns the event value type.
@@ -228,6 +228,9 @@ public:
     {
         return _type == EventValueType::UNKNOWN;
     }
+
+private:
+    virtual std::string toStringImpl() const = 0;
 
 private:
     EventValueType _type;

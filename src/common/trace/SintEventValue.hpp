@@ -52,10 +52,8 @@ public:
      */
     std::int64_t getValue() const;
 
-    /**
-     * @see AbstractEventValue::toString()
-     */
-    std::string toString() const;
+private:
+    std::string toStringImpl() const;
 };
 
 }

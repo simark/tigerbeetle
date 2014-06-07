@@ -40,7 +40,7 @@ namespace common
  * read in a trace format-agnostic way.
  *
  * Trace formats are automagically recognized, either using file
- * extensions or inspecting the actual data or directory structure.
+ * extensions or by inspecting the actual data or directory structure.
  *
  * @author Philippe Proulx
  */

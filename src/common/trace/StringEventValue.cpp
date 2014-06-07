@@ -44,7 +44,7 @@ std::string StringEventValue::getValueStr() const
     return std::string {this->getValue()};
 }
 
-std::string StringEventValue::toString() const
+std::string StringEventValue::toStringImpl() const
 {
     std::stringstream ss;
 

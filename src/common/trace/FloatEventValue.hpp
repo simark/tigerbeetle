@@ -50,10 +50,8 @@ public:
      */
     double getValue() const;
 
-    /**
-     * @see AbstractEventValue::toString()
-     */
-    std::string toString() const;
+private:
+    std::string toStringImpl() const;
 
 private:
     const ::bt_definition* _btDef;

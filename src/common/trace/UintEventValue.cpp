@@ -35,7 +35,7 @@ std::uint64_t UintEventValue::getValue() const
     return ::bt_ctf_get_uint64(this->getDef());
 }
 
-std::string UintEventValue::toString() const
+std::string UintEventValue::toStringImpl() const
 {
     return std::to_string(this->getValue());
 }

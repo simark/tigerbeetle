@@ -38,7 +38,7 @@ double FloatEventValue::getValue() const
     return ::bt_ctf_get_float(_btDef);
 }
 
-std::string FloatEventValue::toString() const
+std::string FloatEventValue::toStringImpl() const
 {
     return std::to_string(this->getValue());
 }

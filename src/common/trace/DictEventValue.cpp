@@ -104,7 +104,7 @@ std::map<std::string, const AbstractEventValue*> DictEventValue::getMap() const
     return ret;
 }
 
-std::string DictEventValue::toString() const
+std::string DictEventValue::toStringImpl() const
 {
     std::stringstream ss;
 

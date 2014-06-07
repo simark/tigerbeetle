@@ -96,7 +96,7 @@ const char* ArrayEventValue::getString() const
     return ::bt_ctf_get_char_array(_btDef);
 }
 
-std::string ArrayEventValue::toString() const
+std::string ArrayEventValue::toStringImpl() const
 {
     std::stringstream ss;
 

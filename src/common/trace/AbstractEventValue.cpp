@@ -84,5 +84,10 @@ const DictEventValue* AbstractEventValue::asDict() const
     return static_cast<const DictEventValue*>(this);
 }
 
+std::string AbstractEventValue::toString() const
+{
+    return this->toStringImpl();
+}
+
 }
 }

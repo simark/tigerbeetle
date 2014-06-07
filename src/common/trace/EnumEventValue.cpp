@@ -51,7 +51,7 @@ std::string EnumEventValue::getLabelStr() const
     return std::string {this->getLabel()};
 }
 
-std::string EnumEventValue::toString() const
+std::string EnumEventValue::toStringImpl() const
 {
     std::stringstream ss;
 

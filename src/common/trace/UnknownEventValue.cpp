@@ -30,7 +30,7 @@ UnknownEventValue::UnknownEventValue() :
 {
 }
 
-std::string UnknownEventValue::toString() const
+std::string UnknownEventValue::toStringImpl() const
 {
     return "null";
 }
