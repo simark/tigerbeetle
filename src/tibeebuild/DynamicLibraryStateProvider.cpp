@@ -93,7 +93,7 @@ void DynamicLibraryStateProvider::onInitImpl(common::CurrentState& state)
     }
 }
 
-void DynamicLibraryStateProvider::onEventImpl(common::CurrentState& state, const common::Event& event)
+void DynamicLibraryStateProvider::onEventImpl(common::CurrentState& state, common::Event& event)
 {
     // delegate
     _dlOnEvent(state, event);

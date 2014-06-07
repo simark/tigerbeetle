@@ -50,7 +50,7 @@ TraceSetIterator::TraceSetIterator(::bt_ctf_iter* btCtfIter) :
     };
 
     // update event wrapper
-    _event->_btEvent = _btEvent;
+    _event->setPrivateEvent(_btEvent);
 }
 
 TraceSetIterator::TraceSetIterator(const TraceSetIterator& it)
@@ -98,7 +98,7 @@ TraceSetIterator& TraceSetIterator::operator++()
     _valueFactory.resetPools();
 
     // update event wrapper
-    _event->_btEvent = _btEvent;
+    _event->setPrivateEvent(_btEvent);
 
     return *this;
 }
@@ -113,7 +113,7 @@ bool TraceSetIterator::operator!=(const TraceSetIterator& rhs)
     return !(*this == rhs);
 }
 
-const Event& TraceSetIterator::operator*()
+Event& TraceSetIterator::operator*()
 {
     /* Behaviour is undefined (could crash) when we're at the end (should
      * be checked first by comparing to and end trace set iterator).

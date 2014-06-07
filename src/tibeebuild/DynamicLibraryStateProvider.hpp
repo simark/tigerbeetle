@@ -52,7 +52,7 @@ protected:
 
 private:
     void onInitImpl(common::CurrentState& state);
-    void onEventImpl(common::CurrentState& state, const common::Event& event);
+    void onEventImpl(common::CurrentState& state, common::Event& event);
     void onFiniImpl(common::CurrentState& state);
 
 private:
@@ -61,7 +61,7 @@ private:
 
     // DL resolved symbols
     void (*_dlOnInit)(common::CurrentState&);
-    void (*_dlOnEvent)(common::CurrentState&, const common::Event&);
+    void (*_dlOnEvent)(common::CurrentState&, common::Event&);
     void (*_dlOnFini)(common::CurrentState&);
 };
 

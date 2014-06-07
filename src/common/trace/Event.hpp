@@ -40,8 +40,6 @@ class Event
     friend class TraceSetIterator;
 
 public:
-    Event(const EventValueFactory* valueFactory);
-
     /**
      * Returns the event name.
      *
@@ -71,54 +69,100 @@ public:
     timestamp_t getTimestamp() const;
 
     /**
-     * Returns the event fields.
+     * Returns the event fields dictionary.
      *
      * The returned pointer is only valid while this event is valid.
      *
-     * @returns Event fields or \a nullptr if not available
+     * Once this dictionary is created, a copy of the pointer is cached
+     * by the owning event. The copy is kept as long as this event remains
+     * valid.
+     *
+     * @returns Event fields dictionary or \a nullptr if not available
      */
-    const DictEventValue* getFields() const;
-
-
-    const AbstractEventValue* getField(const char* name) const;
-    const AbstractEventValue* getField(const std::string& name) const;
-    const AbstractEventValue* operator[](const char* name) const;
-    const AbstractEventValue* operator[](const std::string& name) const;
-
+    const DictEventValue* getFields();
 
     /**
-     * Returns the event context.
+     * Returns the event context dictionary.
      *
      * The returned pointer is only valid while this event is valid.
+     *
+     * Once this dictionary is created, a copy of the pointer is cached
+     * by the owning event. The copy is kept as long as this event remains
+     * valid.
      *
      * @returns Event context or \a nullptr if not available
      */
-    const DictEventValue* getContext() const;
+    const DictEventValue* getContext();
 
     /**
-     * Returns the stream event context.
+     * Returns the stream event context dictionary.
      *
      * The returned pointer is only valid while this event is valid.
+     *
+     * Once this dictionary is created, a copy of the pointer is cached
+     * by the owning event. The copy is kept as long as this event remains
+     * valid.
      *
      * @returns Stream event context or \a nullptr if not available
      */
-    const DictEventValue* getStreamEventContext() const;
+    const DictEventValue* getStreamEventContext();
 
     /**
-     * Returns the stream packet context.
+     * Returns the stream packet context dictionary.
      *
      * The returned pointer is only valid while this event is valid.
      *
+     * Once this dictionary is created, a copy of the pointer is cached
+     * by the owning event. The copy is kept as long as this event remains
+     * valid.
+     *
      * @returns Stream packet context or \a nullptr if not available
      */
-    const DictEventValue* getStreamPacketContext() const;
+    const DictEventValue* getStreamPacketContext();
+
+    /**
+     * Returns a specific event field value using its name.
+     *
+     * Once at least one field value is accessed, the created fields
+     * dictionary is cached by the owning event. The copy is kept as
+     * long as this event remains valid.
+     *
+     * @param name Name of field value to retrieve
+     * @returns    Retrieved field value
+     */
+    const AbstractEventValue* operator[](const char* name);
+
+    /**
+     * @see operator[](const char*)
+     */
+    const AbstractEventValue* operator[](const std::string& name);
+
+    /**
+     * Returns a specific event field value using its numeric index.
+     *
+     * Same as operator[](const char* name), but using the numeric
+     * index of the field value to retrieve.
+     *
+     * Caller must make sure the value exists for the specified
+     * index.
+     *
+     * @param index Index of field value to retrieve
+     * @returns     Retrieved field value
+     */
+    const AbstractEventValue* operator[](std::size_t index);
 
 private:
-    const DictEventValue* getTopLevelScope(::bt_ctf_scope topLevelScope) const;
+    Event(const EventValueFactory* valueFactory);
+    const DictEventValue* getTopLevelScope(::bt_ctf_scope topLevelScope);
+    void setPrivateEvent(::bt_ctf_event* btEvent);
 
 private:
     ::bt_ctf_event* _btEvent;
     const EventValueFactory* _valueFactory;
+    const DictEventValue* _fieldsDict;
+    const DictEventValue* _contextDict;
+    const DictEventValue* _streamEventContextDict;
+    const DictEventValue* _streamPacketContextDict;
 };
 
 }

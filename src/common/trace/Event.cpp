@@ -52,7 +52,7 @@ timestamp_t Event::getTimestamp() const
     return static_cast<timestamp_t>(::bt_ctf_get_timestamp(_btEvent));
 }
 
-const DictEventValue* Event::getTopLevelScope(::bt_ctf_scope topLevelScope) const
+const DictEventValue* Event::getTopLevelScope(::bt_ctf_scope topLevelScope)
 {
     // get fields scope
     auto scopeDef = ::bt_ctf_get_top_level_scope(_btEvent, topLevelScope);
@@ -62,24 +62,55 @@ const DictEventValue* Event::getTopLevelScope(::bt_ctf_scope topLevelScope) cons
         /* We know for sure a DictEventValue will be returned here because
          * of the check above.
          */
-        return static_cast<const DictEventValue*>(_valueFactory->buildEventValue(scopeDef, _btEvent));
+        return _valueFactory->buildEventValue(scopeDef, _btEvent)->asDict();
     }
 
     return nullptr;
 }
 
-const DictEventValue* Event::getFields() const
+const DictEventValue* Event::getFields()
 {
-    return this->getTopLevelScope(::BT_EVENT_FIELDS);
+    if (!_fieldsDict) {
+        _fieldsDict = this->getTopLevelScope(::BT_EVENT_FIELDS);
+    }
+
+    return _fieldsDict;
 }
 
-const AbstractEventValue* Event::getField(const char* name) const
+const DictEventValue* Event::getContext()
+{
+    if (!_contextDict) {
+        _contextDict = this->getTopLevelScope(::BT_EVENT_CONTEXT);
+    }
+
+    return _contextDict;
+}
+
+const DictEventValue* Event::getStreamEventContext()
+{
+    if (!_streamEventContextDict) {
+        _streamEventContextDict = this->getTopLevelScope(::BT_STREAM_EVENT_CONTEXT);
+    }
+
+    return _streamEventContextDict;
+}
+
+const DictEventValue* Event::getStreamPacketContext()
+{
+    if (!_streamPacketContextDict) {
+        _streamPacketContextDict = this->getTopLevelScope(::BT_STREAM_PACKET_CONTEXT);
+    }
+
+    return _streamPacketContextDict;
+}
+
+const AbstractEventValue* Event::operator[](const char* name)
 {
     auto fields = this->getFields();
 
     if (fields == nullptr) {
-		return nullptr;
-	}
+        return nullptr;
+    }
 
     for (std::size_t i = 0; i < fields->size(); i++) {
         if (std::strcmp(name, fields->getKeyName(i)) == 0) {
@@ -90,34 +121,32 @@ const AbstractEventValue* Event::getField(const char* name) const
     return nullptr;
 }
 
-const AbstractEventValue* Event::getField(const std::string& name) const
+const AbstractEventValue* Event::operator[](const std::string& name)
 {
-    return this->getField(name.c_str());
+    return this->operator[](name.c_str());
 }
 
-const AbstractEventValue* Event::operator[](const char* name) const
+const AbstractEventValue* Event::operator[](std::size_t index)
 {
-    return this->getField(name);
+    auto fields = this->getFields();
+
+    if (fields == nullptr) {
+        return nullptr;
+    }
+
+    return (*fields)[index];
 }
 
-const AbstractEventValue* Event::operator[](const std::string& name) const
+void Event::setPrivateEvent(::bt_ctf_event* btEvent)
 {
-    return this->getField(name);
-}
+    // set the attribute
+    _btEvent = btEvent;
 
-const DictEventValue* Event::getContext() const
-{
-    return this->getTopLevelScope(::BT_EVENT_CONTEXT);
-}
-
-const DictEventValue* Event::getStreamEventContext() const
-{
-    return this->getTopLevelScope(::BT_STREAM_EVENT_CONTEXT);
-}
-
-const DictEventValue* Event::getStreamPacketContext() const
-{
-    return this->getTopLevelScope(::BT_STREAM_PACKET_CONTEXT);
+    // reset cached pointers
+    _fieldsDict = nullptr;
+    _contextDict = nullptr;
+    _streamEventContextDict = nullptr;
+    _streamPacketContextDict = nullptr;
 }
 
 }

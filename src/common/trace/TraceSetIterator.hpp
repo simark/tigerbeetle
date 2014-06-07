@@ -68,7 +68,7 @@ public:
      *
      * @returns Current event
      */
-    const Event& operator*();
+    Event& operator*();
 
 private:
     ::bt_ctf_iter* _btCtfIter;

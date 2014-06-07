@@ -64,7 +64,7 @@ public:
      * @param state Current state
      * @param event New event
      */
-    void onEvent(common::CurrentState& state, const common::Event& event)
+    void onEvent(common::CurrentState& state, common::Event& event)
     {
         this->onEventImpl(state, event);
     }
@@ -91,7 +91,7 @@ public:
 
 private:
     virtual void onInitImpl(common::CurrentState& state);
-    virtual void onEventImpl(common::CurrentState& state, const common::Event& event) = 0;
+    virtual void onEventImpl(common::CurrentState& state, common::Event& event) = 0;
     virtual void onFiniImpl(common::CurrentState& state);
 
 private:

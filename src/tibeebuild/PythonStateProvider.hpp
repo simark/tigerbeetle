@@ -48,7 +48,7 @@ public:
 
 private:
     void onInitImpl(common::CurrentState& state);
-    void onEventImpl(common::CurrentState& state, const common::Event& event);
+    void onEventImpl(common::CurrentState& state, common::Event& event);
     void onFiniImpl(common::CurrentState& state);
 };
 

@@ -5,7 +5,7 @@
 
 extern "C" {
 
-void onEvent(tibee::common::CurrentState& state, const tibee::common::Event& event)
+void onEvent(tibee::common::CurrentState& state, tibee::common::Event& event)
 {
     auto fields = event.getFields();
 

@@ -73,7 +73,7 @@ public:
 
 protected:
     bool onStartImpl(const std::shared_ptr<const common::TraceSet>& traceSet);
-    void onEventImpl(const common::Event& event);
+    void onEventImpl(common::Event& event);
     bool onStopImpl();
     void publish();
 

@@ -88,7 +88,7 @@ bool StateHistoryBuilder::onStartImpl(const std::shared_ptr<const common::TraceS
     return true;
 }
 
-void StateHistoryBuilder::onEventImpl(const common::Event& event)
+void StateHistoryBuilder::onEventImpl(common::Event& event)
 {
     // also notify each state provider
     for (auto& provider : _providers) {

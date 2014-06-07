@@ -92,7 +92,7 @@ bool ProgressPublisher::onStartImpl(const std::shared_ptr<const common::TraceSet
     return true;
 }
 
-void ProgressPublisher::onEventImpl(const common::Event& event)
+void ProgressPublisher::onEventImpl(common::Event& event)
 {
     // increase event count
     _evCount++;

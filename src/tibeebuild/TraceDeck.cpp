@@ -45,7 +45,7 @@ bool TraceDeck::play(std::shared_ptr<const common::TraceSet> traceSet,
     }
 
     // go through all events
-    for (const auto& event : *traceSet) {
+    for (auto& event : *traceSet) {
         if (!_playing) {
             return false;
         }
