@@ -22,7 +22,7 @@
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
-#include "AbstractStateProvider.hpp"
+#include "AbstractStateProviderFile.hpp"
 
 namespace tibee
 {
@@ -34,7 +34,7 @@ namespace tibee
  * @author Philippe Proulx
  */
 class PythonStateProvider :
-    public AbstractStateProvider
+    public AbstractStateProviderFile
 {
 public:
     /**

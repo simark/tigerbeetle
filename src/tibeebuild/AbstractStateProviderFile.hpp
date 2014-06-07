@@ -15,27 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef _ABSTRACTSTATEPROVIDERFILE_HPP
+#define _ABSTRACTSTATEPROVIDERFILE_HPP
+
+#include <boost/filesystem.hpp>
+
 #include "AbstractStateProvider.hpp"
 
 namespace tibee
 {
 
-AbstractStateProvider::AbstractStateProvider()
+/**
+ * An abstract state provider file. Any state provider which uses an
+ * external file to provider state changes must inherit this class.
+ *
+ * @author Philippe Proulx
+ */
+class AbstractStateProviderFile :
+    public AbstractStateProvider
 {
+public:
+    /**
+     * Builds a state provider file.
+     *
+     * @param path State provider file path
+     */
+    AbstractStateProviderFile(const boost::filesystem::path& path);
+
+    /**
+     * Returns this provider path.
+     *
+     * @returns Provider path
+     */
+    const boost::filesystem::path& getPath() const
+    {
+        return _path;
+    }
+
+private:
+    boost::filesystem::path _path;
+};
+
 }
 
-AbstractStateProvider::~AbstractStateProvider()
-{
-}
-
-void AbstractStateProvider::onInitImpl(common::CurrentState& state)
-{
-    // implemented here so that it's not mandatory for concrete providers
-}
-
-void AbstractStateProvider::onFiniImpl(common::CurrentState& state)
-{
-    // implemented here so that it's not mandatory for concrete providers
-}
-
-}
+#endif // _ABSTRACTSTATEPROVIDERFILE_HPP

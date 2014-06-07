@@ -18,6 +18,7 @@ main_sources = [
     'AbstractTracePlaybackListener.cpp',
     'AbstractCacheBuilder.cpp',
     'AbstractStateProvider.cpp',
+    'AbstractStateProviderFile.cpp',
     'BuilderBeetle.cpp',
     'DynamicLibraryStateProvider.cpp',
     'ProgressPublisher.cpp',

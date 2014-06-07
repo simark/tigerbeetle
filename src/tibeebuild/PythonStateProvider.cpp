@@ -19,7 +19,6 @@
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
-#include "AbstractStateProvider.hpp"
 #include "PythonStateProvider.hpp"
 
 namespace bfs = boost::filesystem;
@@ -28,7 +27,7 @@ namespace tibee
 {
 
 PythonStateProvider::PythonStateProvider(const boost::filesystem::path& path) :
-    AbstractStateProvider {path}
+    AbstractStateProviderFile {path}
 {
     std::cout << "python state provider: loading script " << path << std::endl;
 }

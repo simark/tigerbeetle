@@ -18,8 +18,6 @@
 #ifndef _ABSTRACTSTATEPROVIDER_HPP
 #define _ABSTRACTSTATEPROVIDER_HPP
 
-#include <boost/filesystem.hpp>
-
 #include <common/state/CurrentState.hpp>
 #include <common/trace/Event.hpp>
 
@@ -41,10 +39,8 @@ public:
 public:
     /**
      * Builds a state provider.
-     *
-     * @param path State provider path
      */
-    AbstractStateProvider(const boost::filesystem::path& path);
+    AbstractStateProvider();
 
     virtual ~AbstractStateProvider();
 
@@ -79,23 +75,10 @@ public:
         this->onFiniImpl(state);
     }
 
-    /**
-     * Returns this provider path.
-     *
-     * @returns Provider path
-     */
-    const boost::filesystem::path& getPath() const
-    {
-        return _path;
-    }
-
 private:
     virtual void onInitImpl(common::CurrentState& state);
     virtual void onEventImpl(common::CurrentState& state, common::Event& event) = 0;
     virtual void onFiniImpl(common::CurrentState& state);
-
-private:
-    boost::filesystem::path _path;
 };
 
 }

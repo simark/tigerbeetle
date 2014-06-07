@@ -21,7 +21,6 @@
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
-#include "AbstractStateProvider.hpp"
 #include "DynamicLibraryStateProvider.hpp"
 #include "ex/WrongStateProvider.hpp"
 
@@ -31,7 +30,7 @@ namespace tibee
 {
 
 DynamicLibraryStateProvider::DynamicLibraryStateProvider(const boost::filesystem::path& path) :
-    AbstractStateProvider {path},
+    AbstractStateProviderFile {path},
     _dlHandle {nullptr}
 {
     std::cout << "dynamic library state provider: loading library " << path << std::endl;
