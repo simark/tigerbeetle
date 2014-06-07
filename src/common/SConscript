@@ -18,7 +18,6 @@ trace_sources = [
     'TraceSet.cpp',
     'TraceSetIterator.cpp',
     'UintEventValue.cpp',
-    'UnknownEventValue.cpp',
 ]
 
 state_sources = [

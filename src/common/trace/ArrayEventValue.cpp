@@ -121,7 +121,12 @@ std::string ArrayEventValue::toStringImpl() const
     ss << "[";
 
     for (auto it = vec.begin(); it != vec.end() - 1; ++it) {
-        ss << (*it)->toString();
+        if (*it) {
+            ss << (*it)->toString();
+        } else {
+            ss << "null";
+        }
+
         ss << ", ";
     }
 

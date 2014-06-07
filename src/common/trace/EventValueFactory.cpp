@@ -19,17 +19,6 @@
 #include <functional>
 #include <babeltrace/ctf/events.h>
 
-#include <common/trace/EventValuePool.hpp>
-#include <common/trace/EventValueType.hpp>
-#include <common/trace/AbstractEventValue.hpp>
-#include <common/trace/StringEventValue.hpp>
-#include <common/trace/SintEventValue.hpp>
-#include <common/trace/UintEventValue.hpp>
-#include <common/trace/FloatEventValue.hpp>
-#include <common/trace/UnknownEventValue.hpp>
-#include <common/trace/EnumEventValue.hpp>
-#include <common/trace/ArrayEventValue.hpp>
-#include <common/trace/DictEventValue.hpp>
 #include <common/trace/EventValueFactory.hpp>
 
 namespace tibee
@@ -44,8 +33,7 @@ EventValueFactory::EventValueFactory() :
     _floatPool {64},
     _sintPool {128},
     _stringPool {64},
-    _uintPool {128},
-    _unknownPool {1}
+    _uintPool {128}
 {
     this->initTypes();
 }
@@ -59,7 +47,7 @@ void EventValueFactory::initTypes()
     // precious builder functions
     auto unknownBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev)
     {
-        return new(_unknownPool.get()) UnknownEventValue;
+        return nullptr;
     };
     auto intBuilder = [this] (const ::bt_definition* def, const ::bt_ctf_event* ev) -> const AbstractEventValue*
     {
@@ -133,7 +121,6 @@ void EventValueFactory::resetPools()
     _sintPool.reset();
     _stringPool.reset();
     _uintPool.reset();
-    _unknownPool.reset();
 }
 
 }

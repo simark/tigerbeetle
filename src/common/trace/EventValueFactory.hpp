@@ -29,7 +29,6 @@
 #include <common/trace/SintEventValue.hpp>
 #include <common/trace/UintEventValue.hpp>
 #include <common/trace/FloatEventValue.hpp>
-#include <common/trace/UnknownEventValue.hpp>
 #include <common/trace/EnumEventValue.hpp>
 #include <common/trace/ArrayEventValue.hpp>
 #include <common/trace/DictEventValue.hpp>
@@ -99,7 +98,6 @@ private:
     EventValuePool<SintEventValue> _sintPool;
     EventValuePool<StringEventValue> _stringPool;
     EventValuePool<UintEventValue> _uintPool;
-    EventValuePool<UnknownEventValue> _unknownPool;
 };
 
 }

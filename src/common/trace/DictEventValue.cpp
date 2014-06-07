@@ -126,7 +126,13 @@ std::string DictEventValue::toStringImpl() const
         ss << "\"";
         ss << keyName;
         ss << "\": ";
-        ss << value->toString();
+
+        if (value) {
+            ss << value->toString();
+        } else {
+            ss << "null";
+        }
+
         ss << ", ";
     }
 
