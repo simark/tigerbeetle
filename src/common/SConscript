@@ -67,7 +67,7 @@ lib_env.ParseConfig('pkg-config --cflags --libs yajl')
 lib_env.ParseConfig('pkg-config --cflags --libs libzmq')
 lib_env.ParseConfig('pkg-config --cflags uuid')
 lib_env.ParseConfig('pkg-config --cflags glib-2.0')
-lib_env.Append(LIBS=['delorean', 'babeltrace', 'babeltrace-ctf'])
+lib_env.Append(LIBS=['delorean', 'babeltrace', 'babeltrace-ctf', 'dl'])
 
 lib = lib_env.SharedLibrary(target=target, source=sources)
 
