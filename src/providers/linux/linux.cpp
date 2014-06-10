@@ -7,8 +7,6 @@
 #include <common/trace/Event.hpp>
 #include <common/trace/TraceSet.hpp>
 
-extern "C" {
-
 namespace
 {
 
@@ -74,9 +72,9 @@ bool onEvent(tibee::common::CurrentState& state, tibee::common::Event& event)
 
 }
 
-void onInit(tibee::common::CurrentState& state,
-            const tibee::common::TraceSet* traceSet,
-            tibee::common::DynamicLibraryStateProvider::StateProviderConfig& config)
+extern "C" void onInit(tibee::common::CurrentState& state,
+                       const tibee::common::TraceSet* traceSet,
+                       tibee::common::DynamicLibraryStateProvider::StateProviderConfig& config)
 {
     std::cout << "hello from linux.so: onInit()" << std::endl;
 
@@ -119,6 +117,4 @@ void onInit(tibee::common::CurrentState& state,
         std::cout << "trace type: " << traceInfos->getTraceType() << std::endl;
         std::cout << "events:     " << traceInfos->getEventMap().size() << std::endl;
     }
-}
-
 }
