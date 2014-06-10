@@ -318,4 +318,14 @@ struct tibee_bt_ctf_event {
 	struct tibee_ctf_event_definition *parent;
 };
 
+struct tibee_bt_ctf_event_decl {
+	struct tibee_ctf_event_declaration parent;
+	GPtrArray *context_decl;
+	GPtrArray *fields_decl;
+	GPtrArray *packet_header_decl;
+	GPtrArray *event_context_decl;
+	GPtrArray *event_header_decl;
+	GPtrArray *packet_context_decl;
+};
+
 #endif /* _BABELTRACE_INTERNALS_H */

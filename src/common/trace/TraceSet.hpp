@@ -21,12 +21,14 @@
 #include <memory>
 #include <cstdint>
 #include <set>
+#include <vector>
 #include <boost/filesystem.hpp>
 #include <boost/utility.hpp>
 #include <babeltrace/babeltrace.h>
 
 #include <common/BasicTypes.hpp>
 #include <common/trace/TraceSetIterator.hpp>
+#include <common/trace/TraceInfos.hpp>
 
 namespace tibee
 {
@@ -101,11 +103,22 @@ public:
      */
     Iterator end() const;
 
-private:
-    void seekBegin() const;
+    /**
+     * Returns the set of trace informations.
+     *
+     * @returns Trace infos set
+     */
+    const std::set<std::unique_ptr<TraceInfos>>& getTracesInfos() const
+    {
+        return _tracesInfos;
+    }
 
 private:
-    std::set<boost::filesystem::path> _tracePaths;
+    void seekBegin() const;
+    bool addTraceToSet(const boost::filesystem::path& path, int traceHandle);
+
+private:
+    std::set<std::unique_ptr<TraceInfos>> _tracesInfos;
     ::bt_context* _btCtx;
     ::bt_iter* _btIter;
     ::bt_ctf_iter* _btCtfIter;

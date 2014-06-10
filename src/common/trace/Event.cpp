@@ -21,6 +21,7 @@
 #include <common/trace/babeltrace-internals.h>
 #include <common/trace/DictEventValue.hpp>
 #include <common/trace/Event.hpp>
+#include <common/trace/TraceUtils.hpp>
 
 namespace tibee
 {
@@ -160,9 +161,9 @@ void Event::setPrivateEvent(::bt_ctf_event* btEvent)
      */
     auto tibeeBtCtfEvent = reinterpret_cast<::tibee_bt_ctf_event*>(btEvent);
     auto tibeeStream = tibeeBtCtfEvent->parent->stream;
-    auto ctfEventId = static_cast<std::uint32_t>(tibeeStream->event_id);
-    auto ctfStreamId = static_cast<std::uint32_t>(tibeeStream->stream_id);
-    _id = (ctfStreamId << 20) | (ctfEventId & 0xfffff);
+    auto ctfEventId = tibeeStream->event_id;
+    auto ctfStreamId = tibeeStream->stream_id;
+    _id = TraceUtils::tibeeEventIdFromCtf(ctfStreamId, ctfEventId);
 
     /* Let's use the trace handle (an integer starting at 0) here, which
      * is unique for each trace in the same Babeltrace context (and we

@@ -15,6 +15,7 @@ trace_sources = [
     'FloatEventValue.cpp',
     'SintEventValue.cpp',
     'StringEventValue.cpp',
+    'TraceInfos.cpp',
     'TraceSet.cpp',
     'TraceSetIterator.cpp',
     'UintEventValue.cpp',
