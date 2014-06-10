@@ -7,10 +7,13 @@
 #include <common/trace/Event.hpp>
 #include <common/trace/TraceSet.hpp>
 
+using namespace tibee;
+using namespace tibee::common;
+
 namespace
 {
 
-void printEventDetails(tibee::common::Event& event)
+void printEventDetails(Event& event)
 {
     auto fields = event.getFields();
 
@@ -24,7 +27,7 @@ void printEventDetails(tibee::common::Event& event)
     }
 }
 
-bool onSchedSwitch(tibee::common::CurrentState& state, tibee::common::Event& event)
+bool onSchedSwitch(CurrentState& state, Event& event)
 {
     assert(std::strcmp(event.getName(), "sched_switch") == 0);
 
@@ -35,7 +38,7 @@ bool onSchedSwitch(tibee::common::CurrentState& state, tibee::common::Event& eve
     return true;
 }
 
-bool onSysOpen(tibee::common::CurrentState& state, tibee::common::Event& event)
+bool onSysOpen(CurrentState& state, Event& event)
 {
     assert(std::strcmp(event.getName(), "sys_open") == 0);
 
@@ -46,7 +49,7 @@ bool onSysOpen(tibee::common::CurrentState& state, tibee::common::Event& event)
     return true;
 }
 
-bool onSysClose(tibee::common::CurrentState& state, tibee::common::Event& event)
+bool onSysClose(CurrentState& state, Event& event)
 {
     assert(std::strcmp(event.getName(), "sys_close") == 0);
 
@@ -57,7 +60,7 @@ bool onSysClose(tibee::common::CurrentState& state, tibee::common::Event& event)
     return true;
 }
 
-bool onEvent(tibee::common::CurrentState& state, tibee::common::Event& event)
+bool onEvent(CurrentState& state, Event& event)
 {
     assert(std::strcmp(event.getName(), "sched_switch") != 0);
     assert(std::strcmp(event.getName(), "sys_close") != 0);
@@ -72,9 +75,9 @@ bool onEvent(tibee::common::CurrentState& state, tibee::common::Event& event)
 
 }
 
-extern "C" void onInit(tibee::common::CurrentState& state,
-                       const tibee::common::TraceSet* traceSet,
-                       tibee::common::DynamicLibraryStateProvider::StateProviderConfig& config)
+extern "C" void onInit(CurrentState& state,
+                       const TraceSet* traceSet,
+                       DynamicLibraryStateProvider::StateProviderConfig& config)
 {
     std::cout << "hello from linux.so: onInit()" << std::endl;
 
