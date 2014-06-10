@@ -15,18 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef _WRONGSTATEPROVIDER_HPP
+#define _WRONGSTATEPROVIDER_HPP
+
+#include <string>
+#include <stdexcept>
 #include <boost/filesystem/path.hpp>
-
-#include "AbstractStateProviderFile.hpp"
-
-namespace bfs = boost::filesystem;
 
 namespace tibee
 {
-
-AbstractStateProviderFile::AbstractStateProviderFile(const bfs::path& path) :
-    _path {path}
+namespace common
 {
-}
+namespace ex
+{
+
+class WrongStateProvider :
+    public std::runtime_error
+{
+public:
+    WrongStateProvider(const std::string& msg, const boost::filesystem::path& path) :
+        std::runtime_error {msg},
+        _path {path}
+    {
+    }
+
+    const boost::filesystem::path& getPath() const {
+        return _path;
+    }
+
+private:
+    boost::filesystem::path _path;
+};
 
 }
+}
+}
+
+#endif // _WRONGSTATEPROVIDER_HPP

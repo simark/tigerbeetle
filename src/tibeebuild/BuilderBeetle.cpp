@@ -21,13 +21,13 @@
 #include <boost/filesystem/path.hpp>
 
 #include <common/trace/TraceSet.hpp>
+#include <common/ex/WrongStateProvider.hpp>
 #include "StateHistoryBuilder.hpp"
 #include "ProgressPublisher.hpp"
 #include "TraceDeck.hpp"
 #include "Arguments.hpp"
 #include "BuilderBeetle.hpp"
 #include "ex/MqBindError.hpp"
-#include "ex/WrongStateProvider.hpp"
 #include "ex/UnknownStateProviderType.hpp"
 
 namespace bfs = boost::filesystem;
@@ -66,7 +66,7 @@ bool BuilderBeetle::run()
                 _args.stateProviders
             }
         };
-    } catch (const ex::WrongStateProvider& ex) {
+    } catch (const common::ex::WrongStateProvider& ex) {
         std::cerr << "Error: wrong state provider: " <<
                      ex.getPath() << std::endl <<
                      "  " << ex.what() << std::endl;

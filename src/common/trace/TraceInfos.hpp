@@ -103,11 +103,22 @@ public:
         return *_eventMap;
     }
 
+    /**
+     * Returns the trace type.
+     *
+     * @returns Trace type
+     */
+    const std::string& getTraceType() const
+    {
+        return _traceType;
+    }
+
 private:
     boost::filesystem::path _path;
     trace_id_t _id;
     std::unique_ptr<Environment> _env;
     std::unique_ptr<EventMap> _eventMap;
+    std::string _traceType;
 };
 
 }

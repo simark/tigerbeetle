@@ -23,9 +23,9 @@
 #include <common/trace/AbstractEventValue.hpp>
 #include "AbstractCacheBuilder.hpp"
 #include "StateHistoryBuilder.hpp"
-#include "AbstractStateProvider.hpp"
-#include "DynamicLibraryStateProvider.hpp"
-#include "PythonStateProvider.hpp"
+#include <common/stateprov/AbstractStateProvider.hpp>
+#include <common/stateprov/DynamicLibraryStateProvider.hpp>
+#include <common/stateprov/PythonStateProvider.hpp>
 #include "ex/UnknownStateProviderType.hpp"
 
 namespace bfs = boost::filesystem;
@@ -44,16 +44,16 @@ StateHistoryBuilder::StateHistoryBuilder(const bfs::path& dir,
         // known providers are right here for the moment
         auto extension = providerPath.extension();
 
-        AbstractStateProvider::UP stateProvider;
+        common::AbstractStateProvider::UP stateProvider;
 
         if (extension == ".so" || extension == ".dll" || extension == ".dylib") {
-            stateProvider = std::move(AbstractStateProvider::UP {
-                new DynamicLibraryStateProvider {providerPath}
-            });
+            stateProvider = common::AbstractStateProvider::UP {
+                new common::DynamicLibraryStateProvider {providerPath}
+            };
         } else if (extension == ".py") {
-            stateProvider = std::move(AbstractStateProvider::UP {
-                new PythonStateProvider {providerPath}
-            });
+            stateProvider = common::AbstractStateProvider::UP {
+                new common::PythonStateProvider {providerPath}
+            };
         } else {
             throw ex::UnknownStateProviderType {providerPath};
         }
@@ -82,7 +82,7 @@ bool StateHistoryBuilder::onStartImpl(const common::TraceSet* traceSet)
 
     // also notify each state provider
     for (auto& provider : _providers) {
-        provider->onInit(_stateHistorySink->getCurrentState());
+        provider->onInit(_stateHistorySink->getCurrentState(), traceSet);
     }
 
     return true;

@@ -15,29 +15,42 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _WRONGSTATEPROVIDER_HPP
-#define _WRONGSTATEPROVIDER_HPP
+#ifndef _TIBEE_COMMON_ABSTRACTSTATEPROVIDERFILE_HPP
+#define _TIBEE_COMMON_ABSTRACTSTATEPROVIDERFILE_HPP
 
-#include <string>
-#include <stdexcept>
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem.hpp>
+
+#include <common/stateprov/AbstractStateProvider.hpp>
 
 namespace tibee
 {
-namespace ex
+namespace common
 {
 
-class WrongStateProvider :
-    public std::runtime_error
+/**
+ * An abstract state provider file. Any state provider which uses an
+ * external file to provider state changes must inherit this class.
+ *
+ * @author Philippe Proulx
+ */
+class AbstractStateProviderFile :
+    public AbstractStateProvider
 {
 public:
-    WrongStateProvider(const std::string& msg, const boost::filesystem::path& path) :
-        std::runtime_error {msg},
-        _path {path}
-    {
-    }
+    /**
+     * Builds a state provider file.
+     *
+     * @param path State provider file path
+     */
+    AbstractStateProviderFile(const boost::filesystem::path& path);
 
-    const boost::filesystem::path& getPath() const {
+    /**
+     * Returns this provider path.
+     *
+     * @returns Provider path
+     */
+    const boost::filesystem::path& getPath() const
+    {
         return _path;
     }
 
@@ -48,4 +61,4 @@ private:
 }
 }
 
-#endif // _WRONGSTATEPROVIDER_HPP
+#endif // _TIBEE_COMMON_ABSTRACTSTATEPROVIDERFILE_HPP

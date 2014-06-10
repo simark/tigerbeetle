@@ -17,12 +17,8 @@ main_sources = [
     'main.cpp',
     'AbstractTracePlaybackListener.cpp',
     'AbstractCacheBuilder.cpp',
-    'AbstractStateProvider.cpp',
-    'AbstractStateProviderFile.cpp',
     'BuilderBeetle.cpp',
-    'DynamicLibraryStateProvider.cpp',
     'ProgressPublisher.cpp',
-    'PythonStateProvider.cpp',
     'StateHistoryBuilder.cpp',
     'TraceDeck.cpp',
 ]

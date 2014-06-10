@@ -21,20 +21,20 @@
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
-#include "DynamicLibraryStateProvider.hpp"
-#include "ex/WrongStateProvider.hpp"
+#include <common/stateprov/DynamicLibraryStateProvider.hpp>
+#include <common/ex/WrongStateProvider.hpp>
 
 namespace bfs = boost::filesystem;
 
 namespace tibee
 {
+namespace common
+{
 
-DynamicLibraryStateProvider::DynamicLibraryStateProvider(const boost::filesystem::path& path) :
+DynamicLibraryStateProvider::DynamicLibraryStateProvider(const bfs::path& path) :
     AbstractStateProviderFile {path},
     _dlHandle {nullptr}
 {
-    std::cout << "dynamic library state provider: loading library " << path << std::endl;
-
     // try loading the dynamic library
     _dlHandle = ::dlopen(path.string().c_str(), RTLD_NOW);
 
@@ -49,25 +49,6 @@ DynamicLibraryStateProvider::DynamicLibraryStateProvider(const boost::filesystem
     _dlOnInit = reinterpret_cast<decltype(_dlOnInit)>(
         ::dlsym(_dlHandle, DynamicLibraryStateProvider::ON_INIT_SYMBOL_NAME())
     );
-
-    _dlOnEvent = reinterpret_cast<decltype(_dlOnEvent)>(
-        ::dlsym(_dlHandle, DynamicLibraryStateProvider::ON_EVENT_SYMBOL_NAME())
-    );
-
-    if (!_dlOnEvent) {
-        ::dlclose(_dlHandle);
-
-        std::string msg;
-
-        msg += "cannot find \"";
-        msg += DynamicLibraryStateProvider::ON_EVENT_SYMBOL_NAME();
-        msg += "\" symbol";
-
-        throw ex::WrongStateProvider {
-            DynamicLibraryStateProvider::getErrorMsg(msg),
-            path
-        };
-    }
 
     _dlOnFini = reinterpret_cast<decltype(_dlOnFini)>(
         ::dlsym(_dlHandle, DynamicLibraryStateProvider::ON_FINI_SYMBOL_NAME())
@@ -89,28 +70,24 @@ std::string DynamicLibraryStateProvider::getErrorMsg(const std::string& base)
 
 DynamicLibraryStateProvider::~DynamicLibraryStateProvider()
 {
-    std::cout << "dynamic library state provider: unloading library" << std::endl;
-
     if (_dlHandle) {
         ::dlclose(_dlHandle);
     }
 }
 
-void DynamicLibraryStateProvider::onInitImpl(common::CurrentState& state)
+void DynamicLibraryStateProvider::onInitImpl(CurrentState& state,
+                                             const TraceSet* traceSet)
 {
     // delegate
     if (_dlOnInit) {
-        _dlOnInit(state);
+        // build temporary configuration façade
+        DynamicLibraryStateProvider::StateProviderConfig config {this};
+
+        _dlOnInit(state, traceSet, config);
     }
 }
 
-void DynamicLibraryStateProvider::onEventImpl(common::CurrentState& state, common::Event& event)
-{
-    // delegate
-    _dlOnEvent(state, event);
-}
-
-void DynamicLibraryStateProvider::onFiniImpl(common::CurrentState& state)
+void DynamicLibraryStateProvider::onFiniImpl(CurrentState& state)
 {
     // delegate
     if (_dlOnFini) {
@@ -118,4 +95,17 @@ void DynamicLibraryStateProvider::onFiniImpl(common::CurrentState& state)
     }
 }
 
+DynamicLibraryStateProvider::StateProviderConfig::StateProviderConfig(DynamicLibraryStateProvider* stateProvider) :
+    _stateProvider {stateProvider}
+{
+}
+
+bool DynamicLibraryStateProvider::StateProviderConfig::registerEventCallback(const std::string& traceType,
+                                                                             const std::string& eventName,
+                                                                             const OnEventFunction& onEvent)
+{
+    return _stateProvider->registerEventCallback(traceType, eventName, onEvent);
+}
+
+}
 }

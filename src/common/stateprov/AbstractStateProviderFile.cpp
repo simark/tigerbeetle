@@ -15,27 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "AbstractStateProvider.hpp"
+#include <boost/filesystem/path.hpp>
+
+#include <common/stateprov/AbstractStateProviderFile.hpp>
+
+namespace bfs = boost::filesystem;
 
 namespace tibee
 {
+namespace common
+{
 
-AbstractStateProvider::AbstractStateProvider()
+AbstractStateProviderFile::AbstractStateProviderFile(const bfs::path& path) :
+    _path {path}
 {
 }
 
-AbstractStateProvider::~AbstractStateProvider()
-{
 }
-
-void AbstractStateProvider::onInitImpl(common::CurrentState& state)
-{
-    // implemented here so that it's not mandatory for concrete providers
-}
-
-void AbstractStateProvider::onFiniImpl(common::CurrentState& state)
-{
-    // implemented here so that it's not mandatory for concrete providers
-}
-
 }

@@ -15,17 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _DYNAMICLIBRARYSTATEPROVIDER_HPP
-#define _DYNAMICLIBRARYSTATEPROVIDER_HPP
+#ifndef _TIBEE_COMMON_DYNAMICLIBRARYSTATEPROVIDER_HPP
+#define _TIBEE_COMMON_DYNAMICLIBRARYSTATEPROVIDER_HPP
 
 #include <string>
 #include <boost/filesystem.hpp>
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
-#include "AbstractStateProviderFile.hpp"
+#include <common/stateprov/AbstractStateProviderFile.hpp>
 
 namespace tibee
+{
+namespace common
 {
 
 /**
@@ -37,6 +39,29 @@ namespace tibee
 class DynamicLibraryStateProvider :
     public AbstractStateProviderFile
 {
+public:
+    /**
+     * This is a façade for dynamically loaded state providers.
+     */
+    class StateProviderConfig
+    {
+        friend class DynamicLibraryStateProvider;
+
+    public:
+        /**
+         * @see AbstractStateProvider::registerEventCallback()
+         */
+        bool registerEventCallback(const std::string& traceType,
+                                   const std::string& eventName,
+                                   const OnEventFunction& onEvent);
+
+    private:
+        StateProviderConfig(DynamicLibraryStateProvider* stateProvider);
+
+    private:
+        DynamicLibraryStateProvider* _stateProvider;
+    };
+
 public:
     /**
      * Builds a dynamic library state provider.
@@ -63,20 +88,20 @@ private:
         return "onFini";
     }
 
-    void onInitImpl(common::CurrentState& state);
-    void onEventImpl(common::CurrentState& state, common::Event& event);
-    void onFiniImpl(common::CurrentState& state);
+    void onInitImpl(CurrentState& state, const TraceSet* traceSet);
+    void onEventImpl(CurrentState& state, Event& event);
+    void onFiniImpl(CurrentState& state);
 
 private:
     // DL handle
     void* _dlHandle;
 
     // DL resolved symbols
-    void (*_dlOnInit)(common::CurrentState&);
-    void (*_dlOnEvent)(common::CurrentState&, common::Event&);
-    void (*_dlOnFini)(common::CurrentState&);
+    void (*_dlOnInit)(CurrentState&, const TraceSet*, StateProviderConfig&);
+    void (*_dlOnFini)(CurrentState&);
 };
 
 }
+}
 
-#endif // _DYNAMICLIBRARYSTATEPROVIDER_HPP
+#endif // _TIBEE_COMMON_DYNAMICLIBRARYSTATEPROVIDER_HPP

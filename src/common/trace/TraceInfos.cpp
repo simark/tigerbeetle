@@ -32,6 +32,16 @@ TraceInfos::TraceInfos(const bfs::path& path, trace_id_t id,
     _env {std::move(env)},
     _eventMap {std::move(eventMap)}
 {
+    const auto& envDomainIt = _env->find("domain");
+
+    if (envDomainIt == _env->end()) {
+        _traceType = "(unknown)";
+
+        return;
+    }
+
+    _traceType = "lttng-";
+    _traceType += (*envDomainIt).second;
 }
 
 }

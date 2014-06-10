@@ -27,6 +27,13 @@ state_sources = [
     'StateHistorySink.cpp',
 ]
 
+stateprov_sources = [
+    'AbstractStateProvider.cpp',
+    'AbstractStateProviderFile.cpp',
+    'DynamicLibraryStateProvider.cpp',
+    'PythonStateProvider.cpp',
+]
+
 mq_sources = [
     'AbstractMqSocket.cpp',
     'MqContext.cpp',
@@ -45,6 +52,7 @@ rpc_sources = [
 subs = [
     ('trace', trace_sources),
     ('state', state_sources),
+    ('stateprov', stateprov_sources),
     ('mq', mq_sources),
     ('rpc', rpc_sources),
 ]

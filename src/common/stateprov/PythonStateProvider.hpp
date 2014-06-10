@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with tigerbeetle.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _PYTHONSTATEPROVIDER_HPP
-#define _PYTHONSTATEPROVIDER_HPP
+#ifndef _TIBEE_COMMON_PYTHONSTATEPROVIDER_HPP
+#define _TIBEE_COMMON_PYTHONSTATEPROVIDER_HPP
 
 #include <boost/filesystem.hpp>
 
@@ -25,6 +25,8 @@
 #include "AbstractStateProviderFile.hpp"
 
 namespace tibee
+{
+namespace common
 {
 
 /**
@@ -47,11 +49,12 @@ public:
     ~PythonStateProvider();
 
 private:
-    void onInitImpl(common::CurrentState& state);
-    void onEventImpl(common::CurrentState& state, common::Event& event);
-    void onFiniImpl(common::CurrentState& state);
+    void onInitImpl(CurrentState& state);
+    void onEventImpl(CurrentState& state, Event& event);
+    void onFiniImpl(CurrentState& state);
 };
 
 }
+}
 
-#endif // _PYTHONSTATEPROVIDER_HPP
+#endif // _TIBEE_COMMON_PYTHONSTATEPROVIDER_HPP

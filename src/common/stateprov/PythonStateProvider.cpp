@@ -19,11 +19,13 @@
 
 #include <common/trace/EventValueType.hpp>
 #include <common/trace/AbstractEventValue.hpp>
-#include "PythonStateProvider.hpp"
+#include <common/stateprov/PythonStateProvider.hpp>
 
 namespace bfs = boost::filesystem;
 
 namespace tibee
+{
+namespace common
 {
 
 PythonStateProvider::PythonStateProvider(const boost::filesystem::path& path) :
@@ -37,19 +39,20 @@ PythonStateProvider::~PythonStateProvider()
     std::cout << "python state provider: unloading script" << std::endl;
 }
 
-void PythonStateProvider::onInitImpl(common::CurrentState& state)
+void PythonStateProvider::onInitImpl(CurrentState& state)
 {
     std::cout << "python state provider: initializing" << std::endl;
 }
 
-void PythonStateProvider::onEventImpl(common::CurrentState& state, common::Event& event)
+void PythonStateProvider::onEventImpl(CurrentState& state, Event& event)
 {
     // getting event
 }
 
-void PythonStateProvider::onFiniImpl(common::CurrentState& state)
+void PythonStateProvider::onFiniImpl(CurrentState& state)
 {
     std::cout << "python state provider: finishing" << std::endl;
 }
 
+}
 }
